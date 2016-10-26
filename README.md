@@ -5,3 +5,4 @@
 - federica
 - albiSan
 - davide
+- Annalisa
