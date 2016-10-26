@@ -1,4 +1,4 @@
-package com.links.checker;
+package com.links.ressys.checker;
 
 import java.util.ArrayList;
 

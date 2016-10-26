@@ -1,25 +1,21 @@
-package com.links.checker;
+package com.links.ressys.checker;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import hotelReservation.Checkable;
-import hotelReservation.Customer;
-import hotelReservation.Reservation;
-import hotelReservation.Room;
+import com.links.ressys.core.Room;
 
-public class CheckRoom implements Checker{
+public class CheckerRoom implements Checker{
 
 	private Room room;
 	
-	public CheckRoom(Room r){
+	public CheckerRoom(Room r){
 		this.room = r;
 	}
+	
 	@Override
 	public ArrayList<Integer> check() {
 		
-		ArrayList<Integer> check = new ArrayList();
+		ArrayList<Integer> check = new ArrayList<Integer>();
 		
 		check.add(checkMaxGuests());
 	    check.add(checkServices());
@@ -33,6 +29,7 @@ public class CheckRoom implements Checker{
 		else
 			return 311;
 	}
+	
 	private int checkServices(){
 		if(room.getServices()!=null)
 			return 100;
