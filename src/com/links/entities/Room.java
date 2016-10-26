@@ -1,19 +1,16 @@
-package com.links.entities;
+package hotelReservation;
 
 import java.util.Arrays;
 
-public class Room {
-
+public abstract class Room {
 	private int roomId;
 	private boolean isServiceable;
-	private boolean isAvailable;
 	private int maxGuests;
 	private String[] services;
-	
-	public Room(int roomId, boolean isServiceable, boolean isAvailable, int maxGuests, String[] services) {
+
+	public Room(int roomId, boolean isServiceable, int maxGuests, String[] services) {
 		this.roomId = roomId;
 		this.isServiceable = isServiceable;
-		this.isAvailable = isAvailable;
 		this.maxGuests = maxGuests;
 		this.services = services;
 	}
@@ -34,14 +31,6 @@ public class Room {
 		this.isServiceable = isServiceable;
 	}
 
-	public boolean isAvailable() {
-		return isAvailable;
-	}
-
-	public void setAvailable(boolean isAvailable) {
-		this.isAvailable = isAvailable;
-	}
-
 	public int getMaxGuests() {
 		return maxGuests;
 	}
@@ -60,8 +49,9 @@ public class Room {
 
 	@Override
 	public String toString() {
-		return "Room [roomId=" + roomId + ", isServiceable=" + isServiceable + ", isAvailable=" + isAvailable
-				+ ", maxGuests=" + maxGuests + ", services=" + Arrays.toString(services) + "]";
+		return "Room information: [roomId = " + roomId + ", " + "isServiceable = " + isServiceable + ", "
+				+ "maxGuests = " + maxGuests + ", " + "services = " + Arrays.toString(services) + "]";
 	}
 
+	abstract public void print();
 }

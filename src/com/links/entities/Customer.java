@@ -1,16 +1,15 @@
-package com.links.entities;
+package hotelReservation;
 
 public abstract class Customer {
 	private String taxCode;
-	private String customerId;
 	private String name;
 	private String surname;
 	private String cellPhoneNumber;
 	private String mailAddress;
 	private String cardNumber;
 
-	public Customer(String taxCode, String name, String surname, String cellPhoneNumber,
-			String mailAddress, String cardNumber) {
+	public Customer(String taxCode, String name, String surname, String cellPhoneNumber, String mailAddress,
+			String cardNumber) {
 		this.taxCode = taxCode;
 		this.name = name;
 		this.surname = surname;
@@ -25,14 +24,6 @@ public abstract class Customer {
 
 	public void setTaxCode(String taxCode) {
 		this.taxCode = taxCode;
-	}
-
-	public String getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
 	}
 
 	public String getName() {
@@ -77,9 +68,11 @@ public abstract class Customer {
 
 	@Override
 	public String toString() {
-		return "Customer [taxCode=" + taxCode + ", customerId=" + customerId + ", name=" + name + ", surname=" + surname
-				+ ", cellPhoneNumber=" + cellPhoneNumber + ", mailAddress=" + mailAddress + ", cardNumber=" + cardNumber
-				+ "]";
+		return "Customer information: " + "\n" + "taxCode = " + taxCode + "\n" + "name = " + name + "\n" + "surname = "
+				+ surname + "\n" + "cellPhoneNumber = " + cellPhoneNumber + "\n" + "mailAddress = " + mailAddress + "\n"
+				+ "cardNumber = " + cardNumber + "\n";
 	}
+
+	abstract public void print();
 
 }
