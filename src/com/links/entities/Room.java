@@ -49,7 +49,7 @@ public abstract class Room {
 
 	@Override
 	public String toString() {
-		return "Room information: [roomId = " + roomId + ", " + "isServiceable = " + isServiceable + ", "
+		return "Rom information: [roomId = " + roomId + ", " + "isServiceable = " + isServiceable + ", "
 				+ "maxGuests = " + maxGuests + ", " + "services = " + Arrays.toString(services) + "]";
 	}
 
