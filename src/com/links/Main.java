@@ -1,50 +1,50 @@
-package main;
+package com.links;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.Month;
+//import java.io.IOException;
+//import java.time.LocalDate;
+//import java.time.Month;
 import java.util.Scanner;
 
-import hotelReservation.*;
 
 public class Main {
 
 	public static void main(String[] args) {
 		int choice = 0;
 
-		/**CustomerConcrete customerConcrete = new CustomerConcrete("SSSKVN74A01F839P", "Kevin", "Sasso", "342 042 7775",
-				"kevinciaociao@gmail.com", "4023600442460293");
-		customerConcrete.print();
-
-		String[] services = { "fridge", "phon", "television" };
-		RoomConcrete roomConcrete = new RoomConcrete(601, false, 1, services);
-		roomConcrete.print();
-
-		// Current Date
-		LocalDate startDate = LocalDate.now();
-		System.out.println("Start Date = " + startDate);
-
-		// Creating LocalDate by providing input arguments
-		LocalDate endDate = LocalDate.of(2016, Month.OCTOBER, 29);
-		System.out.println("End Date = " + endDate + "\n");
-
-		RoomConcrete[] reservatedRoom = { roomConcrete };
-
-		ReservationConcrete reservationConcrete = new ReservationConcrete(1234, "Kevin Sasso", reservatedRoom,
-				startDate, endDate);
-		reservationConcrete.print();
-		*/
+//		CustomerConcrete customerConcrete = new CustomerConcrete("SSSKVN74A01F839P", "Kevin", "Sasso", "342 042 7775",
+//				"kevinciaociao@gmail.com", "4023600442460293");
+//		customerConcrete.print();
+//
+//		String[] services = { "fridge", "phon", "television" };
+//		RoomConcrete roomConcrete = new RoomConcrete(601, false, 1, services);
+//		roomConcrete.print();
+//
+//		// Current Date
+//		LocalDate startDate = LocalDate.now();
+//		System.out.println("Start Date = " + startDate);
+//
+//		// Creating LocalDate by providing input arguments
+//		LocalDate endDate = LocalDate.of(2016, Month.OCTOBER, 29);
+//		System.out.println("End Date = " + endDate + "\n");
+//
+//		RoomConcrete[] reservatedRoom = { roomConcrete };
+//
+//		ReservationConcrete reservationConcrete = new ReservationConcrete(1234, "Kevin Sasso", reservatedRoom,
+//				startDate, endDate);
+//		reservationConcrete.print();
 
 		menu(choice);
 
 	}
 
+	
+	@SuppressWarnings("resource")
 	private static void menu(int choice) {
 		Scanner keyboard = new Scanner(System.in);
 		boolean flagContinueScanner = true;
 
 		// possibili scelte creaQualcosa, inventaQualcosa
-		System.out.println("Test menù");
+		System.out.println("Test menu'");
 		System.out.println("1 - Create room.");
 		System.out.println("2 - Delete room.");
 		System.out.println("3 - Show rooms.");
