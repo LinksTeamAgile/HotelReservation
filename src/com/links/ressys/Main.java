@@ -37,7 +37,7 @@ public class Main {
 
 	}
 
-	
+
 	@SuppressWarnings("resource")
 	private static void menu(int choice) {
 		Scanner keyboard = new Scanner(System.in);
@@ -55,18 +55,18 @@ public class Main {
 		System.out.println("8 - Modify reservation.");
 		System.out.println("9 - Show reservations.");
 		System.out.println("0 - Exit");
-		System.out.println("STO QUA E FUNZIONO.");
 
 		while (flagContinueScanner == true) {
-			System.out.println("enter an integer");
+			System.out.println("Please enter your choice: ");
 			int myint = keyboard.nextInt();
 
 			if (myint >= 0 || myint <= 9) {
 				flagContinueScanner = false;
 				choice = myint;
+			}else{
+				System.out.println("Not valide choice!");
 			}
 		}
-		System.out.println("STO QUA E FUNZIONO.");
 
 		switch (choice) {
 
@@ -103,7 +103,6 @@ public class Main {
 		default:
 
 		}
-		System.out.println("sono qua e ho fatto lo switch");
 	}
 
 }
