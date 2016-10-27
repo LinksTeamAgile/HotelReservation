@@ -2,7 +2,9 @@ package com.links.ressys;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import com.links.ressys.core.*;
+import com.links.ressys.*;
+import com.links.ressys.core.Room;
+import com.links.ressys.core.RoomConcrete;
 
 //import java.io.IOException;
 //import java.time.LocalDate;
@@ -10,9 +12,12 @@ import com.links.ressys.core.*;
 import java.util.Scanner;
 
 public class Main {
-
+	static ArrayList<Room> roomList = new ArrayList<Room>();
 	public static void main(String[] args) {
-		ArrayList<Room> RoomList = new ArrayList<Room>();
+		
+		String[] services = { "fridge", "phon", "television" };
+		RoomConcrete roomConcrete = new RoomConcrete(601, false, false, 1,services);
+		roomList.add(roomConcrete);
 		int choice = 0;
 		menu(choice);
 
@@ -93,6 +98,7 @@ public class Main {
 			break;
 		case 3: // showRoom(,...)
 			System.out.println("method for ShowRooms");
+			showRoom();
 			break;
 		case 4: // createCustomer(,...)
 			System.out.println("method for CreateCustomer");
@@ -120,6 +126,11 @@ public class Main {
 			System.exit(1);
 			break;
 		}
+	}
+	
+	public static void showRoom() {
+		for(Room r: roomList)
+			System.out.println(r.toString());
 	}
 }
 
