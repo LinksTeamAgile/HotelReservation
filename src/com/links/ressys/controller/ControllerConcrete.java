@@ -43,7 +43,7 @@ public class ControllerConcrete extends Controller{
 				case 9: // showReservation(,...)
 					System.out.println("method for ShowRooms");
 					break;
-				case 0: // System.exit(0)
+				case 0:
 					System.out.println("Exit!");
 					System.exit(0);
 					break;
