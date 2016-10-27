@@ -16,7 +16,7 @@ public class ControllerConcrete extends Controller{
 		while(true){
 			choice = Integer.valueOf(this.gui.getInput());
 			switch (choice) {
-				case 1:
+				case 1: // createRoom(,...)
 					System.out.println("method for CreateRoom");
 					break;
 				case 2: // deleteRoom(,...)
@@ -43,7 +43,7 @@ public class ControllerConcrete extends Controller{
 				case 9: // showReservation(,...)
 					System.out.println("method for ShowRooms");
 					break;
-				case 0:
+				case 0: // System.exit(0)
 					System.out.println("Exit!");
 					System.exit(0);
 					break;
