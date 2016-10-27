@@ -1,10 +1,8 @@
 package com.links.ressys;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import com.links.ressys.core.*;
-
-import main.ArrayList;
-import main.Room;
 
 //import java.io.IOException;
 //import java.time.LocalDate;
@@ -14,7 +12,7 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String[] args) {
-		ArrayList<Room> RoomList = ArrayList<>();
+		ArrayList<Room> RoomList = new ArrayList<Room>();
 		int choice = 0;
 		menu(choice);
 
