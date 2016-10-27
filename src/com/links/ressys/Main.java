@@ -1,47 +1,55 @@
 package com.links.ressys;
 
+import java.util.InputMismatchException;
+import com.links.ressys.core.*;
+
+import main.ArrayList;
+import main.Room;
+
 //import java.io.IOException;
 //import java.time.LocalDate;
 //import java.time.Month;
 import java.util.Scanner;
 
-
 public class Main {
 
 	public static void main(String[] args) {
+		ArrayList<Room> RoomList = ArrayList<>();
 		int choice = 0;
-
-//		CustomerConcrete customerConcrete = new CustomerConcrete("SSSKVN74A01F839P", "Kevin", "Sasso", "342 042 7775",
-//				"kevinciaociao@gmail.com", "4023600442460293");
-//		customerConcrete.print();
-//
-//		String[] services = { "fridge", "phon", "television" };
-//		RoomConcrete roomConcrete = new RoomConcrete(601, false, 1, services);
-//		roomConcrete.print();
-//
-//		// Current Date
-//		LocalDate startDate = LocalDate.now();
-//		System.out.println("Start Date = " + startDate);
-//
-//		// Creating LocalDate by providing input arguments
-//		LocalDate endDate = LocalDate.of(2016, Month.OCTOBER, 29);
-//		System.out.println("End Date = " + endDate + "\n");
-//
-//		RoomConcrete[] reservatedRoom = { roomConcrete };
-//
-//		ReservationConcrete reservationConcrete = new ReservationConcrete(1234, "Kevin Sasso", reservatedRoom,
-//				startDate, endDate);
-//		reservationConcrete.print();
-
 		menu(choice);
+
+		// CustomerConcrete customerConcrete = new
+		// CustomerConcrete("SSSKVN74A01F839P", "Kevin", "Sasso", "342 042
+		// 7775",
+		// "kevinciaociao@gmail.com", "4023600442460293");
+		// customerConcrete.print();
+		//
+		// String[] services = { "fridge", "phon", "television" };
+		// RoomConcrete roomConcrete = new RoomConcrete(601, false, 1,
+		// services);
+		// roomConcrete.print();
+		//
+		// // Current Date
+		// LocalDate startDate = LocalDate.now();
+		// System.out.println("Start Date = " + startDate);
+		//
+		// // Creating LocalDate by providing input arguments
+		// LocalDate endDate = LocalDate.of(2016, Month.OCTOBER, 29);
+		// System.out.println("End Date = " + endDate + "\n");
+		//
+		// RoomConcrete[] reservatedRoom = { roomConcrete };
+		//
+		// ReservationConcrete reservationConcrete = new
+		// ReservationConcrete(1234, "Kevin Sasso", reservatedRoom,
+		// startDate, endDate);
+		// reservationConcrete.print();
 
 	}
 
-
-	@SuppressWarnings("resource")
-	private static void menu(int choice) {
+	public static void menu(int choice) {
 		Scanner keyboard = new Scanner(System.in);
 		boolean flagContinueScanner = true;
+		int scanneredNumber = 0;
 
 		// possibili scelte creaQualcosa, inventaQualcosa
 		System.out.println("Test menu'");
@@ -58,13 +66,22 @@ public class Main {
 
 		while (flagContinueScanner == true) {
 			System.out.println("Please enter your choice: ");
-			int myint = keyboard.nextInt();
-
-			if (myint >= 0 || myint <= 9) {
+			try {
+				scanneredNumber = keyboard.nextInt();
+			} catch (InputMismatchException ex) {
+				System.out.println("User input is not a valid value for this method.");
+				System.out.println("Exception caught: User cannot put that value as menu choice.");
+				scanneredNumber = -1;
+			}
+			if (scanneredNumber == -1) {
 				flagContinueScanner = false;
-				choice = myint;
-			}else{
-				System.out.println("Not valide choice!");
+			}else if(scanneredNumber >= 0 && scanneredNumber <= 9 ){
+				System.out.println("value entered : " + scanneredNumber);
+			}
+
+			if (scanneredNumber >= 0 && scanneredNumber <= 9) {
+				flagContinueScanner = false;
+				choice = scanneredNumber;
 			}
 		}
 
@@ -97,12 +114,14 @@ public class Main {
 		case 9: // showReservation(,...)
 			System.out.println("method for ShowRooms");
 			break;
-		case 0: // esce
-			System.out.println("Exit");
+		case 0: // System.exit(0)
+			System.out.println("Exit!");
+			System.exit(0);
 			break;
-		default:
-
+		case -1:
+			System.exit(1);
+			break;
 		}
 	}
-
 }
+
