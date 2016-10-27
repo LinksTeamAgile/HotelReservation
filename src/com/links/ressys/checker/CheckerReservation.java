@@ -26,7 +26,7 @@ public class CheckerReservation implements Checker{
 		if(res.getCustomer()!=null)
 			return 100;
 		else
-			return Re.servationCode.EMPTY_CUSTOMER.getCode();
+			return ReservationCode.EMPTY_CUSTOMER.getCode();
 	}
 	
 	private int checkRooms(){
