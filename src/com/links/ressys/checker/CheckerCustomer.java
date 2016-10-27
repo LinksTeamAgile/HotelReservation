@@ -2,6 +2,7 @@ package com.links.ressys.checker;
 
 import java.util.ArrayList;
 import com.links.ressys.core.Customer;
+import com.links.ressys.statuscodes.*;
 
 public class CheckerCustomer implements Checker{
 
@@ -27,41 +28,41 @@ public class CheckerCustomer implements Checker{
 		if(!customer.getName().equals(""))
 			return 100;
 		else
-			return 511;
+			return CustomerCode.EMPTY_NAME.getCode();
 	}
 	
 	private int checkSurname(){
 		if(!customer.getSurname().equals(""))
 			return 100;
 		else
-			return 521;
+			return CustomerCode.EMPTY_SURNAME.getCode();
 	}
 	
 	private int checkTaxCode(){
 		if(!customer.getTaxCode().equals(""))
 			return 100;
 		else
-			return 531;
+			return CustomerCode.EMPTY_TAXCODE.getCode();
 	}
 	
 	private int checkCellPhoneNumber(){
 		if(!customer.getCellPhoneNumber().equals(""))
 			return 100;
 		else
-			return 541;
+			return CustomerCode.EMPTY_PHONENUM.getCode();
 	}
 	
 	private int checkMailAddress(){
 		if(!customer.getMailAddress().equals(""))
 			return 100;
 		else
-			return 551;
+			return CustomerCode.EMPTY_MAIL.getCode();
 	}
 	
 	private int checkCardNumber(){
 		if(customer.getCardNumber()>0)
 			return 100;
 		else
-			return 561;
+			return CustomerCode.EMPTY_CARDNUM.getCode();
 	}
 }
