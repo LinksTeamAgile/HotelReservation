@@ -32,7 +32,7 @@ public class ControllerConcrete extends Controller{
 					System.out.println("method for DeleteRoom");
 					break;
 				case 6: // showCustomers(,...)
-					super.sys.showCustomer();;
+					super.sys.showCustomer();
 					break;
 				case 7: // createReservation(,...)
 					System.out.println("method for CreateReservation");
@@ -41,7 +41,7 @@ public class ControllerConcrete extends Controller{
 					System.out.println("method for DeleteReservation");
 					break;
 				case 9: // showReservation(,...)
-					super.sys.showReservation();;
+					super.sys.showReservation();
 					break;
 				case 0: // System.exit(0)
 					System.out.println("Exit!");
