@@ -1,21 +1,27 @@
 package com.links.ressys;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.links.ressys.checker.CheckerCustomer;
+import com.links.ressys.checker.CheckerReservation;
 import com.links.ressys.checker.CheckerRoom;
 import com.links.ressys.core.Customer;
 import com.links.ressys.core.CustomerConcrete;
 import com.links.ressys.core.Reservation;
+import com.links.ressys.core.ReservationConcrete;
 import com.links.ressys.core.Room;
 
 import com.links.ressys.core.RoomConcrete;
-import com.links.ressys.database.DBConnection;
+import com.links.ressys.statuscodes.CustomerCode;
 
 public class Sys {
 	private ArrayList<Room> roomList = new ArrayList<Room>();
 	private ArrayList<Customer> customerList = new ArrayList<Customer>();
 	private ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
+	private CustomerCode[] customerCodes;
+
+	
 	
 	public Sys(){
 		String[] services = { "fridge", "phon", "television" };
@@ -62,13 +68,24 @@ public class Sys {
 			return errors.get(0);
 	}
 	
-	public void showRoom() {
-		roomList.forEach(r -> System.out.println(r));
-			/*try {
-				new DBConnection().getRooms().stream().forEach(r -> System.out.println(r));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-	}
+	public int createReservation(CustomerConcrete customer, RoomConcrete[] rooms, int reservationId, Date startDate, Date endDate){
+        CheckerReservation checkerReservation = new CheckerReservation(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
+		ArrayList<Integer> status = new ArrayList<Integer>();
+		boolean success = true;
+		
+		status = checkerReservation.check();
+		
+		for(Integer x : status)
+			if(x != 100)
+				success = false;
+		
+		if(success == true){
+			reservationList.add(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
+			System.out.println("Reservation created");	
+			return 100;
+		}else
+			return status.get(0);
+		
+		}
+
 }
