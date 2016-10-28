@@ -15,7 +15,7 @@ public class Sys {
 	
 	public Sys(){
 		String[] services = { "fridge", "phon", "television" };
-		Room roomCrt1 = new RoomConcrete(601, false, false, 1,services);
+		Room roomCrt1 = new RoomConcrete(false, false, 1,services);
 		roomList.add(roomCrt1);
 	}
 	
