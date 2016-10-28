@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class GuiBash implements Gui {
 	
 	private void viewMenu(){
-		System.out.println("Test menu'");
+		System.out.println("Menu'");
 		System.out.println("1 - Create room.");
 		System.out.println("2 - Delete room.");
 		System.out.println("3 - Show rooms.");
@@ -30,11 +30,11 @@ public class GuiBash implements Gui {
 
 	@SuppressWarnings("resource")
 	@Override
-	public String getInput() {
+	public String getInput(String message) {
 		Scanner keyboard = new Scanner(System.in);
 		int scanneredNumber = 0;		
 
-		System.out.println("Please enter your choice: ");
+		System.out.println(message);
 		try {
 			scanneredNumber = keyboard.nextInt();
 		} catch (InputMismatchException ex) {

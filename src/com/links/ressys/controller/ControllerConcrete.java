@@ -17,23 +17,21 @@ public class ControllerConcrete extends Controller {
 
 		this.gui.open();
 		while (true) {
-			choice = Integer.valueOf(this.gui.getInput());
+			choice = Integer.valueOf(this.gui.getInput("Make a choice:"));
 			switch (choice) {
-			case 1: // createRoom(,...)
-				System.out.println("Here call the method for CreateRoom.");
+			case 1:
 				int codeOperation = checkBasicRoomInformation();
 				if (codeOperation == 100) {
 					System.out.println("Room create successfully!");
 				} else {
 					System.out.println("Room not create!");
 				}
-				System.exit(0);
 				break;
 			case 2: // deleteRoom(,...)
 				System.out.println("method for DeleteRoom");
 				break;
 			case 3:
-				super.sys.showRoom(Integer.parseInt(gui.getInput()));
+				super.sys.showRoom();
 				break;
 			case 4: // createCustomer(,...)
 				System.out.println("method for CreateCustomer");
@@ -65,17 +63,15 @@ public class ControllerConcrete extends Controller {
 	}
 
 	public int checkBasicRoomInformation() {
+		/**
+		 * @return 		100 if all info are correct else 200 
+		 */
 		int codeOperation = 0, scanneredNumber = 0;
 		String[] scanneredServices = new String[5];
 
 		scanneredNumber = getRoomGuestsFromKeyboard();
 		scanneredServices = getRoomServicesFromKeyboard();
 
-		// controllo per il createRoom
-		// createRoom deve ritornare 100 se l'utente ha immesso
-		// dati validi per i campi MaxGuest e Services
-		// dell'oggetto Room
-		// altrimenti 200 se i dati non sono validi.
 		for (int i = 0; i < 5; i++) {
 			if (scanneredServices[i].isEmpty() != true) {
 				if (scanneredNumber != 0 || scanneredNumber != -1) {

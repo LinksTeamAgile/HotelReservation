@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.links.ressys.checker.CheckerCustomer;
+import com.links.ressys.checker.CheckerReservation;
 import com.links.ressys.checker.CheckerRoom;
 import com.links.ressys.core.Customer;
 import com.links.ressys.core.CustomerConcrete;
@@ -68,28 +69,7 @@ public class Sys {
 		} else 
 			return errors.get(0);
 	}
-<<<<<<< HEAD
 	
-	public void showRoom() {
-		roomList.forEach(r -> System.out.println(r));
-			/*try {
-				new DBConnection().getRooms().stream().forEach(r -> System.out.println(r));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-	}
-	
-	public void showCustomer() {
-		customerList.forEach(r -> System.out.println(r));
-	}
-	
-	public void showReservation() {
-		reservationList.forEach(r -> System.out.println(r));
-	}
-}
-=======
-
 	public int createReservation(CustomerConcrete customer, RoomConcrete[] rooms, int reservationId, Date startDate, Date endDate){
 		CheckerReservation checkerReservation = new CheckerReservation(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
 		ArrayList<Integer> status = new ArrayList<Integer>();
@@ -109,6 +89,20 @@ public class Sys {
 			return status.get(0);
 
 	}
+	
+	public void showRoom() {
+		roomList.forEach(r -> System.out.println(r));
+	}
+	
+	public void showCustomer() {
+		customerList.forEach(r -> System.out.println(r));
+	}
+	
+	public void showReservation() {
+		reservationList.forEach(r -> System.out.println(r));
+	}
+
+	
 
 	public boolean deleteRoom(int roomId){
 		boolean roomRemoved = false;
@@ -166,12 +160,4 @@ public class Sys {
 	}
 
 
-	public void showRoom() {
-		for(Room r: this.roomList){
-			System.out.println(r.toString());
-		}
-	}
-
-
 }
->>>>>>> master
