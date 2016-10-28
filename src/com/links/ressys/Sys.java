@@ -25,20 +25,47 @@ public class Sys {
 	
 	public Sys(){
 		String[] services = { "fridge", "phon", "television" };
-		Room roomCrt1 = new RoomConcrete(601, false, false, 1,services);
+		Room roomCrt1 = new RoomConcrete(false, false, 1,services);
 		roomList.add(roomCrt1);
-	}
-	
-	
-	public void createRoom() {
-		
 		
 	}
 	
-	public void showRoom() {
-		for(Room r: this.roomList){
-			System.out.println(r.toString());
+	
+	public int createRoom(int maxGuests, String[] services) {
+		RoomConcrete room = new RoomConcrete(true, true, maxGuests, services);
+		CheckerRoom checker = new CheckerRoom(room);
+		ArrayList<Integer> errors = checker.check();
+		boolean success = true;
+		for(Integer i : errors) {
+			if(i != 100)
+				success = false;
+			else
+				;
 		}
+		if(success == true) {
+			System.out.println("Room inserted");
+			return 100;
+		} else 
+			return errors.get(0);
+	}
+	
+	public int createCustomer(String taxCode, String name, String surname, String cellPhoneNumber, String mailAddress,
+			int cardNumber){
+		CustomerConcrete customer = new CustomerConcrete(taxCode, name, surname, cellPhoneNumber, mailAddress, cardNumber);
+		CheckerCustomer checker = new CheckerCustomer(customer);
+		ArrayList<Integer> errors = checker.check();
+		boolean success = true;
+		for(Integer i : errors) {
+			if(i != 100)
+				success = false;
+			else
+				;
+		}
+		if(success == true) {
+			System.out.println("Customer created");
+			return 100;
+		} else 
+			return errors.get(0);
 	}
 	
 	public int createReservation(CustomerConcrete customer, RoomConcrete[] rooms, int reservationId, Date startDate, Date endDate){
