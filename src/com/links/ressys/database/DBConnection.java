@@ -9,14 +9,12 @@ import java.util.ArrayList;
 
 import com.links.ressys.core.Customer;
 import com.links.ressys.core.CustomerConcrete;
-import com.links.ressys.core.Reservation;
-import com.links.ressys.core.ReservationConcrete;
 import com.links.ressys.core.Room;
 import com.links.ressys.core.RoomConcrete;
 
 public class DBConnection {
 
-	private String URL = "jdbc:sqlite:/Users/userm01/Desktop/Workspace/HotelReservation/res/HotelReservation.sqlite";
+	private static String URL = "jdbc:sqlite:/Users/userm01/Desktop/Workspace/HotelReservation/res/HotelReservation.sqlite";
 	
 	
 	
@@ -55,12 +53,6 @@ public class DBConnection {
 			while(rs.next()) {
 				room.add(new RoomConcrete(rs.getInt("idRoom"), rs.getBoolean("isServiceable"), 
 						rs.getBoolean("isAvailable"), rs.getInt("maxGuest"), rs.getString("services").split(" ")));
-				/*System.out.println(rs.getInt("idRoom"));
-				System.out.println(rs.getInt("isServiceable"));
-				System.out.println(rs.getInt("isAvailable"));
-				System.out.println(rs.getInt("maxGuest"));
-				System.out.println(rs.getString("services"));
-				System.out.println("- - - - - - - - - - - - - -");*/
 			}		
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -138,11 +130,33 @@ public class DBConnection {
 		return result;
 	}
 	
+	public boolean deleteRoom(int roomIndex) throws Exception{
+		boolean result = false;
+		
+		String sql = "DELETE FROM room WHERE idRoom = ?";
+		String sDriverName = "org.sqlite.JDBC";
+		Class.forName(sDriverName);
+		
+		try(Connection con = DriverManager.getConnection(URL);
+				PreparedStatement ps = con.prepareStatement(sql)) {
+			
+			ps.setInt(1, roomIndex);
+			ps.executeUpdate();
+			result = true;
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 //	public static void main(String[] args){
 //		try {
 //			String[] sss={"asdasd","adasdsa"};
 //			System.out.println( createCustomer(new CustomerConcrete("alberto","sanso","dfasf@fdsfs.com","551662626","sdasdas65sadasd",112232125)) );
 //			System.out.println( createRoom(new RoomConcrete(500, true, true,4, sss)) );
+//			System.out.println( deleteRoom(201) );
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
