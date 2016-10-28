@@ -3,7 +3,7 @@ package com.links.ressys.core;
 import java.util.Arrays;
 import java.util.Date;
 
-public class ReservationConcrete {
+public class ReservationConcrete extends Reservation{
 
 	private CustomerConcrete customer;
 	private RoomConcrete[] rooms;
@@ -62,8 +62,8 @@ public class ReservationConcrete {
 
 	@Override
 	public String toString() {
-		return "Reservation [rooms=" + Arrays.toString(rooms) + ", reservationId=" + reservationId + ", startDate="
-				+ startDate + ", endDate=" + endDate + "]";
+		return "Reservation: Rooms = " + Arrays.toString(rooms) + ", Reservation Id = " + reservationId + ", Start Date = "
+				+ startDate + ", End Date = " + endDate + "\n";
 	}
 
 }
