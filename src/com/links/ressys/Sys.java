@@ -49,7 +49,7 @@ public class Sys {
 		} else 
 			return errors.get(0);
 	}
-	
+
 	public int createCustomer(String taxCode, String name, String surname, String cellPhoneNumber, String mailAddress,
 			int cardNumber){
 		CustomerConcrete customer = new CustomerConcrete(taxCode, name, surname, cellPhoneNumber, mailAddress, cardNumber);
@@ -68,6 +68,7 @@ public class Sys {
 		} else 
 			return errors.get(0);
 	}
+<<<<<<< HEAD
 	
 	public void showRoom() {
 		roomList.forEach(r -> System.out.println(r));
@@ -87,3 +88,90 @@ public class Sys {
 		reservationList.forEach(r -> System.out.println(r));
 	}
 }
+=======
+
+	public int createReservation(CustomerConcrete customer, RoomConcrete[] rooms, int reservationId, Date startDate, Date endDate){
+		CheckerReservation checkerReservation = new CheckerReservation(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
+		ArrayList<Integer> status = new ArrayList<Integer>();
+		boolean success = true;
+
+		status = checkerReservation.check();
+
+		for(Integer x : status)
+			if(x != 100)
+				success = false;
+
+		if(success == true){
+			reservationList.add(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
+			System.out.println("Reservation created");	
+			return 100;
+		}else
+			return status.get(0);
+
+	}
+
+	public boolean deleteRoom(int roomId){
+		boolean roomRemoved = false;
+		for(Room r: this.roomList){
+			if(r.getRoomId()==roomId){
+				roomList.remove(r);
+				roomRemoved = true;
+			}
+		}
+		if(roomRemoved){
+			System.out.println("Room "+roomId+" deleted");
+			return roomRemoved;
+		}
+		else{
+			System.out.println("Room not exists");
+			return roomRemoved;
+		}
+	}
+
+	public boolean deleteCustomer(String mailAddress){
+		boolean customerRemoved = false;
+		for(Customer c: this.customerList){
+			if(c.getMailAddress()==mailAddress){
+				customerList.remove(c);
+				customerRemoved = true;
+			}
+		}
+		if(customerRemoved){
+			System.out.println("Customer with "+mailAddress+" address deleted");
+			return customerRemoved;
+		}
+		else{
+			System.out.println("Customer not exists");
+			return customerRemoved;
+		}
+
+	}
+
+	public boolean deleteReservation(int reservationId){
+		boolean reservationRemoved = false;
+		for(Reservation rs: this.reservationList){
+			if(rs.getReservationId()==reservationId){
+				reservationList.remove(rs);
+				reservationRemoved = true;
+			}
+		}
+		if(reservationRemoved){
+			System.out.println("Reservation "+reservationId+" deleted");
+			return reservationRemoved;
+		}
+		else{
+			System.out.println("Reservation not exists");
+			return reservationRemoved;
+		}
+	}
+
+
+	public void showRoom() {
+		for(Room r: this.roomList){
+			System.out.println(r.toString());
+		}
+	}
+
+
+}
+>>>>>>> master
