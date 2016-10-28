@@ -151,12 +151,34 @@ public class DBConnection {
 		return result;
 	}
 	
+	public boolean deleteCustomer(String mailAdd) throws Exception{
+		boolean result = false;
+		
+		String sql = "DELETE FROM customer WHERE mailAddress = ?";
+		String sDriverName = "org.sqlite.JDBC";
+		Class.forName(sDriverName);
+		
+		try(Connection con = DriverManager.getConnection(URL);
+				PreparedStatement ps = con.prepareStatement(sql)) {
+			
+			ps.setString(1, mailAdd);
+			ps.executeUpdate();
+			result = true;
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 //	public static void main(String[] args){
 //		try {
 //			String[] sss={"asdasd","adasdsa"};
-//			System.out.println( createCustomer(new CustomerConcrete("alberto","sanso","dfasf@fdsfs.com","551662626","sdasdas65sadasd",112232125)) );
-//			System.out.println( createRoom(new RoomConcrete(500, true, true,4, sss)) );
-//			System.out.println( deleteRoom(201) );
+////			System.out.println( createCustomer(new CustomerConcrete("alberto","sanso","dfasf@fdsfs.com","551662626","sdasdas65sadasd",112232125)) );
+////			System.out.println( createRoom(new RoomConcrete(500, true, true,4, sss)) );
+////			System.out.println( deleteRoom(201) );
+//			System.out.println(deleteCustomer("sdasdas65sadasd"));
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
