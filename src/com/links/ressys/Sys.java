@@ -7,6 +7,7 @@ import com.links.ressys.core.Reservation;
 import com.links.ressys.core.Room;
 
 import com.links.ressys.core.RoomConcrete;
+import com.links.ressys.database.DBConnection;
 
 public class Sys {
 	private ArrayList<Room> roomList = new ArrayList<Room>();
@@ -24,7 +25,18 @@ public class Sys {
 		
 	}
 	
-	public void showRoom() {
+	public void showRoom(int guests) {
+		DBConnection dbc = new DBConnection();
+		ArrayList<RoomConcrete> rooms;
+		try {
+			rooms = dbc.getRooms();
+			rooms.stream()
+				.filter(r -> r.getMaxGuests() <= guests).forEach(r -> System.out.println(r));
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
 		for(Room r: this.roomList){
 			System.out.println(r.toString());
 		}
