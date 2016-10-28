@@ -1,6 +1,8 @@
 package com.links.ressys;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.links.ressys.core.Customer;
 import com.links.ressys.core.CustomerConcrete;
@@ -20,10 +22,11 @@ public class Sys {
 		String[] services = { "fridge", "phon", "television" };
 		Room roomCrt1 = new RoomConcrete(601, false, false, 1,services);
 		roomList.add(roomCrt1);
-		Customer customerCrt1 = new CustomerConcrete("DFGHFT90U0H8919", "Mario", "Rossi", "3245965943", "mariorossi@gmail.com", 49237550);
+		Customer customerCrt1 = new CustomerConcrete("DFGHFT90U0H8919", "Mario", "Rossi", "3245965943", "mariorossi@gmail.com", 49237550475965433L);
 		customerList.add(customerCrt1);
-		//Reservation reservationCrt1= new ReservationConcrete(customerCrt1, null, 0, null, null);
-		//reservationList.add(reservationCrt1);
+		RoomConcrete[] roomArrayCrt1 = {(RoomConcrete) roomCrt1};
+		Reservation reservationCrt1= new ReservationConcrete((CustomerConcrete) customerCrt1, (RoomConcrete[]) roomArrayCrt1, 1, LocalDateTime.of(2010, 10, 3, 10, 4), LocalDateTime.of(2010, 10, 3, 10, 4));
+		reservationList.add(reservationCrt1);
 	}
 	
 	

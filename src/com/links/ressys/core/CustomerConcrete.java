@@ -6,10 +6,10 @@ public class CustomerConcrete extends Customer{
 	private String surname;
 	private String cellPhoneNumber;
 	private String mailAddress;
-	private int cardNumber;
+	private long cardNumber;
 
 	public CustomerConcrete(String taxCode, String name, String surname, String cellPhoneNumber, String mailAddress,
-			int cardNumber) {
+			long cardNumber) {
 		super();
 		this.taxCode = taxCode;
 		this.name = name;
@@ -59,7 +59,7 @@ public class CustomerConcrete extends Customer{
 		this.mailAddress = mailAddress;
 	}
 
-	public int getCardNumber() {
+	public long getCardNumber() {
 		return cardNumber;
 	}
 
@@ -69,8 +69,8 @@ public class CustomerConcrete extends Customer{
 
 	@Override
 	public String toString() {
-		return "Customer: Tax Code = " + taxCode + ", Name = " + name + ", Surname = " + surname + ", Cell Phone Number = "
-				+ cellPhoneNumber + ", Mail Address = " + mailAddress + ", Card Number = " + cardNumber + "\n";
+		return "Customer:\n\tTax Code = " + taxCode + "\n\tName = " + name + "\n\tSurname = " + surname + "\n\tCell Phone Number = "
+				+ cellPhoneNumber + "\n\tMail Address = " + mailAddress + "\n\tCard Number = " + cardNumber + "\n";
 	}
 
 }
