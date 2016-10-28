@@ -2,7 +2,10 @@ package com.links.ressys;
 
 import java.util.ArrayList;
 
+import com.links.ressys.checker.CheckerCustomer;
+import com.links.ressys.checker.CheckerRoom;
 import com.links.ressys.core.Customer;
+import com.links.ressys.core.CustomerConcrete;
 import com.links.ressys.core.Reservation;
 import com.links.ressys.core.Room;
 
@@ -17,11 +20,45 @@ public class Sys {
 		String[] services = { "fridge", "phon", "television" };
 		Room roomCrt1 = new RoomConcrete(601, false, false, 1,services);
 		roomList.add(roomCrt1);
+		
 	}
 	
 	
-	public void createRoom() {
-		
+	public int createRoom(int maxGuests, String[] services) {
+		RoomConcrete room = new RoomConcrete(true, true, maxGuests, services);
+		CheckerRoom checker = new CheckerRoom(room);
+		ArrayList<Integer> errors = checker.check();
+		boolean success = true;
+		for(Integer i : errors) {
+			if(i != 100)
+				success = false;
+			else
+				;
+		}
+		if(success == true) {
+			System.out.println("Room inserted");
+			return 100;
+		} else 
+			return errors.get(0);
+	}
+	
+	public int createCustomer(String taxCode, String name, String surname, String cellPhoneNumber, String mailAddress,
+			int cardNumber){
+		CustomerConcrete customer = new CustomerConcrete(taxCode, name, surname, cellPhoneNumber, mailAddress, cardNumber);
+		CheckerCustomer checker = new CheckerCustomer(customer);
+		ArrayList<Integer> errors = checker.check();
+		boolean success = true;
+		for(Integer i : errors) {
+			if(i != 100)
+				success = false;
+			else
+				;
+		}
+		if(success == true) {
+			System.out.println("Customer created");
+			return 100;
+		} else 
+			return errors.get(0);
 	}
 	
 	public void showRoom() {
