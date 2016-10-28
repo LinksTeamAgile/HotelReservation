@@ -3,7 +3,7 @@ package com.links.ressys.core;
 import java.util.Arrays;
 import java.util.Date;
 
-public class ReservationConcrete {
+public class ReservationConcrete extends Reservation {
 
 	private CustomerConcrete customer;
 	private RoomConcrete[] rooms;
