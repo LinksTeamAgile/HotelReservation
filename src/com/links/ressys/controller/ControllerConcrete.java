@@ -23,7 +23,7 @@ public class ControllerConcrete extends Controller{
 					System.out.println("method for DeleteRoom");
 					break;
 				case 3:
-					super.sys.showRoom(Integer.parseInt(gui.getInput()));
+					super.sys.showRoom();
 					break;
 				case 4: // createCustomer(,...)
 					System.out.println("method for CreateCustomer");

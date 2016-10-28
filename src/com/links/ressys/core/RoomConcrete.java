@@ -60,8 +60,8 @@ public class RoomConcrete extends Room{
 
 	@Override
 	public String toString() {
-		return "Room [roomId=" + roomId + ", isServiceable=" + isServiceable + ", isAvailable=" + isAvailable
-				+ ", maxGuests=" + maxGuests + ", services=" + Arrays.toString(services) + "]";
+		return "Room " + roomId + ": Is Serviceable = " + isServiceable + ", Is Available = " + isAvailable
+				+ ", Max Guests = " + maxGuests + ", Services = " + Arrays.toString(services) + "\n";
 	}
 
 }
