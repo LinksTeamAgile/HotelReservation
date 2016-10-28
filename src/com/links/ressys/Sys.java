@@ -53,6 +53,7 @@ public class Sys {
 				success = false;
 		
 		if(success == true){
+			reservationList.add(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
 			System.out.println("Reservation created");	
 			return 100;
 		}else
