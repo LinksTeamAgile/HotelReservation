@@ -6,9 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.links.ressys.core.Customer;
 import com.links.ressys.core.CustomerConcrete;
+import com.links.ressys.core.ReservationConcrete;
 import com.links.ressys.core.Room;
 import com.links.ressys.core.RoomConcrete;
 
@@ -130,6 +132,42 @@ public class DBConnection {
 		return result;
 	}
 	
+	
+	
+	public boolean createReservation(ReservationConcrete r) throws Exception{
+		boolean result = false;
+		
+		int idCustomer = getCustomerId(r.getCustomer());
+		RoomConcrete[] rooms = r.getRooms();
+		int reservationId = r.getReservationId();
+		Date startDate = r.getStartDate();
+		Date endDate = r.getEndDate();
+		
+
+		String sql = "INSERT INTO reservation ( idCustomer, idRoom , startDate, endDate ) VALUES ( ?, ?, ?, ? )";
+		String sDriverName = "org.sqlite.JDBC";
+		Class.forName(sDriverName);
+		
+		for(RoomConcrete room : rooms)
+		try(Connection con = DriverManager.getConnection(URL);
+				PreparedStatement ps = con.prepareStatement(sql)) {
+			
+			ps.setInt(1, idCustomer);
+			ps.setInt(2, room.getRoomId());
+			ps.setString(3, startDate.toString());
+			ps.setString(4, endDate.toString());
+			
+			ps.executeUpdate();
+			
+			result = true;
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 	public boolean deleteRoom(int roomIndex) throws Exception{
 		boolean result = false;
 		
@@ -194,6 +232,27 @@ public class DBConnection {
 		return maxId;
 	}
 	
+	public int getCustomerId(CustomerConcrete c) throws Exception{
+		int maxId = 0;
+		String query = "SELECT idCustomer FROM customer WHERE mailAddress = '"+c.getMailAddress()+"'";
+		String sDriverName = "org.sqlite.JDBC";
+		Class.forName(sDriverName);
+		
+		try(Connection con = DriverManager.getConnection(URL);
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(query)) {
+			
+			while(rs.next()) {
+				maxId = rs.getInt("idCustomer");
+			}		
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return maxId;
+	}
+	
 //	public static void main(String[] args){
 //		try {
 //			String[] sss={"asdasd","adasdsa"};
@@ -201,7 +260,18 @@ public class DBConnection {
 ////			System.out.println( createRoom(new RoomConcrete(500, true, true,4, sss)) );
 ////			System.out.println( deleteRoom(201) );
 ////			System.out.println(deleteCustomer("sdasdas65sadasd"));
-//			System.out.println( getMaxRoomId() );
+////			System.out.println( getMaxRoomId() );
+//			
+//			ArrayList<Customer> listcust = getCustomers();
+//			CustomerConcrete cust =(CustomerConcrete) listcust.get(0);
+//			
+//			ArrayList<Room> listroom = getRooms();
+//			RoomConcrete[] rooom = new RoomConcrete[1];
+//			rooom[0]=(RoomConcrete)listroom.get(0);
+//			
+////			System.out.println( getCustomerId(new CustomerConcrete("", "", "", "", "jbanksrr@squidoo.com",	55565) ) );
+//			ReservationConcrete rescon = new ReservationConcrete(cust, rooom, 1000, new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime(), new GregorianCalendar(2014, Calendar.MARCH, 11).getTime());
+//			System.out.println( createReservation(rescon) );
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
