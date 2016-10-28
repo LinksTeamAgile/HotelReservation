@@ -172,13 +172,36 @@ public class DBConnection {
 		return result;
 	}
 	
+	public int getMaxRoomId() throws Exception{
+		int maxId = 0;
+		String query = "SELECT MAX(idRoom) AS maxIdRoom FROM room";
+		String sDriverName = "org.sqlite.JDBC";
+		Class.forName(sDriverName);
+		
+		try(Connection con = DriverManager.getConnection(URL);
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(query)) {
+			
+			while(rs.next()) {
+				maxId = rs.getInt("maxIdRoom");
+			}		
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return maxId;
+	}
+	
 //	public static void main(String[] args){
 //		try {
 //			String[] sss={"asdasd","adasdsa"};
 ////			System.out.println( createCustomer(new CustomerConcrete("alberto","sanso","dfasf@fdsfs.com","551662626","sdasdas65sadasd",112232125)) );
 ////			System.out.println( createRoom(new RoomConcrete(500, true, true,4, sss)) );
 ////			System.out.println( deleteRoom(201) );
-//			System.out.println(deleteCustomer("sdasdas65sadasd"));
+////			System.out.println(deleteCustomer("sdasdas65sadasd"));
+//			System.out.println( getMaxRoomId() );
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
