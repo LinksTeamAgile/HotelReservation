@@ -27,7 +27,7 @@ public class Sys {
 	
 	public void showRoom(int guests) {
 		DBConnection dbc = new DBConnection();
-		ArrayList<RoomConcrete> rooms;
+		ArrayList<Room> rooms;
 		try {
 			rooms = dbc.getRooms();
 			rooms.stream()
