@@ -54,5 +54,4 @@ public class ControllerConcrete extends Controller{
 		}
 			
 	};
-
 }
