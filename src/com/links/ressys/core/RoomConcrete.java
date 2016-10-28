@@ -4,14 +4,15 @@ import java.util.Arrays;
 
 public class RoomConcrete extends Room{
 
-	private int roomId;
+	private static int roomId;
 	private boolean isServiceable;
 	private boolean isAvailable;
 	private int maxGuests;
 	private String[] services;
 	
-	public RoomConcrete(int roomId, boolean isServiceable, boolean isAvailable, int maxGuests, String[] services) {
-		this.roomId = roomId;
+	@SuppressWarnings("static-access")
+	public RoomConcrete(boolean isServiceable, boolean isAvailable, int maxGuests, String[] services) {
+		this.roomId++;
 		this.isServiceable = isServiceable;
 		this.isAvailable = isAvailable;
 		this.maxGuests = maxGuests;
