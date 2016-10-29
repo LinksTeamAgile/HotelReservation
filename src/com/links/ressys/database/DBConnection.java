@@ -24,6 +24,4 @@ public interface DBConnection {
 
 	int getMaxRoomId() throws Exception;
 
-	int getCustomerId(Customer customer) throws Exception;
-
 }
