@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import com.links.ressys.core.Customer;
 import com.links.ressys.core.CustomerConcrete;
-import com.links.ressys.core.Reservation;
+import com.links.ressys.core.ReservationConcrete;
 import com.links.ressys.core.Room;
 import com.links.ressys.core.RoomConcrete;
 
@@ -134,7 +134,7 @@ public class DBConnection {
 	
 	
 	
-	public boolean createReservation(Reservation r) throws Exception{
+	public boolean createReservation(ReservationConcrete r) throws Exception{
 		boolean result = false;
 		
 		int idCustomer = getCustomerId(r.getCustomer());
