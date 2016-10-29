@@ -1,8 +1,8 @@
 package com.links.ressys;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
-import java.util.Date;
 
 import com.links.ressys.checker.CheckerCustomer;
 import com.links.ressys.checker.CheckerReservation;
@@ -27,7 +27,7 @@ public class Sys {
 		Customer customerCrt1 = new CustomerConcrete("DFGHFT90U0H8919", "Mario", "Rossi", "3245965943", "mariorossi@gmail.com", "49237550475965433");
 		customerList.add(customerCrt1);
 		Room[] roomArrayCrt1 = {roomCrt1};
-		Reservation reservationCrt1= new ReservationConcrete(customerCrt1, roomArrayCrt1, 1, new Date(2010, 10, 3), new Date(2010, 10, 3));
+		Reservation reservationCrt1= new ReservationConcrete(customerCrt1, roomArrayCrt1, 1, LocalDate.of(2014, Month.FEBRUARY, 11), LocalDate.of(2014, Month.FEBRUARY, 23));
 		reservationList.add(reservationCrt1);
 	}
 	
@@ -69,7 +69,7 @@ public class Sys {
 			return errors.get(0);
 	}
 	
-	public int createReservation(CustomerConcrete customer, RoomConcrete[] rooms, int reservationId, Date startDate, Date endDate){
+	public int createReservation(CustomerConcrete customer, RoomConcrete[] rooms, int reservationId, LocalDate startDate, LocalDate endDate){
 		CheckerReservation checkerReservation = new CheckerReservation(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
 		ArrayList<Integer> status = new ArrayList<Integer>();
 		boolean success = true;

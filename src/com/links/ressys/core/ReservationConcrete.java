@@ -1,16 +1,16 @@
 package com.links.ressys.core;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class ReservationConcrete extends Reservation {
 
 	private Customer customer;
 	private Room[] rooms;
 	private int reservationId;
-	private Date startDate;
-	private Date endDate;
+	private LocalDate startDate;
+	private LocalDate endDate;
 
-	public ReservationConcrete(Customer customer, Room[] rooms, int reservationId, Date localDateTime, Date localDateTime2) {
+	public ReservationConcrete(Customer customer, Room[] rooms, int reservationId, LocalDate localDateTime, LocalDate localDateTime2) {
 		super();
 		this.customer = customer;
 		this.rooms = rooms;
@@ -43,19 +43,19 @@ public class ReservationConcrete extends Reservation {
 		this.reservationId = reservationId;
 	}
 
-	public Date getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 

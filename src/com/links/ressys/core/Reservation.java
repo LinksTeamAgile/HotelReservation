@@ -1,6 +1,6 @@
 package com.links.ressys.core;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public abstract class Reservation{
 	
@@ -16,11 +16,11 @@ public abstract class Reservation{
 
 	public abstract void setReservationId(int reservationId);
 
-	public abstract Date getStartDate();
+	public abstract LocalDate getStartDate();
 
-	public abstract void setStartDate(Date startDate);
+	public abstract void setStartDate(LocalDate startDate);
 
-	public abstract Date getEndDate();
+	public abstract LocalDate getEndDate();
 
-	public abstract void setEndDate(Date endDate);
+	public abstract void setEndDate(LocalDate endDate);
 }
