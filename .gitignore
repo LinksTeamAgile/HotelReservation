@@ -1,6 +1,7 @@
 .metadata
 bin/
 tmp/
+res/configs/*
 *.tmp
 *.bak
 *.swp
