@@ -1,16 +1,17 @@
 package com.links.ressys.core;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 
 public class ReservationConcrete extends Reservation {
 
-	private Customer customer;
-	private Room[] rooms;
+	private CustomerConcrete customer;
+	private RoomConcrete[] rooms;
 	private int reservationId;
-	private LocalDate startDate;
-	private LocalDate endDate;
+	private LocalDateTime startDate;
+	private LocalDateTime endDate;
 
-	public ReservationConcrete(Customer customer, Room[] rooms, int reservationId, LocalDate localDateTime, LocalDate localDateTime2) {
+	public ReservationConcrete(CustomerConcrete customer, RoomConcrete[] rooms, int reservationId, LocalDateTime localDateTime, LocalDateTime localDateTime2) {
 		super();
 		this.customer = customer;
 		this.rooms = rooms;
@@ -19,19 +20,19 @@ public class ReservationConcrete extends Reservation {
 		this.endDate = localDateTime2;
 	}
 
-	public Customer getCustomer() {
+	public CustomerConcrete getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(Customer customer) {
+	public void setCustomer(CustomerConcrete customer) {
 		this.customer = customer;
 	}
 
-	public Room[] getRooms() {
+	public RoomConcrete[] getRooms() {
 		return rooms;
 	}
 
-	public void setRooms(Room[] rooms) {
+	public void setRooms(RoomConcrete[] rooms) {
 		this.rooms = rooms;
 	}
 
@@ -43,19 +44,19 @@ public class ReservationConcrete extends Reservation {
 		this.reservationId = reservationId;
 	}
 
-	public LocalDate getStartDate() {
+	public LocalDateTime getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(LocalDate startDate) {
+	public void setStartDate(LocalDateTime startDate) {
 		this.startDate = startDate;
 	}
 
-	public LocalDate getEndDate() {
+	public LocalDateTime getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(LocalDate endDate) {
+	public void setEndDate(LocalDateTime endDate) {
 		this.endDate = endDate;
 	}
 
