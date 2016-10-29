@@ -15,13 +15,17 @@ import com.links.ressys.core.ReservationConcrete;
 import com.links.ressys.core.Room;
 
 import com.links.ressys.core.RoomConcrete;
+import com.links.ressys.database.DBConnection;
 
 public class Sys {
 	private ArrayList<Room> roomList = new ArrayList<Room>();
 	private ArrayList<Customer> customerList = new ArrayList<Customer>();
 	private ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
+	private DBConnection db;
 	
-	public Sys(){
+	public Sys(DBConnection db){
+		this.db = db;
+				
 		String[] services = { "fridge", "phon", "television" };
 		Room roomCrt1 = new RoomConcrete(1, false, false, 1,services);
 		roomList.add(roomCrt1);
