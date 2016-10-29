@@ -239,8 +239,7 @@ public class SQLiteDBC implements DBConnection {
 		return maxId;
 	}
 	
-	@Override
-	public int getCustomerId(Customer customer) throws Exception{
+	private int getCustomerId(Customer customer) throws Exception{
 		int maxId = 0;
 		String query = "SELECT idCustomer FROM customer WHERE mailAddress = '"+customer.getMailAddress()+"'";
 		String sDriverName = "org.sqlite.JDBC";
