@@ -4,6 +4,10 @@
 - make all pull-requests to <i>alpha</i> and wait for a response;
 - don't merge a pull-request from a normal branch to <i>master</i>;
 
+# Configs files
+- props for file <b>res/configs/config.properties</b>
+-- db_path=/your/path/HotelReservation.sqlite
+
 
 # HotelReservation Team Members
 - TheRealkam
