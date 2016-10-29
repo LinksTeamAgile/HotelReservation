@@ -10,7 +10,6 @@ public class RoomConcrete extends Room{
 	private int maxGuests;
 	private String[] services;
 	
-	@SuppressWarnings("static-access")
 	public RoomConcrete(int roomId, boolean isServiceable, boolean isAvailable, int maxGuests, String[] services) {
 		this.roomId = roomId;
 		this.isServiceable = isServiceable;
