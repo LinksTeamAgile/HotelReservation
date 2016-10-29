@@ -55,8 +55,8 @@ public class ControllerConcrete extends Controller {
 				System.out.println("Exit!");
 				System.exit(0);
 				break;
-			case -1:
-				System.exit(1);
+			default:
+				System.out.println("Invalid choice, please retry");
 				break;
 			}
 		}
