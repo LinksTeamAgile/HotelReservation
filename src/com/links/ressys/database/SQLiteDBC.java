@@ -16,9 +16,8 @@ import com.links.ressys.core.RoomConcrete;
 
 public class SQLiteDBC implements DBConnection {
 
-	private static String URL = "jdbc:sqlite:/Users/userm01/Desktop/Workspace/HotelReservation/res/HotelReservation.sqlite";
-	
-	
+	private final String JDBC_TYPE = "jdbc:sqlite:";
+	private final String DB_PATH = "/Users/userm01/Desktop/Workspace/HotelReservation/res/HotelReservation.sqlite";
 	
 	@Override
 	public ArrayList<Customer> getCustomers() throws Exception{
@@ -27,7 +26,7 @@ public class SQLiteDBC implements DBConnection {
 		ArrayList<Customer> customer = new ArrayList<Customer>();
 		Class.forName(sDriverName);
 		
-		try(Connection con = DriverManager.getConnection(URL);
+		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(query)) {
 			
@@ -50,7 +49,7 @@ public class SQLiteDBC implements DBConnection {
 		ArrayList<Room> room = new ArrayList<Room>();
 		Class.forName(sDriverName);
 		
-		try(Connection con = DriverManager.getConnection(URL);
+		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(query)) {
 			
@@ -79,7 +78,7 @@ public class SQLiteDBC implements DBConnection {
 		String sDriverName = "org.sqlite.JDBC";
 		Class.forName(sDriverName);
 		
-		try(Connection con = DriverManager.getConnection(URL);
+		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				PreparedStatement ps = con.prepareStatement(sql)) {
 			
 			ps.setString(1, name);
@@ -117,7 +116,7 @@ public class SQLiteDBC implements DBConnection {
 		String sDriverName = "org.sqlite.JDBC";
 		Class.forName(sDriverName);
 		
-		try(Connection con = DriverManager.getConnection(URL);
+		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				PreparedStatement ps = con.prepareStatement(sql)) {
 			
 			ps.setInt(1, maxGuest);
@@ -153,7 +152,7 @@ public class SQLiteDBC implements DBConnection {
 		Class.forName(sDriverName);
 		
 		for(Room room : rooms)
-		try(Connection con = DriverManager.getConnection(URL);
+		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				PreparedStatement ps = con.prepareStatement(sql)) {
 			
 			ps.setInt(1, idCustomer);
@@ -180,7 +179,7 @@ public class SQLiteDBC implements DBConnection {
 		String sDriverName = "org.sqlite.JDBC";
 		Class.forName(sDriverName);
 		
-		try(Connection con = DriverManager.getConnection(URL);
+		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				PreparedStatement ps = con.prepareStatement(sql)) {
 			
 			ps.setInt(1, roomIndex);
@@ -202,7 +201,7 @@ public class SQLiteDBC implements DBConnection {
 		String sDriverName = "org.sqlite.JDBC";
 		Class.forName(sDriverName);
 		
-		try(Connection con = DriverManager.getConnection(URL);
+		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				PreparedStatement ps = con.prepareStatement(sql)) {
 			
 			ps.setString(1, mailAdd);
@@ -223,7 +222,7 @@ public class SQLiteDBC implements DBConnection {
 		String sDriverName = "org.sqlite.JDBC";
 		Class.forName(sDriverName);
 		
-		try(Connection con = DriverManager.getConnection(URL);
+		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(query)) {
 			
@@ -246,7 +245,7 @@ public class SQLiteDBC implements DBConnection {
 		String sDriverName = "org.sqlite.JDBC";
 		Class.forName(sDriverName);
 		
-		try(Connection con = DriverManager.getConnection(URL);
+		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(query)) {
 			
