@@ -60,7 +60,7 @@ public class CheckerCustomer implements Checker{
 	}
 	
 	private int checkCardNumber(){
-		if(customer.getCardNumber()>0)
+		if(customer.getCardNumber().equals(""))
 			return 100;
 		else
 			return CustomerCode.EMPTY_CARDNUM.getCode();

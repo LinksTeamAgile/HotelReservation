@@ -6,10 +6,10 @@ public class CustomerConcrete extends Customer{
 	private String surname;
 	private String cellPhoneNumber;
 	private String mailAddress;
-	private long cardNumber;
+	private String cardNumber;
 
 	public CustomerConcrete(String taxCode, String name, String surname, String cellPhoneNumber, String mailAddress,
-			long cardNumber) {
+			String cardNumber) {
 		super();
 		this.taxCode = taxCode;
 		this.name = name;
@@ -59,11 +59,11 @@ public class CustomerConcrete extends Customer{
 		this.mailAddress = mailAddress;
 	}
 
-	public long getCardNumber() {
+	public String getCardNumber() {
 		return cardNumber;
 	}
 
-	public void setCardNumber(int cardNumber) {
+	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
 
