@@ -14,7 +14,6 @@ import com.links.ressys.core.ReservationConcrete;
 import com.links.ressys.core.Room;
 
 import com.links.ressys.core.RoomConcrete;
-import com.links.ressys.database.DBConnection;
 
 public class Sys {
 	private ArrayList<Room> roomList = new ArrayList<Room>();
@@ -23,18 +22,18 @@ public class Sys {
 	
 	public Sys(){
 		String[] services = { "fridge", "phon", "television" };
-		Room roomCrt1 = new RoomConcrete(false, false, 1,services);
+		Room roomCrt1 = new RoomConcrete(1, false, false, 1,services);
 		roomList.add(roomCrt1);
-		Customer customerCrt1 = new CustomerConcrete("DFGHFT90U0H8919", "Mario", "Rossi", "3245965943", "mariorossi@gmail.com", 49237550475965433L);
+		Customer customerCrt1 = new CustomerConcrete("DFGHFT90U0H8919", "Mario", "Rossi", "3245965943", "mariorossi@gmail.com", "49237550475965433");
 		customerList.add(customerCrt1);
-		RoomConcrete[] roomArrayCrt1 = {(RoomConcrete) roomCrt1};
-		Reservation reservationCrt1= new ReservationConcrete((CustomerConcrete) customerCrt1, (RoomConcrete[]) roomArrayCrt1, 1, LocalDateTime.of(2010, 10, 3, 10, 4), LocalDateTime.of(2010, 10, 3, 10, 4));
+		Room[] roomArrayCrt1 = {roomCrt1};
+		Reservation reservationCrt1= new ReservationConcrete(customerCrt1, roomArrayCrt1, 1, new Date(2010, 10, 3), new Date(2010, 10, 3));
 		reservationList.add(reservationCrt1);
 	}
 	
 	
 	public int createRoom(int maxGuests, String[] services) {
-		RoomConcrete room = new RoomConcrete(true, true, maxGuests, services);
+		RoomConcrete room = new RoomConcrete(2, true, true, maxGuests, services);
 		CheckerRoom checker = new CheckerRoom(room);
 		ArrayList<Integer> errors = checker.check();
 		boolean success = true;
@@ -52,7 +51,7 @@ public class Sys {
 	}
 
 	public int createCustomer(String taxCode, String name, String surname, String cellPhoneNumber, String mailAddress,
-			int cardNumber){
+			String cardNumber){
 		CustomerConcrete customer = new CustomerConcrete(taxCode, name, surname, cellPhoneNumber, mailAddress, cardNumber);
 		CheckerCustomer checker = new CheckerCustomer(customer);
 		ArrayList<Integer> errors = checker.check();
