@@ -5,8 +5,8 @@
 - don't merge a pull-request from a normal branch to <i>master</i>;
 
 # Configs files
-- properties for file <b>res/configs/config.properties</b>:
-- - db_path=/your/path/HotelReservation.sqlite
+- properties for file <b>res/configs/config.properties</b>:<br>
+db_path=/your/path/HotelReservation.sqlite<br>
 
 
 # HotelReservation Team Members
