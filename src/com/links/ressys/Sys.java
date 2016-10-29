@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 
+import com.links.ressys.checker.Checker;
 import com.links.ressys.checker.CheckerCustomer;
 import com.links.ressys.checker.CheckerReservation;
 import com.links.ressys.checker.CheckerRoom;
@@ -33,8 +34,8 @@ public class Sys {
 	
 	
 	public int createRoom(int maxGuests, String[] services) {
-		RoomConcrete room = new RoomConcrete(2, true, true, maxGuests, services);
-		CheckerRoom checker = new CheckerRoom(room);
+		Room room = new RoomConcrete(2, true, true, maxGuests, services);
+		Checker checker = new CheckerRoom(room);
 		ArrayList<Integer> errors = checker.check();
 		boolean success = true;
 		for(Integer i : errors) {
@@ -52,8 +53,8 @@ public class Sys {
 
 	public int createCustomer(String taxCode, String name, String surname, String cellPhoneNumber, String mailAddress,
 			String cardNumber){
-		CustomerConcrete customer = new CustomerConcrete(taxCode, name, surname, cellPhoneNumber, mailAddress, cardNumber);
-		CheckerCustomer checker = new CheckerCustomer(customer);
+		Customer customer = new CustomerConcrete(taxCode, name, surname, cellPhoneNumber, mailAddress, cardNumber);
+		Checker checker = new CheckerCustomer(customer);
 		ArrayList<Integer> errors = checker.check();
 		boolean success = true;
 		for(Integer i : errors) {
@@ -69,8 +70,8 @@ public class Sys {
 			return errors.get(0);
 	}
 	
-	public int createReservation(CustomerConcrete customer, RoomConcrete[] rooms, int reservationId, LocalDate startDate, LocalDate endDate){
-		CheckerReservation checkerReservation = new CheckerReservation(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
+	public int createReservation(Customer customer, Room[] rooms, int reservationId, LocalDate startDate, LocalDate endDate){
+		Checker checkerReservation = new CheckerReservation(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
 		ArrayList<Integer> status = new ArrayList<Integer>();
 		boolean success = true;
 

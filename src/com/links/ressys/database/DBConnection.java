@@ -5,12 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 import com.links.ressys.core.Customer;
 import com.links.ressys.core.CustomerConcrete;
-import com.links.ressys.core.ReservationConcrete;
+import com.links.ressys.core.Reservation;
 import com.links.ressys.core.Room;
 import com.links.ressys.core.RoomConcrete;
 
@@ -134,21 +134,20 @@ public class DBConnection {
 	
 	
 	
-	public boolean createReservation(ReservationConcrete r) throws Exception{
+	public boolean createReservation(Reservation r) throws Exception{
 		boolean result = false;
 		
 		int idCustomer = getCustomerId(r.getCustomer());
-		RoomConcrete[] rooms = r.getRooms();
-		int reservationId = r.getReservationId();
-		Date startDate = r.getStartDate();
-		Date endDate = r.getEndDate();
+		Room[] rooms = r.getRooms();
+		LocalDate startDate = r.getStartDate();
+		LocalDate endDate = r.getEndDate();
 		
 
 		String sql = "INSERT INTO reservation ( idCustomer, idRoom , startDate, endDate ) VALUES ( ?, ?, ?, ? )";
 		String sDriverName = "org.sqlite.JDBC";
 		Class.forName(sDriverName);
 		
-		for(RoomConcrete room : rooms)
+		for(Room room : rooms)
 		try(Connection con = DriverManager.getConnection(URL);
 				PreparedStatement ps = con.prepareStatement(sql)) {
 			
@@ -232,9 +231,9 @@ public class DBConnection {
 		return maxId;
 	}
 	
-	public int getCustomerId(CustomerConcrete c) throws Exception{
+	public int getCustomerId(Customer customer) throws Exception{
 		int maxId = 0;
-		String query = "SELECT idCustomer FROM customer WHERE mailAddress = '"+c.getMailAddress()+"'";
+		String query = "SELECT idCustomer FROM customer WHERE mailAddress = '"+customer.getMailAddress()+"'";
 		String sDriverName = "org.sqlite.JDBC";
 		Class.forName(sDriverName);
 		
