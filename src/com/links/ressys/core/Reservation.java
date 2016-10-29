@@ -1,27 +1,26 @@
 package com.links.ressys.core;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public abstract class Reservation{
 	
-	public abstract CustomerConcrete getCustomer();
+	public abstract Customer getCustomer();
 
-	public abstract void setCustomer(CustomerConcrete customer);
+	public abstract void setCustomer(Customer customer);
 
-	public abstract RoomConcrete[] getRooms();
+	public abstract Room[] getRooms();
 
-	public abstract void setRooms(RoomConcrete[] rooms);
+	public abstract void setRooms(Room[] rooms);
 
 	public abstract int getReservationId();
 
 	public abstract void setReservationId(int reservationId);
 
-	public abstract LocalDateTime getStartDate();
+	public abstract Date getStartDate();
 
-	public abstract void setStartDate(LocalDateTime startDate);
+	public abstract void setStartDate(Date startDate);
 
-	public abstract LocalDateTime getEndDate();
+	public abstract Date getEndDate();
 
-	public abstract void setEndDate(LocalDateTime endDate);
+	public abstract void setEndDate(Date endDate);
 }

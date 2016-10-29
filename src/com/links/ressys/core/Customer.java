@@ -22,7 +22,7 @@ public abstract class Customer{
 
 	public abstract void setMailAddress(String mailAddress);
 
-	public abstract long getCardNumber();
+	public abstract String getCardNumber();
 
-	public abstract void setCardNumber(int cardNumber);
+	public abstract void setCardNumber(String cardNumber);
 }

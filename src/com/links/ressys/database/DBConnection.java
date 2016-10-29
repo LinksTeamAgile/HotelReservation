@@ -33,7 +33,7 @@ public class DBConnection {
 			while(rs.next()) {
 				
 				customer.add(new CustomerConcrete(rs.getString("taxCode"), rs.getString("name"), 
-						rs.getString("surname"), rs.getString("cellPhoneNumber"), rs.getString("mailAddress"), rs.getInt("cardNumber")));
+						rs.getString("surname"), rs.getString("cellPhoneNumber"), rs.getString("mailAddress"), rs.getString("cardNumber")));
 			}		
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -69,7 +69,7 @@ public class DBConnection {
 		String surname = c.getSurname();
 		String mail = c.getMailAddress();
 		String cell = c.getCellPhoneNumber();
-		int card = c.getCardNumber();
+		String card = c.getCardNumber();
 		String tax = c.getTaxCode();
 		
 		String sql = "INSERT INTO customer (name, surname, mailAddress, cellPhoneNumber, cardNumber, taxCode) VALUES ( ?, ?, ?, ?, ?, ? )";
