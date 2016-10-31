@@ -186,7 +186,7 @@ public class SQLiteDBC implements DBConnection {
 			ps.executeUpdate();
 			
 			result = true;
-					
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

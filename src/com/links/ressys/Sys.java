@@ -52,6 +52,7 @@ public class Sys {
 				;
 		}
 		if(success == true) {
+			this.db.createRoom(room);
 			System.out.println("Room inserted");
 			return 100;
 		} else 
@@ -121,6 +122,7 @@ public class Sys {
 			}
 		}
 		if(roomRemoved){
+			this.db.deleteRoom(roomId);
 			System.out.println("Room "+roomId+" deleted");
 			return roomRemoved;
 		}
@@ -139,6 +141,7 @@ public class Sys {
 			}
 		}
 		if(customerRemoved){
+			this.db.deleteCustomer(mailAddress);
 			System.out.println("Customer with "+mailAddress+" address deleted");
 			return customerRemoved;
 		}
