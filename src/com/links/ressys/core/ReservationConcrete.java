@@ -65,7 +65,7 @@ public class ReservationConcrete extends Reservation {
 		for(int i = 0; i <rooms.length; i++)
 			r +="\n\t" + rooms[i].toString();
 		return "Reservation:\n\tID Room = " + rooms[0].getRoomId() + "\n\tReservation Id = " + reservationId + "\n\tStart Date = "
-				+ startDate + "\n\tEnd Date = " + endDate + "\n\n\tCamere prenotate:\n" + r;
+				+ startDate + "\n\tEnd Date = " + endDate + "\n\n\tRoom reserved:\n" + r;
 	}
 
 }

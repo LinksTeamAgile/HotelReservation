@@ -119,8 +119,9 @@ public class Sys {
 
 	}
 	
-	public void showRoom() {
-		Predicate<Room> pred = null;
+	public void showRoom(Predicate<Room> pred) {
+		roomList.forEach(r -> System.out.println(r));
+		/* Old implementation:
 		System.out.println("1: Visualizza tutte le stanze\n"
 				+ "2: Visualizza le stanze libere\n"
 				+ "3: Visualizza le stanze libere ma non ancora disponibili\n"
@@ -162,14 +163,15 @@ public class Sys {
 			for (Room p:roomList)
 				if (pred.test(p))
 					filteredList.add(p);
-	 
-			filteredList.forEach(r -> System.out.println(r));
-		}
+
+		filteredList.forEach(r -> System.out.println(r));
+		}*/
 	}
 
 	
-	public void showCustomer() {
-		Predicate<Customer> pred = null;
+	public void showCustomer(Predicate<Customer> pred) {
+		customerList.forEach(r -> System.out.println(r));
+		/* Old implementation:
 		System.out.println("1: Visualizza tutti i clienti\n"
 				+ "2: Visualizza i clienti aventi lo stesso cognome");
 		
@@ -194,13 +196,14 @@ public class Sys {
 			for (Customer p: customerList)
 				if (pred.test(p))
 					filteredList.add(p);
-	 
-			filteredList.forEach(r -> System.out.println(r));
-		}
+		
+				filteredList.forEach(r -> System.out.println(r));
+		}*/
 	}
 	
-	public void showReservation() {
-		Predicate<Reservation> pred = null;
+	public void showReservation(Predicate<Reservation> pred) {
+		reservationList.forEach(r -> System.out.println(r));
+		/* Old implementation:
 		System.out.println("1: Visualizza tutte le prenotazioni\n"
 				+ "2: Visualizza le prenotazioni eseguite da un cliente\n");
 		
@@ -226,8 +229,8 @@ public class Sys {
 				if (pred.test(p))
 					filteredList.add(p);
 	 
-			filteredList.forEach(r -> System.out.println(r));
-		}
+		filteredList.forEach(r -> System.out.println(r));
+		}*/
 	}
 
 	
