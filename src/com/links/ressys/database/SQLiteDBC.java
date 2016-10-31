@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Properties;
 
+import com.links.ressys.Main;
 import com.links.ressys.core.Customer;
 import com.links.ressys.core.CustomerConcrete;
 import com.links.ressys.core.Reservation;
@@ -18,7 +18,7 @@ import com.links.ressys.core.RoomConcrete;
 public class SQLiteDBC implements DBConnection {
 
 	private final String JDBC_TYPE = "jdbc:sqlite:";
-	private final String DB_PATH = new Properties().getProperty("db_path");
+	private final String DB_PATH = Main.getMain().getProperty("db_path");
 	
 	@Override
 	public ArrayList<Customer> getCustomers() throws Exception{

@@ -18,21 +18,24 @@ import com.links.ressys.core.RoomConcrete;
 import com.links.ressys.database.DBConnection;
 
 public class Sys {
-	private ArrayList<Room> roomList = new ArrayList<Room>();
-	private ArrayList<Customer> customerList = new ArrayList<Customer>();
+	private ArrayList<Room> roomList;
+	private ArrayList<Customer> customerList;
 	private ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
 	private DBConnection db;
 	
 	public Sys(DBConnection db){
 		this.db = db;
-				
-		String[] services = { "fridge", "phon", "television" };
-		Room roomCrt1 = new RoomConcrete(1, false, false, 1,services);
-		roomList.add(roomCrt1);
-		Customer customerCrt1 = new CustomerConcrete("DFGHFT90U0H8919", "Mario", "Rossi", "3245965943", "mariorossi@gmail.com", "49237550475965433");
-		customerList.add(customerCrt1);
-		Room[] roomArrayCrt1 = {roomCrt1};
-		Reservation reservationCrt1= new ReservationConcrete(customerCrt1, roomArrayCrt1, 1, LocalDate.of(2014, Month.FEBRUARY, 11), LocalDate.of(2014, Month.FEBRUARY, 23));
+		try {
+			this.customerList = this.db.getCustomers();
+			this.roomList = this.db.getRooms();
+		} catch (Exception e) {
+			this.customerList = new ArrayList<Customer>();
+			this.roomList = new ArrayList<Room>();
+			e.printStackTrace();
+		}
+		
+		Room[] roomArrayCrt1 = {roomList.get(0)};
+		Reservation reservationCrt1= new ReservationConcrete(customerList.get(0), roomArrayCrt1, 1, LocalDate.of(2014, Month.FEBRUARY, 11), LocalDate.of(2014, Month.FEBRUARY, 23));
 		reservationList.add(reservationCrt1);
 	}
 	
