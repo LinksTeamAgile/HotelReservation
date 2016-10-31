@@ -21,11 +21,15 @@ public class SQLiteDBC implements DBConnection {
 	private final String DB_PATH = Main.getMain().getProperty("db_path");
 	
 	@Override
-	public ArrayList<Customer> getCustomers() throws Exception{
+	public ArrayList<Customer> getCustomers(){
 		String query = "SELECT * FROM customer";
 		String sDriverName = "org.sqlite.JDBC";
 		ArrayList<Customer> customer = new ArrayList<Customer>();
-		Class.forName(sDriverName);
+		try {
+			Class.forName(sDriverName);
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
 		
 		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				Statement stmt = con.createStatement();
@@ -44,11 +48,15 @@ public class SQLiteDBC implements DBConnection {
 	}
 
 	@Override
-	public ArrayList<Room> getRooms() throws Exception{
+	public ArrayList<Room> getRooms(){
 		String query = "SELECT * FROM room";
 		String sDriverName = "org.sqlite.JDBC";
 		ArrayList<Room> room = new ArrayList<Room>();
-		Class.forName(sDriverName);
+		try {
+			Class.forName(sDriverName);
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
 		
 		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				Statement stmt = con.createStatement();
@@ -65,7 +73,7 @@ public class SQLiteDBC implements DBConnection {
 	}
 	
 	@Override
-	public boolean createCustomer(Customer c) throws Exception{
+	public boolean createCustomer(Customer c){
 		boolean result = false;
 		
 		String name = c.getName();
@@ -77,7 +85,11 @@ public class SQLiteDBC implements DBConnection {
 		
 		String sql = "INSERT INTO customer (name, surname, mailAddress, cellPhoneNumber, cardNumber, taxCode) VALUES ( ?, ?, ?, ?, ?, ? )";
 		String sDriverName = "org.sqlite.JDBC";
-		Class.forName(sDriverName);
+		try {
+			Class.forName(sDriverName);
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
 		
 		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				PreparedStatement ps = con.prepareStatement(sql)) {
@@ -101,7 +113,7 @@ public class SQLiteDBC implements DBConnection {
 	}
 	
 	@Override
-	public boolean createRoom(Room r) throws Exception{
+	public boolean createRoom(Room r){
 		boolean result = false;
 		
 		int maxGuest = r.getMaxGuests();
@@ -115,7 +127,12 @@ public class SQLiteDBC implements DBConnection {
 		
 		String sql = "INSERT INTO room (maxGuest , isServiceable, services, isAvailable ) VALUES ( ?, ?, ?, ? )";
 		String sDriverName = "org.sqlite.JDBC";
-		Class.forName(sDriverName);
+		try {
+			Class.forName(sDriverName);
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				PreparedStatement ps = con.prepareStatement(sql)) {
@@ -139,7 +156,7 @@ public class SQLiteDBC implements DBConnection {
 	
 	
 	@Override
-	public boolean createReservation(Reservation r) throws Exception{
+	public boolean createReservation(Reservation r){
 		boolean result = false;
 		
 		int idCustomer = getCustomerId(r.getCustomer());
@@ -150,7 +167,12 @@ public class SQLiteDBC implements DBConnection {
 
 		String sql = "INSERT INTO reservation ( idCustomer, idRoom , startDate, endDate ) VALUES ( ?, ?, ?, ? )";
 		String sDriverName = "org.sqlite.JDBC";
-		Class.forName(sDriverName);
+		try {
+			Class.forName(sDriverName);
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		for(Room room : rooms)
 		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
@@ -173,12 +195,16 @@ public class SQLiteDBC implements DBConnection {
 	}
 	
 	@Override
-	public boolean deleteRoom(int roomIndex) throws Exception{
+	public boolean deleteRoom(int roomIndex){
 		boolean result = false;
 		
 		String sql = "DELETE FROM room WHERE idRoom = ?";
 		String sDriverName = "org.sqlite.JDBC";
-		Class.forName(sDriverName);
+		try {
+			Class.forName(sDriverName);
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
 		
 		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				PreparedStatement ps = con.prepareStatement(sql)) {
@@ -195,12 +221,16 @@ public class SQLiteDBC implements DBConnection {
 	}
 	
 	@Override
-	public boolean deleteCustomer(String mailAdd) throws Exception{
+	public boolean deleteCustomer(String mailAdd){
 		boolean result = false;
 		
 		String sql = "DELETE FROM customer WHERE mailAddress = ?";
 		String sDriverName = "org.sqlite.JDBC";
-		Class.forName(sDriverName);
+		try {
+			Class.forName(sDriverName);
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
 		
 		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				PreparedStatement ps = con.prepareStatement(sql)) {
@@ -217,11 +247,15 @@ public class SQLiteDBC implements DBConnection {
 	}
 	
 	@Override
-	public int getMaxRoomId() throws Exception{
+	public int getMaxRoomId(){
 		int maxId = 0;
 		String query = "SELECT MAX(idRoom) AS maxIdRoom FROM room";
 		String sDriverName = "org.sqlite.JDBC";
-		Class.forName(sDriverName);
+		try {
+			Class.forName(sDriverName);
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
 		
 		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				Statement stmt = con.createStatement();
@@ -239,11 +273,15 @@ public class SQLiteDBC implements DBConnection {
 		return maxId;
 	}
 	
-	private int getCustomerId(Customer customer) throws Exception{
+	private int getCustomerId(Customer customer){
 		int maxId = 0;
 		String query = "SELECT idCustomer FROM customer WHERE mailAddress = '"+customer.getMailAddress()+"'";
 		String sDriverName = "org.sqlite.JDBC";
-		Class.forName(sDriverName);
+		try {
+			Class.forName(sDriverName);
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
 		
 		try(Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
 				Statement stmt = con.createStatement();

@@ -71,6 +71,7 @@ public class Sys {
 				;
 		}
 		if(success == true) {
+			this.db.createCustomer(customer);
 			System.out.println("Customer created");
 			return 100;
 		} else 
