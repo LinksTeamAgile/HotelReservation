@@ -3,6 +3,8 @@ package com.links.ressys;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
 import com.links.ressys.checker.Checker;
 import com.links.ressys.checker.CheckerCustomer;
@@ -18,95 +20,199 @@ import com.links.ressys.core.RoomConcrete;
 import com.links.ressys.database.DBConnection;
 
 public class Sys {
-	private ArrayList<Room> roomList = new ArrayList<Room>();
-	private ArrayList<Customer> customerList = new ArrayList<Customer>();
+	private ArrayList<Room> roomList;
+	private ArrayList<Customer> customerList;
 	private ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
+	private ArrayList<Integer> lastErrors;
 	private DBConnection db;
 	
 	public Sys(DBConnection db){
 		this.db = db;
-				
-		String[] services = { "fridge", "phon", "television" };
-		Room roomCrt1 = new RoomConcrete(1, false, false, 1,services);
-		roomList.add(roomCrt1);
-		Customer customerCrt1 = new CustomerConcrete("DFGHFT90U0H8919", "Mario", "Rossi", "3245965943", "mariorossi@gmail.com", "49237550475965433");
-		customerList.add(customerCrt1);
-		Room[] roomArrayCrt1 = {roomCrt1};
-		Reservation reservationCrt1= new ReservationConcrete(customerCrt1, roomArrayCrt1, 1, LocalDate.of(2014, Month.FEBRUARY, 11), LocalDate.of(2014, Month.FEBRUARY, 23));
+		
+		try {
+			this.customerList = this.db.getCustomers();
+			this.roomList = this.db.getRooms();
+		} catch (Exception e) {
+			this.customerList = new ArrayList<Customer>();
+			this.roomList = new ArrayList<Room>();
+			e.printStackTrace();
+		}
+		
+		Room[] roomArrayCrt1 = {roomList.get(0)};
+		Reservation reservationCrt1= new ReservationConcrete(customerList.get(0), roomArrayCrt1, 201, LocalDate.of(2014, Month.FEBRUARY, 11), LocalDate.of(2014, Month.FEBRUARY, 23));
 		reservationList.add(reservationCrt1);
+		Room[] roomArrayCrt2 = {roomList.get(1), roomList.get(2)};
+		Reservation reservationCrt2= new ReservationConcrete(customerList.get(1), roomArrayCrt2, 202, LocalDate.of(2015, Month.FEBRUARY, 15), LocalDate.of(2015, Month.FEBRUARY, 17));
+		reservationList.add(reservationCrt2);
 	}
 	
+	public ArrayList<Integer> getLastErrors(){
+		return this.lastErrors;
+	}
 	
-	public int createRoom(int maxGuests, String[] services) {
-		Room room = new RoomConcrete(2, true, true, maxGuests, services);
-		Checker checker = new CheckerRoom(room);
-		ArrayList<Integer> errors = checker.check();
-		boolean success = true;
-		for(Integer i : errors) {
-			if(i != 100)
-				success = false;
-			else
-				;
+	public boolean isThereAnError() {
+		for(Integer errCode: this.lastErrors){
+			if(errCode != 100){
+				return true;
+			}
 		}
-		if(success == true) {
-			System.out.println("Room inserted");
-			return 100;
-		} else 
-			return errors.get(0);
+		return false;
+	}
+	
+	public void createRoom(int maxGuests, String[] services){
+		Room room = new RoomConcrete(this.db.getMaxRoomId()+1, true, true, maxGuests, services);
+		Checker checker = new CheckerRoom(room);
+		this.lastErrors = checker.check();
+		if(!this.isThereAnError()) {
+			roomList.add(room);
+			this.db.createRoom(room);
+		}
 	}
 
-	public int createCustomer(String taxCode, String name, String surname, String cellPhoneNumber, String mailAddress,
-			String cardNumber){
+	public void createCustomer(String taxCode, String name, String surname, String cellPhoneNumber, String mailAddress, String cardNumber){
 		Customer customer = new CustomerConcrete(taxCode, name, surname, cellPhoneNumber, mailAddress, cardNumber);
 		Checker checker = new CheckerCustomer(customer);
-		ArrayList<Integer> errors = checker.check();
-		boolean success = true;
-		for(Integer i : errors) {
-			if(i != 100)
-				success = false;
-			else
-				;
+		this.lastErrors = checker.check();
+		if(!this.isThereAnError()) {
+			customerList.add(customer);
+			this.db.createCustomer(customer);
 		}
-		if(success == true) {
-			System.out.println("Customer created");
-			return 100;
-		} else 
-			return errors.get(0);
 	}
 	
-	public int createReservation(Customer customer, Room[] rooms, int reservationId, LocalDate startDate, LocalDate endDate){
-		Checker checkerReservation = new CheckerReservation(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
-		ArrayList<Integer> status = new ArrayList<Integer>();
-		boolean success = true;
-
-		status = checkerReservation.check();
-
-		for(Integer x : status)
-			if(x != 100)
-				success = false;
-
-		if(success == true){
-			reservationList.add(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
-			System.out.println("Reservation created");	
-			return 100;
-		}else
-			return status.get(0);
-
+	public void createReservation(int customerId, int[] roomIds, LocalDate startDate, LocalDate endDate){
+	    Customer customer = this.customerList.get(customerId);
+	    Room[] rooms = new Room[roomIds.length];
+	    
+	    for (int i=0; i < roomIds.length; i++){
+	      rooms[i] = this.roomList.get(roomIds[i]);
+	    }
+	    
+	    Reservation reservation = new ReservationConcrete(customer, rooms, this.db.getMaxReservationId()+1, startDate, endDate);
+		Checker checker = new CheckerReservation(reservation);
+		this.lastErrors = checker.check();
+		if(!this.isThereAnError()) {
+			reservationList.add(reservation);
+			this.db.createReservation(reservation);
+		}
 	}
 	
-	public void showRoom() {
-		roomList.forEach(r -> System.out.println(r));
-	}
+	public List<Room> showRoom(Predicate<Room> pred) {
+		if (pred!= null) {
+			List<Room> filteredList = new ArrayList<Room>();
+			
+			for (Room p:roomList)
+				if (pred.test(p))
+					filteredList.add(p);
+
+			filteredList.forEach(r -> System.out.println(r));
+			return filteredList;
+		}
+		this.roomList.forEach(r -> System.out.println(r));
+		return this.roomList;
+		/* Old implementation:
+		System.out.println("1: Visualizza tutte le stanze\n"
+				+ "2: Visualizza le stanze libere\n"
+				+ "3: Visualizza le stanze libere ma non ancora disponibili\n"
+				+ "4: Visualizza le stanze che possono ospitare un minimo numero di persone\n"
+				+ "5: Visualizza le stanze che forniscono certi servizi\n");
+		
+		Scanner keyboard = new Scanner(System.in);
 	
-	public void showCustomer() {
-		customerList.forEach(r -> System.out.println(r));
-	}
-	
-	public void showReservation() {
-		reservationList.forEach(r -> System.out.println(r));
+		switch(keyboard.nextInt()) {
+			case(1):
+				roomList.forEach(r -> System.out.println(r));
+				break;
+			
+			case(2):
+				pred = p -> p.isAvailable() && p.isServiceable();
+				break;
+			
+			case(3):
+				pred = p -> p.isAvailable() && !p.isServiceable();
+			break;
+			case(4): {
+				System.out.println("Inserire il numero minimo di persone che la stanza dovra' contenere");
+				int pNumber = keyboard.nextInt();
+				pred = p -> p.getMaxGuests() >= pNumber;
+				break;	
+			}
+
+			case(5):		
+				System.out.println("Inserire il servizio richiesto:");
+				String service = keyboard.next().toLowerCase();
+				
+				pred = p -> Arrays.asList(p.getServices()).contains(service);
+				break;
+		}*/
 	}
 
 	
+	public List<Customer> showCustomer(Predicate<Customer> pred) {
+		if (pred!= null) {
+			List<Customer> filteredList = new ArrayList<Customer>();
+			
+			for (Customer p: customerList)
+				if (pred.test(p))
+					filteredList.add(p);
+		
+			filteredList.forEach(r -> System.out.println(r));
+			return filteredList;
+		} 
+		this.customerList.forEach(r -> System.out.println(r));
+		return this.customerList;
+		/* Old implementation:
+		System.out.println("1: Visualizza tutti i clienti\n"
+				+ "2: Visualizza i clienti aventi lo stesso cognome");
+		
+		Scanner keyboard = new Scanner(System.in);
+	
+		switch(keyboard.nextInt()) {
+			case(1):
+				customerList.forEach(r -> System.out.println(r));
+				break;
+			
+			case(2): {
+				System.out.println("Inserire il cognome del cliente:");
+				String pSurname = keyboard.next();
+				pred = p -> p.getSurname().compareToIgnoreCase(pSurname) == 0;
+				break;	
+			}
+		}*/
+	}
+	
+	public List<Reservation> showReservation(Predicate<Reservation> pred) {
+		if (pred!= null) {
+			List<Reservation> filteredList = new ArrayList<Reservation>();
+			
+			for (Reservation p:reservationList)
+				if (pred.test(p))
+					filteredList.add(p);
+	 
+			filteredList.forEach(r -> System.out.println(r));
+			return filteredList;
+		}
+		this.reservationList.forEach(r -> System.out.println(r));
+		return this.reservationList;
+		
+		/* Old implementation:
+		System.out.println("1: Visualizza tutte le prenotazioni\n"
+				+ "2: Visualizza le prenotazioni eseguite da un cliente\n");
+		
+		Scanner keyboard = new Scanner(System.in);
+	
+		switch(keyboard.nextInt()) {
+			case(1):
+				reservationList.forEach(r -> System.out.println(r));
+				break;
+			
+			case(2): {
+				System.out.println("Inserire il codice fiscale del cliente:");
+				String pSurname = keyboard.next();
+				pred = p -> p.getCustomer().getTaxCode().compareToIgnoreCase(pSurname) == 0;
+				break;	
+			}
+		}*/
+	}
 
 	public boolean deleteRoom(int roomId){
 		boolean roomRemoved = false;
@@ -117,6 +223,7 @@ public class Sys {
 			}
 		}
 		if(roomRemoved){
+			this.db.deleteRoom(roomId);
 			System.out.println("Room "+roomId+" deleted");
 			return roomRemoved;
 		}
@@ -135,6 +242,7 @@ public class Sys {
 			}
 		}
 		if(customerRemoved){
+			this.db.deleteCustomer(mailAddress);
 			System.out.println("Customer with "+mailAddress+" address deleted");
 			return customerRemoved;
 		}

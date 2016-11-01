@@ -8,20 +8,22 @@ import com.links.ressys.core.Room;
 
 public interface DBConnection {
 
-	ArrayList<Customer> getCustomers() throws Exception;
+	ArrayList<Customer> getCustomers();
 
-	ArrayList<Room> getRooms() throws Exception;
+	ArrayList<Room> getRooms();
 
-	boolean createCustomer(Customer c) throws Exception;
+	boolean createCustomer(Customer c);
 
-	boolean createRoom(Room r) throws Exception;
+	boolean createRoom(Room r);
 
-	boolean createReservation(Reservation r) throws Exception;
+	boolean createReservation(Reservation r);
 
-	boolean deleteRoom(int roomIndex) throws Exception;
+	boolean deleteRoom(int roomIndex);
 
-	boolean deleteCustomer(String mailAdd) throws Exception;
+	boolean deleteCustomer(String mailAdd);
 
-	int getMaxRoomId() throws Exception;
+	int getMaxRoomId();
+	
+	int getMaxReservationId();
 
 }
