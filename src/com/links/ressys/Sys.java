@@ -23,6 +23,7 @@ public class Sys {
 	private ArrayList<Room> roomList;
 	private ArrayList<Customer> customerList;
 	private ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
+	private ArrayList<Integer> lastErrors;
 	private DBConnection db;
 	
 	public Sys(DBConnection db){
@@ -45,61 +46,47 @@ public class Sys {
 		reservationList.add(reservationCrt2);
 	}
 	
-	private int checkErrors(ArrayList<Integer> errors) {
-		boolean success = true;
-		for(Integer i : errors) {
-			if(i != 100)
-				success = false;
-			else
-				;
-		}
-		if(success == true) {
-			return 100;
-		} else 
-			return errors.get(0);
+	public ArrayList<Integer> getLastErrors(){
+		return this.lastErrors;
 	}
 	
-	public int createRoom(int maxGuests, String[] services){
-		int id = 10;
-		Room room = new RoomConcrete(id, true, true, maxGuests, services);
+	private boolean isThereAnError() {
+		for(Integer errCode: this.lastErrors){
+			if(errCode != 100){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void createRoom(int maxGuests, String[] services){
+		Room room = new RoomConcrete(10, true, true, maxGuests, services);
 		Checker checker = new CheckerRoom(room);
-		ArrayList<Integer> errors = checker.check();
-		int checking = checkErrors(errors);
-		if(checking == 100) {
+		this.lastErrors = checker.check();
+		if(!this.isThereAnError()) {
 			roomList.add(room);
 			this.db.createRoom(room);
-			System.out.println("Room inserted");
 		}
-		return checking;
 	}
 
-	public int createCustomer(String taxCode, String name, String surname, String cellPhoneNumber, String mailAddress,
-			String cardNumber){
+	public void createCustomer(String taxCode, String name, String surname, String cellPhoneNumber, String mailAddress, String cardNumber){
 		Customer customer = new CustomerConcrete(taxCode, name, surname, cellPhoneNumber, mailAddress, cardNumber);
 		Checker checker = new CheckerCustomer(customer);
-		ArrayList<Integer> errors = checker.check();
-		int checking = checkErrors(errors);
-		if(checking == 100) {
+		this.lastErrors = checker.check();
+		if(!this.isThereAnError()) {
 			customerList.add(customer);
 			this.db.createCustomer(customer);
-			System.out.println("Customer inserted");
 		}
-		return checking;
 	}
 	
-	public int createReservation(Customer customer, Room[] rooms, LocalDate startDate, LocalDate endDate){
-		int reservationId = 10;
-		Checker checkerReservation = new CheckerReservation(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
+	public void createReservation(Customer customer, Room[] rooms, LocalDate startDate, LocalDate endDate){
 		Reservation reservation = new ReservationConcrete(customer, rooms, 20, startDate, endDate);
-		ArrayList<Integer> errors = checkerReservation.check();
-		int checking = checkErrors(errors);
-		if(checking == 100) {
+		Checker checker = new CheckerReservation(reservation);
+		this.lastErrors = checker.check();
+		if(!this.isThereAnError()) {
 			reservationList.add(reservation);
 			this.db.createReservation(reservation);
-			System.out.println("Reservation inserted");
 		}
-		return checking;
-
 	}
 	
 	public void showRoom(Predicate<Room> pred) {
