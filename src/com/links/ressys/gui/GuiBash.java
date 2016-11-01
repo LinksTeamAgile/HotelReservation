@@ -1,9 +1,12 @@
 package com.links.ressys.gui;
 
+import java.io.Closeable;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class GuiBash implements Gui {
+public class GuiBash implements Gui, Closeable, AutoCloseable {
+	
+	private Scanner keyboard = new Scanner(System.in);
 
 	@Override
 	public void viewMenu(){
@@ -27,17 +30,19 @@ public class GuiBash implements Gui {
 
 	@Override
 	public void close() {
+		keyboard.close();
 	}
 
 	@Override
 	public String getInput(String message) {
-		try(Scanner keyboard = new Scanner(System.in)){
+		try{
 			System.out.print(message);
 			return keyboard.next();
 		} catch (NoSuchElementException ex) {
 			System.out.println("User input is not a valid value for this method.");
 			System.out.println("Exception caught: User cannot put that value as menu choice.");
-			return "-1";
+			System.exit(0);
+			return "";
 		}
 	}
 
