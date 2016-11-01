@@ -1,7 +1,5 @@
 package com.links.ressys.test;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +14,7 @@ public class CustomerTest extends TestCase{
 	public void setUp() throws Exception {
 		customerConcrete = new CustomerConcrete("PRSFLC90E09B408T",
 				"Felice","Parisi","349 567 4345", "ginoPino90@gmail.com",
-				4000_5328);
+				"4000_5328");
 	}
 
 	@Test
@@ -84,7 +82,7 @@ public class CustomerTest extends TestCase{
 
 	@Test
 	public void testWorkingSetCardNumber() {
-		customerConcrete.setCardNumber(4000_5328);
+		customerConcrete.setCardNumber("4000_5328");
 		assertEquals(4000_5328, customerConcrete.getCardNumber());
 	}
 

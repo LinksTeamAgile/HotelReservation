@@ -6,6 +6,6 @@ public interface Gui {
 	
 	public void close();
 	
-	public String getInput();
+	public String getInput(String message);
 
 }

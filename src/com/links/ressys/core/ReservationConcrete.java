@@ -1,38 +1,37 @@
 package com.links.ressys.core;
 
-import java.util.Arrays;
-import java.util.Date;
+import java.time.LocalDate;
 
-public class ReservationConcrete {
+public class ReservationConcrete extends Reservation {
 
-	private CustomerConcrete customer;
-	private RoomConcrete[] rooms;
-	private int reservationId;
-	private Date startDate;
-	private Date endDate;
+	private Customer customer;
+	private Room[] rooms;
+	private LocalDate startDate;
+	private LocalDate endDate;
+	private int reservationId = 0;
 
-	public ReservationConcrete(CustomerConcrete customer, RoomConcrete[] rooms, int reservationId, Date startDate, Date endDate) {
+	public ReservationConcrete(Customer customer, Room[] rooms, int reservationId, LocalDate localDateTime, LocalDate localDateTime2) {
 		super();
 		this.customer = customer;
 		this.rooms = rooms;
 		this.reservationId = reservationId;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		this.startDate = localDateTime;
+		this.endDate = localDateTime2;
 	}
 
-	public CustomerConcrete getCustomer() {
+	public Customer getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(CustomerConcrete customer) {
+	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
 
-	public RoomConcrete[] getRooms() {
+	public Room[] getRooms() {
 		return rooms;
 	}
 
-	public void setRooms(RoomConcrete[] rooms) {
+	public void setRooms(Room[] rooms) {
 		this.rooms = rooms;
 	}
 
@@ -44,26 +43,29 @@ public class ReservationConcrete {
 		this.reservationId = reservationId;
 	}
 
-	public Date getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 
 	@Override
 	public String toString() {
-		return "Reservation [rooms=" + Arrays.toString(rooms) + ", reservationId=" + reservationId + ", startDate="
-				+ startDate + ", endDate=" + endDate + "]";
+		String r = "";
+		for(int i = 0; i <rooms.length; i++)
+			r +="\n\t" + rooms[i].toString();
+		return "Reservation:\n\tID Room = " + rooms[0].getRoomId() + "\n\tReservation Id = " + reservationId + "\n\tStart Date = "
+				+ startDate + "\n\tEnd Date = " + endDate + "\n\n\tRoom reserved:\n" + r;
 	}
 
 }

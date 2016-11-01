@@ -4,15 +4,14 @@ import java.util.Arrays;
 
 public class RoomConcrete extends Room{
 
-	private static int roomId;
+	private int roomId;
 	private boolean isServiceable;
 	private boolean isAvailable;
 	private int maxGuests;
 	private String[] services;
 	
-	@SuppressWarnings("static-access")
-	public RoomConcrete(boolean isServiceable, boolean isAvailable, int maxGuests, String[] services) {
-		this.roomId++;
+	public RoomConcrete(int roomId, boolean isServiceable, boolean isAvailable, int maxGuests, String[] services) {
+		this.roomId = roomId;
 		this.isServiceable = isServiceable;
 		this.isAvailable = isAvailable;
 		this.maxGuests = maxGuests;
@@ -61,8 +60,8 @@ public class RoomConcrete extends Room{
 
 	@Override
 	public String toString() {
-		return "Room " + roomId + ": Is Serviceable = " + isServiceable + ", Is Available = " + isAvailable
-				+ ", Max Guests = " + maxGuests + ", Services = " + Arrays.toString(services) + "\n";
+		return "Room " + roomId + ":\n\tIs Serviceable = " + isServiceable + "\n\tIs Available = " + isAvailable
+				+ "\n\tMax Guests = " + maxGuests + "\n\tServices = " + Arrays.toString(services) + "\n";
 	}
 
 }

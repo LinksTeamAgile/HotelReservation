@@ -1,5 +1,6 @@
 package com.links.ressys.controller;
 
+import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -18,25 +19,21 @@ public class ControllerConcrete extends Controller {
 		this.gui.open();
 
 		while (true) {
-			choice = Integer.valueOf(this.gui.getInput());
+			choice = Integer.valueOf(this.gui.getInput("Make a choice:"));
 			switch (choice) {
-			case 1: // createRoom(,...)
-				System.out.println("Here call the method for CreateRoom.");
-
+			case 1:
 				int codeOperation = checkRoomScanneredInformation();
-
 				if (codeOperation == 100) {
 					System.out.println("Room create successfully!");
 				} else {
 					System.out.println("Room not create!");
 				}
-				System.exit(0);
 				break;
 			case 2: // deleteRoom(,...)
 				System.out.println("method for DeleteRoom");
 				break;
 			case 3:
-				// super.sys.showRoom(Integer.parseInt(gui.getInput()));
+				super.sys.showRoom(null);
 				break;
 			case 4: // createCustomer(,...)
 				System.out.println("method for CreateCustomer");
@@ -44,24 +41,31 @@ public class ControllerConcrete extends Controller {
 			case 5: // deleteCustomer(,...)
 				System.out.println("method for DeleteRoom");
 				break;
-			case 6: // showCustomers(,...)
-				System.out.println("method for ShowRooms");
+			case 6:
+				super.sys.showCustomer(null);				
 				break;
-			case 7: // createReservation(,...)
-				System.out.println("method for CreateReservation");
+			case 7:
+				int idCostumer = getCostumerIdFromKeyboard();
+				int[] idRoom = getRoomIdFromKeyboard();
+				LocalDate[] dates = getDatesFromKeyboard();
+				try {
+					super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1]);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				break;
 			case 8: // deleteReservation(,...)
 				System.out.println("method for DeleteReservation");
 				break;
-			case 9: // showReservation(,...)
-				System.out.println("method for ShowRooms");
+			case 9:
+				super.sys.showReservation(null);	
 				break;
-			case 0: // System.exit(0)
+			case 0:
 				System.out.println("Exit!");
 				System.exit(0);
 				break;
-			case -1:
-				System.exit(1);
+			default:
+				System.out.println("Invalid choice, please retry");
 				break;
 			}
 		}
@@ -72,11 +76,6 @@ public class ControllerConcrete extends Controller {
 
 		int scanneredNumber = getRoomGuestsFromKeyboard();
 		String[] scanneredServices = getRoomServicesFromKeyboard();
-		// controllo per il createRoom
-		// createRoom deve ritornare 100 se l'utente ha immesso
-		// dati validi per i campi MaxGuest e Services
-		// dell'oggetto Room
-		// altrimenti 200 se i dati non sono validi.
 		for (String service : scanneredServices) {
 			if (!service.equals(null) && scanneredNumber != 0 && scanneredNumber != -1) {
 				codeOperation = 100;
@@ -165,6 +164,111 @@ public class ControllerConcrete extends Controller {
 			services[i] = scanneredServices[i];
 		}
 		return services;
+	}
+	
+	public int getCostumerIdFromKeyboard(){
+		Scanner keyboard = new Scanner(System.in);
+		boolean continueScanneringUserInput = true;
+		int scanneredCustomerId = 0;
+
+		while(continueScanneringUserInput == true){
+			System.out.println("Please insert the customer's id: ");
+			try{
+				scanneredCustomerId = keyboard.nextInt();
+				if (scanneredCustomerId == 0){
+					System.out.println("Choice not valid!\nPlease enter a vail id");
+				} else {
+					continueScanneringUserInput = false;
+				}
+			} catch (InputMismatchException ex){
+				System.out.println("User input is not a valid value for this method.");
+				System.out.println("Exception caught: User cannot put that value as menu choice.");
+				continueScanneringUserInput = false;
+			}
+		}
+		return scanneredCustomerId;
+	}
+	
+	public int[] getRoomIdFromKeyboard(){
+		Scanner keyboard = new Scanner(System.in);
+		boolean continueScanneringUserInput = true;
+		int idCounter = 0;
+		int scanneredRoomId = 0;
+		int[] scanneredRoomIds = new int[10];
+
+		while(continueScanneringUserInput == true){
+			System.out.println("Please insert the rooms' id: ");
+			try{
+				scanneredRoomId = keyboard.nextInt();
+				if (scanneredRoomId == 0){
+					System.out.println("Choice not valid!\nPlease enter a vail id");
+				} else {
+					scanneredRoomIds[idCounter] = scanneredRoomId;
+					idCounter += 1;
+					continueScanneringUserInput = false;
+				}
+			} catch (InputMismatchException ex){
+				System.out.println("User input is not a valid value for this method.");
+				System.out.println("Exception caught: User cannot put that value as menu choice.");
+				continueScanneringUserInput = false;
+			}
+		}
+		return scanneredRoomIds;
+	}
+	
+	public LocalDate[] getDatesFromKeyboard(){
+		Scanner keyboard = new Scanner(System.in);
+		boolean continueScanneringUserInput = true;
+		LocalDate[] scanneredDates = new LocalDate[2];
+		String[] scanneredDate = new String[2];
+		int scannerCounter = 0;
+		int startDate[] = new int[3];
+		int endDate[] = new int[3];
+
+		while(continueScanneringUserInput == true){
+			try{
+			if(scannerCounter == 0){
+				System.out.println("Please insert a start date using the YYYY-MM-DD format: ");
+				scanneredDate[0] = keyboard.nextLine();
+				if((scanneredDate[0].isEmpty() == true) || (scanneredDate[0].matches("\\d{4}-[01]\\d-[0-3]\\d") == false)){
+					System.out.println("Choice not valid!\nPlease enter a vail date");
+				} else {
+					scannerCounter += 1;
+				}
+			}
+			else{
+				System.out.println("Please insert an end date using the YYYY-MM-DD format: ");
+				scanneredDate[1] = keyboard.nextLine();
+				if((scanneredDate[1].isEmpty() == true) || (scanneredDate[0].matches("\\d{4}-[01]\\d-[0-3]\\d") == false)){
+					System.out.println("Choice not valid!\nPlease enter a vail date");
+				} else {
+					scannerCounter += 1;
+					continueScanneringUserInput = false;
+				}
+			} 
+		} catch (InputMismatchException ex){
+			System.out.println("User input is not a valid value for this method.");
+			System.out.println("Exception caught: User cannot put that value as menu choice.");
+			continueScanneringUserInput = false;
+			}
+		}
+		
+		String[] start = new String[3];
+		start = scanneredDate[0].split("-");
+		for(int i=0; i<3; i++){
+			startDate[i] = Integer.parseInt(start[i]);
+		}
+		
+		String[] end = new String[3];
+		end = scanneredDate[0].split("-");
+		for(int i=0; i<3; i++){
+			endDate[i] = Integer.parseInt(end[i]);
+		}
+		
+		scanneredDates[0] = LocalDate.of(startDate[0], startDate[1], startDate[2]);
+		scanneredDates[1] = LocalDate.of(endDate[0], endDate[1], endDate[2]);
+		
+		return scanneredDates;
 	}
 
 }
