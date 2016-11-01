@@ -22,25 +22,31 @@ import com.links.ressys.core.RoomConcrete;
 import com.links.ressys.database.DBConnection;
 
 public class Sys {
-	private ArrayList<Room> roomList = new ArrayList<Room>();
-	private ArrayList<Customer> customerList = new ArrayList<Customer>();
+	private ArrayList<Room> roomList;
+	private ArrayList<Customer> customerList;
 	private ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
 	private DBConnection db;
 	
 	public Sys(DBConnection db){
 		this.db = db;
-				
+		
+		try {
+			this.customerList = this.db.getCustomers();
+			this.roomList = this.db.getRooms();
+		} catch (Exception e) {
+			this.customerList = new ArrayList<Customer>();
+			this.roomList = new ArrayList<Room>();
+			e.printStackTrace();
+		}
+		
 		String[] services1 = { "fridge"};
-		Room roomCrt1 = new RoomConcrete(1, true, true, 3,services1);
+		Room roomCrt1 = new RoomConcrete(201, true, true, 3,services1);
 		roomList.add(roomCrt1);
-		String[] services2 = {"phon"};
-		Room roomCrt2 = new RoomConcrete(2, false, true, 2,services2);
-		roomList.add(roomCrt2);
 		String[] services3 = {"television"};
-		Room roomCrt3 = new RoomConcrete(3, false, false, 1,services3);
+		Room roomCrt3 = new RoomConcrete(203, false, false, 1,services3);
 		roomList.add(roomCrt3);
 		String[] services4 = { "fridge", "television" };
-		Room roomCrt4 = new RoomConcrete(4, true, true, 1,services4);
+		Room roomCrt4 = new RoomConcrete(204, true, true, 1,services4);
 		roomList.add(roomCrt4);
 
 		Customer customerCrt1 = new CustomerConcrete("MARRSSJ92B4N7142", "Mario", "Rossi", "3245965943", "mariorossi@gmail.com", "49237550475965433");
@@ -50,15 +56,12 @@ public class Sys {
 		Customer customerCrt3 = new CustomerConcrete("FABNER90U0H87194", "Fabio", "Neri", "3245965944", "fabioneri@gmail.com", "49237550475965435");
 		customerList.add(customerCrt3);
 		
-		Room[] roomArrayCrt1 = {roomCrt1};
-		Room[] roomArrayCrt2 = {roomCrt2};
 		Room[] roomArrayCrt3 = {roomCrt3, roomCrt4};
-		Reservation reservationCrt1= new ReservationConcrete(customerCrt1, roomArrayCrt1, 1, LocalDate.of(2014, Month.FEBRUARY, 11), LocalDate.of(2014, Month.FEBRUARY, 13));
+		Room[] roomArrayCrt1 = {roomList.get(0)};
+		Reservation reservationCrt1= new ReservationConcrete(customerList.get(0), roomArrayCrt1, 201, LocalDate.of(2014, Month.FEBRUARY, 11), LocalDate.of(2014, Month.FEBRUARY, 23));
 		reservationList.add(reservationCrt1);
-		Reservation reservationCrt2= new ReservationConcrete(customerCrt2, roomArrayCrt3, 2, LocalDate.of(2015, Month.FEBRUARY, 15), LocalDate.of(2015, Month.FEBRUARY, 17));
+		Reservation reservationCrt2= new ReservationConcrete(customerCrt2, roomArrayCrt3, 202, LocalDate.of(2015, Month.FEBRUARY, 15), LocalDate.of(2015, Month.FEBRUARY, 17));
 		reservationList.add(reservationCrt2);
-		Reservation reservationCrt3= new ReservationConcrete(customerCrt3, roomArrayCrt2, 3, LocalDate.of(2016, Month.FEBRUARY, 19), LocalDate.of(2016, Month.FEBRUARY, 23));
-		reservationList.add(reservationCrt3);
 	}
 	
 	
@@ -74,6 +77,7 @@ public class Sys {
 				;
 		}
 		if(success == true) {
+			this.db.createRoom(room);
 			System.out.println("Room inserted");
 			return 100;
 		} else 
@@ -93,6 +97,7 @@ public class Sys {
 				;
 		}
 		if(success == true) {
+			this.db.createCustomer(customer);
 			System.out.println("Customer created");
 			return 100;
 		} else 
@@ -240,6 +245,7 @@ public class Sys {
 			}
 		}
 		if(roomRemoved){
+			this.db.deleteRoom(roomId);
 			System.out.println("Room "+roomId+" deleted");
 			return roomRemoved;
 		}
@@ -258,6 +264,7 @@ public class Sys {
 			}
 		}
 		if(customerRemoved){
+			this.db.deleteCustomer(mailAddress);
 			System.out.println("Customer with "+mailAddress+" address deleted");
 			return customerRemoved;
 		}
