@@ -134,6 +134,7 @@ public class Sys {
 
 			return filteredList;
 		}
+		return roomList;
 		/* Old implementation:
 		System.out.println("1: Visualizza tutte le stanze\n"
 				+ "2: Visualizza le stanze libere\n"
@@ -169,7 +170,6 @@ public class Sys {
 				pred = p -> Arrays.asList(p.getServices()).contains(service);
 				break;
 		}*/
-		return roomList;
 	}
 
 	
@@ -181,9 +181,11 @@ public class Sys {
 				if (pred.test(p))
 					filteredList.add(p);
 		
-				return filteredList;
-		} else
-			return customerList;
+			return filteredList;
+		}
+		
+		return customerList;
+		
 		/* Old implementation:
 		System.out.println("1: Visualizza tutti i clienti\n"
 				+ "2: Visualizza i clienti aventi lo stesso cognome");
@@ -213,7 +215,7 @@ public class Sys {
 					filteredList.add(p);
 	 
 			return filteredList;
-			}
+		}
 		
 		return reservationList;
 		
