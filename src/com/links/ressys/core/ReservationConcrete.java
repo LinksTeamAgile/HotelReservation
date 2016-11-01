@@ -6,9 +6,9 @@ public class ReservationConcrete extends Reservation {
 
 	private Customer customer;
 	private Room[] rooms;
-	private int reservationId;
 	private LocalDate startDate;
 	private LocalDate endDate;
+	private int reservationId = 0;
 
 	public ReservationConcrete(Customer customer, Room[] rooms, int reservationId, LocalDate localDateTime, LocalDate localDateTime2) {
 		super();
@@ -61,8 +61,11 @@ public class ReservationConcrete extends Reservation {
 
 	@Override
 	public String toString() {
+		String r = "";
+		for(int i = 0; i <rooms.length; i++)
+			r +="\n\t" + rooms[i].toString();
 		return "Reservation:\n\tID Room = " + rooms[0].getRoomId() + "\n\tReservation Id = " + reservationId + "\n\tStart Date = "
-				+ startDate + "\n\tEnd Date = " + endDate + "\n";
+				+ startDate + "\n\tEnd Date = " + endDate + "\n\n\tRoom reserved:\n" + r;
 	}
 
 }
