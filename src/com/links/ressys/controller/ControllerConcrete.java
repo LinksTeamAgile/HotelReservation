@@ -5,7 +5,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.links.ressys.Sys;
-import com.links.ressys.core.Customer;
 import com.links.ressys.gui.Gui;
 
 public class ControllerConcrete extends Controller {

@@ -8,15 +8,15 @@ public class ReservationConcrete extends Reservation {
 	private Room[] rooms;
 	private LocalDate startDate;
 	private LocalDate endDate;
-	private static int reservationId = 0;
+	private int reservationId = 0;
 
-	public ReservationConcrete(Customer customer, Room[] rooms, LocalDate localDateTime, LocalDate localDateTime2) {
+	public ReservationConcrete(Customer customer, Room[] rooms, int reservationId, LocalDate localDateTime, LocalDate localDateTime2) {
 		super();
 		this.customer = customer;
 		this.rooms = rooms;
+		this.reservationId = reservationId;
 		this.startDate = localDateTime;
 		this.endDate = localDateTime2;
-		reservationId++;
 	}
 
 	public Customer getCustomer() {
