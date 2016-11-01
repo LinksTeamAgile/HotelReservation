@@ -120,7 +120,16 @@ public class Sys {
 	}
 	
 	public void showRoom(Predicate<Room> pred) {
-		roomList.forEach(r -> System.out.println(r));
+		if (pred!= null) {
+			List<Room> filteredList = new ArrayList<Room>();
+			
+			for (Room p:roomList)
+				if (pred.test(p))
+					filteredList.add(p);
+
+		filteredList.forEach(r -> System.out.println(r));
+		} else
+			roomList.forEach(r -> System.out.println(r));
 		/* Old implementation:
 		System.out.println("1: Visualizza tutte le stanze\n"
 				+ "2: Visualizza le stanze libere\n"
@@ -155,22 +164,21 @@ public class Sys {
 				
 				pred = p -> Arrays.asList(p.getServices()).contains(service);
 				break;
-		}
-		
-		if (pred!= null) {
-			List<Room> filteredList = new ArrayList<Room>();
-			
-			for (Room p:roomList)
-				if (pred.test(p))
-					filteredList.add(p);
-
-		filteredList.forEach(r -> System.out.println(r));
 		}*/
 	}
 
 	
 	public void showCustomer(Predicate<Customer> pred) {
-		customerList.forEach(r -> System.out.println(r));
+		if (pred!= null) {
+			List<Customer> filteredList = new ArrayList<Customer>();
+			
+			for (Customer p: customerList)
+				if (pred.test(p))
+					filteredList.add(p);
+		
+				filteredList.forEach(r -> System.out.println(r));
+		} else
+			customerList.forEach(r -> System.out.println(r));
 		/* Old implementation:
 		System.out.println("1: Visualizza tutti i clienti\n"
 				+ "2: Visualizza i clienti aventi lo stesso cognome");
@@ -188,21 +196,21 @@ public class Sys {
 				pred = p -> p.getSurname().compareToIgnoreCase(pSurname) == 0;
 				break;	
 			}
-		}
-		
-		if (pred!= null) {
-			List<Customer> filteredList = new ArrayList<Customer>();
-			
-			for (Customer p: customerList)
-				if (pred.test(p))
-					filteredList.add(p);
-		
-				filteredList.forEach(r -> System.out.println(r));
 		}*/
 	}
 	
 	public void showReservation(Predicate<Reservation> pred) {
-		reservationList.forEach(r -> System.out.println(r));
+		if (pred!= null) {
+			List<Reservation> filteredList = new ArrayList<Reservation>();
+			
+			for (Reservation p:reservationList)
+				if (pred.test(p))
+					filteredList.add(p);
+	 
+		filteredList.forEach(r -> System.out.println(r));
+		} else
+			reservationList.forEach(r -> System.out.println(r));
+		
 		/* Old implementation:
 		System.out.println("1: Visualizza tutte le prenotazioni\n"
 				+ "2: Visualizza le prenotazioni eseguite da un cliente\n");
@@ -220,20 +228,8 @@ public class Sys {
 				pred = p -> p.getCustomer().getTaxCode().compareToIgnoreCase(pSurname) == 0;
 				break;	
 			}
-		}
-		
-		if (pred!= null) {
-			List<Reservation> filteredList = new ArrayList<Reservation>();
-			
-			for (Reservation p:reservationList)
-				if (pred.test(p))
-					filteredList.add(p);
-	 
-		filteredList.forEach(r -> System.out.println(r));
 		}*/
 	}
-
-	
 
 	public boolean deleteRoom(int roomId){
 		boolean roomRemoved = false;
