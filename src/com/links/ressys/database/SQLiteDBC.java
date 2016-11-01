@@ -264,6 +264,27 @@ public class SQLiteDBC implements DBConnection {
 		return maxId;
 	}
 	
+	@Override
+	public int getMaxReservationId() {
+		int maxId = 0;
+		String query = "SELECT MAX(idReservation) AS maxIdReservation FROM reservation";
+		
+		initializationDriver();
+		
+		try(ResultSet rs = connectionResulSet(query)) {
+			
+			while(rs.next()) {
+				maxId = rs.getInt("maxIdReservation");
+			}		
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return maxId;
+	}
+	
 	private int getCustomerId(Customer customer){
 		int maxId = 0;
 		String query = "SELECT idCustomer FROM customer WHERE mailAddress = '"+customer.getMailAddress()+"'";
