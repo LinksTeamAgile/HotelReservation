@@ -23,5 +23,7 @@ public interface DBConnection {
 	boolean deleteCustomer(String mailAdd);
 
 	int getMaxRoomId();
+	
+	int getMaxReservationId();
 
 }

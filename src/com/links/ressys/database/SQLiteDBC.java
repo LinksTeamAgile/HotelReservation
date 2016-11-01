@@ -21,7 +21,7 @@ public class SQLiteDBC implements DBConnection {
 	private final String DB_PATH = Main.getMain().getProperty("db_path");
 	private final String S_DRIVER_NAME = "org.sqlite.JDBC";
 	
-	public void initializationDriver(){
+	private void initializationDriver(){
 		try {
 			Class.forName(S_DRIVER_NAME);
 		} catch (ClassNotFoundException e) {
@@ -29,7 +29,7 @@ public class SQLiteDBC implements DBConnection {
 		}
 	}
 	
-	public ResultSet connectionResulSet(String query){
+	private ResultSet connectionResulSet(String query){
 		Connection con = null;
 		ResultSet rs = null;
 		try {
@@ -43,7 +43,7 @@ public class SQLiteDBC implements DBConnection {
 		return rs;
 	}
 	
-	public PreparedStatement connectionPreparedStatement(String query){
+	private PreparedStatement connectionPreparedStatement(String query){
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
@@ -254,6 +254,27 @@ public class SQLiteDBC implements DBConnection {
 			
 			while(rs.next()) {
 				maxId = rs.getInt("maxIdRoom");
+			}		
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return maxId;
+	}
+	
+	@Override
+	public int getMaxReservationId() {
+		int maxId = 0;
+		String query = "SELECT MAX(idReservation) AS maxIdReservation FROM reservation";
+		
+		initializationDriver();
+		
+		try(ResultSet rs = connectionResulSet(query)) {
+			
+			while(rs.next()) {
+				maxId = rs.getInt("maxIdReservation");
 			}		
 			
 		} catch (SQLException e) {

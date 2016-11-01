@@ -8,4 +8,6 @@ public interface Gui {
 	
 	public String getInput(String message);
 
+	void viewMenu();
+
 }
