@@ -26,7 +26,7 @@ public class GuiBash implements Gui, Closeable, AutoCloseable {
 		} catch (NoSuchElementException ex) {
 			System.out.println("User input is not a valid value for this method.");
 			System.out.println("Exception caught: User cannot put that value as menu choice.");
-			System.exit(0);
+			System.exit(-1);
 			return "";
 		}
 	}

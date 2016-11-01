@@ -35,19 +35,8 @@ public class ControllerConcrete extends Controller {
 			case 3:
 				super.sys.showRoom(null);
 				break;
-			case 4: // createCustomer(,...)
-				String taxCode = this.gui.getInput("Insert tax code:");
-				String name = this.gui.getInput("Insert name:");
-				String surName = this.gui.getInput("Insert surname:");
-				String cellPhone = this.gui.getInput("Insert phone number:");
-				String mail = this.gui.getInput("Insert email:");
-				String cardNumber = this.gui.getInput("Insert card number:");
-				int success = sys.createCustomer(taxCode, name, surName, cellPhone, mail, cardNumber);
-				if (success == 100) {
-					System.out.println("Customer create successfully!");
-				} else {
-					System.out.println("Customer not create!");
-				}
+			case 4:
+				this.makeCreateCustomer();
 				break;
 			case 5: // deleteCustomer(,...)
 				System.out.println("method for DeleteRoom");
@@ -83,6 +72,21 @@ public class ControllerConcrete extends Controller {
 		}
 	}
 
+	private void makeCreateCustomer(){
+		String taxCode = this.gui.getInput("Insert tax code:");
+		String name = this.gui.getInput("Insert name:");
+		String surName = this.gui.getInput("Insert surname:");
+		String cellPhone = this.gui.getInput("Insert phone number:");
+		String mail = this.gui.getInput("Insert email:");
+		String cardNumber = this.gui.getInput("Insert card number:");
+		super.sys.createCustomer(taxCode, name, surName, cellPhone, mail, cardNumber);
+		if (!super.sys.isThereAnError()) {
+			System.out.println("Customer create successfully!");
+		} else {
+			System.out.println("Customer not create!");
+		}
+	}
+	
 	public int checkRoomScanneredInformation() {
 		int codeOperation = 0;
 

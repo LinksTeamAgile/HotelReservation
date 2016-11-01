@@ -50,7 +50,7 @@ public class Sys {
 		return this.lastErrors;
 	}
 	
-	private boolean isThereAnError() {
+	public boolean isThereAnError() {
 		for(Integer errCode: this.lastErrors){
 			if(errCode != 100){
 				return true;
@@ -79,8 +79,15 @@ public class Sys {
 		}
 	}
 	
-	public void createReservation(Customer customer, Room[] rooms, LocalDate startDate, LocalDate endDate){
-		Reservation reservation = new ReservationConcrete(customer, rooms, 20, startDate, endDate);
+	public void createReservation(int customerId, int[] roomIds, LocalDate startDate, LocalDate endDate){
+	    Customer customer = this.customerList.get(customerId);
+	    Room[] rooms = new Room[roomIds.length];
+	    
+	    for (int i=0; i < roomIds.length; i++){
+	      rooms[i] = this.roomList.get(roomIds[i]);
+	    }
+	    
+	    Reservation reservation = new ReservationConcrete(customer, rooms, 20, startDate, endDate);
 		Checker checker = new CheckerReservation(reservation);
 		this.lastErrors = checker.check();
 		if(!this.isThereAnError()) {

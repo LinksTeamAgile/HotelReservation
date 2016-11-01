@@ -21,7 +21,7 @@ public class SQLiteDBC implements DBConnection {
 	private final String DB_PATH = Main.getMain().getProperty("db_path");
 	private final String S_DRIVER_NAME = "org.sqlite.JDBC";
 	
-	public void initializationDriver(){
+	private void initializationDriver(){
 		try {
 			Class.forName(S_DRIVER_NAME);
 		} catch (ClassNotFoundException e) {
@@ -29,7 +29,7 @@ public class SQLiteDBC implements DBConnection {
 		}
 	}
 	
-	public ResultSet connectionResulSet(String query){
+	private ResultSet connectionResulSet(String query){
 		Connection con = null;
 		ResultSet rs = null;
 		try {
@@ -43,7 +43,7 @@ public class SQLiteDBC implements DBConnection {
 		return rs;
 	}
 	
-	public PreparedStatement connectionPreparedStatement(String query){
+	private PreparedStatement connectionPreparedStatement(String query){
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
@@ -283,34 +283,34 @@ public class SQLiteDBC implements DBConnection {
 		return maxId;
 	}
 	
-//	public static void main(String[] args){
-//		try {
-////			String[] sss={"asdasd","adasdsa"};
-////			System.out.println( createCustomer(new CustomerConcrete("alberto","sanso","dfasf@fdsfs.com","551662626","sdasdas65sadasd",112232125)) );
-////			System.out.println( createRoom(new RoomConcrete(500, true, true,4, sss)) );
-////			System.out.println( deleteRoom(201) );
-////			System.out.println(deleteCustomer("sdasdas65sadasd"));
-////			System.out.println( getMaxRoomId() );
-//			
-//			DBConnection db = new SQLiteDBC();
-//			ArrayList<Customer> listcust = db.getCustomers();
-//			
-//			for (Customer customer : listcust) {
-//				System.out.println(customer);
-//			}
-//			
-//			
-////			ArrayList<Room> listroom = getRooms();
-////			RoomConcrete[] rooom = new RoomConcrete[1];
-////			rooom[0]=(RoomConcrete)listroom.get(0);
-//			
-////			System.out.println( getCustomerId(new CustomerConcrete("", "", "", "", "jbanksrr@squidoo.com",	55565) ) );
-////			ReservationConcrete rescon = new ReservationConcrete(cust, rooom, 1000, new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime(), new GregorianCalendar(2014, Calendar.MARCH, 11).getTime());
-////			System.out.println( createReservation(rescon) );
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+	public static void main(String[] args){
+		try {
+//			String[] sss={"asdasd","adasdsa"};
+//			System.out.println( createCustomer(new CustomerConcrete("alberto","sanso","dfasf@fdsfs.com","551662626","sdasdas65sadasd",112232125)) );
+//			System.out.println( createRoom(new RoomConcrete(500, true, true,4, sss)) );
+//			System.out.println( deleteRoom(201) );
+//			System.out.println(deleteCustomer("sdasdas65sadasd"));
+//			System.out.println( getMaxRoomId() );
+			
+			DBConnection db = new SQLiteDBC();
+			ArrayList<Customer> listcust = db.getCustomers();
+			
+			for (Customer customer : listcust) {
+				System.out.println(customer);
+			}
+			
+			
+//			ArrayList<Room> listroom = getRooms();
+//			RoomConcrete[] rooom = new RoomConcrete[1];
+//			rooom[0]=(RoomConcrete)listroom.get(0);
+			
+//			System.out.println( getCustomerId(new CustomerConcrete("", "", "", "", "jbanksrr@squidoo.com",	55565) ) );
+//			ReservationConcrete rescon = new ReservationConcrete(cust, rooom, 1000, new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime(), new GregorianCalendar(2014, Calendar.MARCH, 11).getTime());
+//			System.out.println( createReservation(rescon) );
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 }
