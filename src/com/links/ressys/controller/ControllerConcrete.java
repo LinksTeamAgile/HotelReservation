@@ -79,6 +79,7 @@ public class ControllerConcrete extends Controller {
 				System.out.println("Invalid choice, please retry");
 				break;
 			}
+			super.gui.viewMenu();
 		}
 	}
 
@@ -126,46 +127,45 @@ public class ControllerConcrete extends Controller {
 	public String[] getRoomServicesFromKeyboard() {
 		int serviceCounter = 0, pairNumber = 0;
 		boolean continueScanneringUserInput = true, stopScanneringInput = true;
+		Scanner keyboard = new Scanner(System.in);
 
 		String scanneredService = "", scanneredChoice = "";
 		String[] scanneredServices = new String[50];
 
-		try (Scanner keyboard = new Scanner(System.in)) {
-			while (continueScanneringUserInput == true) {
-				System.out.println("Please enter the type of services that you want in your room: ");
-				try {
-					scanneredService = keyboard.nextLine();
-					if (scanneredService.isEmpty() == true) {
-						System.out.println("Choice not valid!\nPlease entered a valid service");
-					}
-					if (scanneredService.matches("[0-9]+") && scanneredService.length() > 0) {
-						System.out.println("Choice not valid!\nPlease entered a valid service");
-					} else {
-						scanneredServices[serviceCounter] = scanneredService;
-						serviceCounter += 1;
-						stopScanneringInput = true;
-						if ((serviceCounter % 4) == 0) {
-							while (stopScanneringInput == true) {
-								System.out.println("Do you want to stop type? Please digit yes/no: ");
-								scanneredChoice = keyboard.nextLine();
-								if (scanneredChoice.equalsIgnoreCase("yes")) {
-									stopScanneringInput = false;
-									continueScanneringUserInput = false;
-								} else if (scanneredChoice.isEmpty() == true) {
-									System.out.println("Choice not valid!");
-								} else if (scanneredChoice.equalsIgnoreCase("no")) {
-									stopScanneringInput = false;
-								} else {
-									System.out.println("Choice not valid!");
-								}
+		while (continueScanneringUserInput == true) {
+			System.out.println("Please enter the type of services that you want in your room: ");
+			try {
+				scanneredService = keyboard.nextLine();
+				if (scanneredService.isEmpty() == true) {
+					System.out.println("Choice not valid!\nPlease entered a valid service");
+				}
+				if (scanneredService.matches("[0-9]+") && scanneredService.length() > 0) {
+					System.out.println("Choice not valid!\nPlease entered a valid service");
+				} else {
+					scanneredServices[serviceCounter] = scanneredService;
+					serviceCounter += 1;
+					stopScanneringInput = true;
+					if ((serviceCounter % 4) == 0) {
+						while (stopScanneringInput == true) {
+							System.out.println("Do you want to stop type? Please digit yes/no: ");
+							scanneredChoice = keyboard.nextLine();
+							if (scanneredChoice.equalsIgnoreCase("yes")) {
+								stopScanneringInput = false;
+								continueScanneringUserInput = false;
+							} else if (scanneredChoice.isEmpty() == true) {
+								System.out.println("Choice not valid!");
+							} else if (scanneredChoice.equalsIgnoreCase("no")) {
+								stopScanneringInput = false;
+							} else {
+								System.out.println("Choice not valid!");
 							}
 						}
 					}
-				} catch (InputMismatchException ex) {
-					System.out.println("User input is not a valid value for this method.");
-					System.out.println("Exception caught: User cannot put that value as menu choice.");
-					continueScanneringUserInput = false;
 				}
+			} catch (InputMismatchException ex) {
+				System.out.println("User input is not a valid value for this method.");
+				System.out.println("Exception caught: User cannot put that value as menu choice.");
+				continueScanneringUserInput = false;
 			}
 		}
 
