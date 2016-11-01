@@ -71,6 +71,7 @@ public class ControllerConcrete extends Controller {
 		if (!super.sys.isThereAnError()) {
 			System.out.println("Customer create successfully!");
 		} else {
+			System.out.println(super.sys.getLastErrors());
 			System.out.println("Customer not create!");
 		}
 	}
@@ -91,6 +92,7 @@ public class ControllerConcrete extends Controller {
 			if (!super.sys.isThereAnError()) {
 				System.out.println("Room create successfully!");
 			} else {
+				System.out.println(super.sys.getLastErrors());
 				System.out.println("Room not create!");
 			}
 		}
@@ -104,6 +106,7 @@ public class ControllerConcrete extends Controller {
 		if (!super.sys.isThereAnError()) {
 			System.out.println("Reservation create successfully!");
 		} else {
+			System.out.println(super.sys.getLastErrors());
 			System.out.println("Reservation not create!");
 		}
 	}
