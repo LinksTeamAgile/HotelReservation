@@ -27,12 +27,12 @@ public class Sys {
 		this.db = db;
 				
 		String[] services = { "fridge", "phon", "television" };
-		Room roomCrt1 = new RoomConcrete(1, false, false, 1,services);
+		Room roomCrt1 = new RoomConcrete(1, false, false, 1, services);
 		roomList.add(roomCrt1);
 		Customer customerCrt1 = new CustomerConcrete("DFGHFT90U0H8919", "Mario", "Rossi", "3245965943", "mariorossi@gmail.com", "49237550475965433");
 		customerList.add(customerCrt1);
 		Room[] roomArrayCrt1 = {roomCrt1};
-		Reservation reservationCrt1= new ReservationConcrete(customerCrt1, roomArrayCrt1, 1, LocalDate.of(2014, Month.FEBRUARY, 11), LocalDate.of(2014, Month.FEBRUARY, 23));
+		Reservation reservationCrt1 = new ReservationConcrete(customerCrt1, roomArrayCrt1, LocalDate.of(2014, Month.FEBRUARY, 11), LocalDate.of(2014, Month.FEBRUARY, 23));
 		reservationList.add(reservationCrt1);
 	}
 	
@@ -74,8 +74,18 @@ public class Sys {
 			return errors.get(0);
 	}
 	
-	public int createReservation(Customer customer, Room[] rooms, int reservationId, LocalDate startDate, LocalDate endDate){
-		Checker checkerReservation = new CheckerReservation(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
+	public int createReservation(int customerId, int[] roomsIds, LocalDate startDate, LocalDate endDate) throws Exception{
+		ArrayList<Customer> customers = db.getCustomers();
+		Customer customer = customers.get(customerId);
+		
+		ArrayList<Room> allRooms = db.getRooms();
+		Room[] rooms = new Room[roomsIds.length];
+		
+		for (int i=0; i < roomsIds.length; i++){
+			rooms[i] = allRooms.get(roomsIds[i]);
+		}
+		
+		Checker checkerReservation = new CheckerReservation(new ReservationConcrete(customer, rooms, startDate, endDate));
 		ArrayList<Integer> status = new ArrayList<Integer>();
 		boolean success = true;
 
@@ -86,7 +96,7 @@ public class Sys {
 				success = false;
 
 		if(success == true){
-			reservationList.add(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
+			reservationList.add(new ReservationConcrete(customer, rooms, startDate, endDate));
 			System.out.println("Reservation created");	
 			return 100;
 		}else
