@@ -21,7 +21,7 @@ public class GuiBash implements Gui, Closeable, AutoCloseable {
 	@Override
 	public String getInput(String message) {
 		try{
-			System.out.print(message);
+			System.out.println(message);
 			return keyboard.next();
 		} catch (NoSuchElementException ex) {
 			System.out.println("User input is not a valid value for this method.");
