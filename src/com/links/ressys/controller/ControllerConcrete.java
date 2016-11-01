@@ -17,11 +17,12 @@ public class ControllerConcrete extends Controller {
 		int choice = 0;
 
 		this.gui.open();
+
 		while (true) {
 			choice = Integer.valueOf(this.gui.getInput("Make a choice:"));
 			switch (choice) {
 			case 1:
-				int codeOperation = checkBasicRoomInformation();
+				int codeOperation = checkRoomScanneredInformation();
 				if (codeOperation == 100) {
 					System.out.println("Room create successfully!");
 				} else {
@@ -40,10 +41,10 @@ public class ControllerConcrete extends Controller {
 			case 5: // deleteCustomer(,...)
 				System.out.println("method for DeleteRoom");
 				break;
-			case 6: // showCustomers(,...)
+			case 6:
 				super.sys.showCustomer(null);				
 				break;
-			case 7: // createReservation(,...)
+			case 7:
 				int idCostumer = getCostumerIdFromKeyboard();
 				int[] idRoom = getRoomIdFromKeyboard();
 				LocalDate[] dates = getDatesFromKeyboard();
@@ -56,10 +57,10 @@ public class ControllerConcrete extends Controller {
 			case 8: // deleteReservation(,...)
 				System.out.println("method for DeleteReservation");
 				break;
-			case 9: // showReservation(,...)
+			case 9:
 				super.sys.showReservation(null);	
 				break;
-			case 0: // System.exit(0)
+			case 0:
 				System.out.println("Exit!");
 				System.exit(0);
 				break;
@@ -70,32 +71,26 @@ public class ControllerConcrete extends Controller {
 		}
 	}
 
-	public int checkBasicRoomInformation() {
-		/**
-		 * @return 		100 if all info are correct else 200 
-		 */
-		int codeOperation = 0, scanneredNumber = 0;
-		String[] scanneredServices = new String[5];
+	public int checkRoomScanneredInformation() {
+		int codeOperation = 0;
 
-		scanneredNumber = getRoomGuestsFromKeyboard();
-		scanneredServices = getRoomServicesFromKeyboard();
-
-		for (int i = 0; i < 5; i++) {
-			if (scanneredServices[i].isEmpty() != true) {
-				if (scanneredNumber != 0 || scanneredNumber != -1) {
-					codeOperation = 100;
-				} else {
-					codeOperation = 200;
-				}
+		int scanneredNumber = getRoomGuestsFromKeyboard();
+		String[] scanneredServices = getRoomServicesFromKeyboard();
+		for (String service : scanneredServices) {
+			if (!service.equals(null) && scanneredNumber != 0 && scanneredNumber != -1) {
+				codeOperation = 100;
+			} else {
+				codeOperation = 200;
 			}
 		}
 		return codeOperation;
 	}
 
+
 	public int getRoomGuestsFromKeyboard() {
 		boolean continueScanneringUserInput = true;
-		Scanner keyboard = new Scanner(System.in);
 		int scanneredNumber = 0;
+		Scanner keyboard = new Scanner(System.in);
 
 		while (continueScanneringUserInput == true) {
 			System.out.println("Please enter the number of guests: ");
@@ -113,37 +108,62 @@ public class ControllerConcrete extends Controller {
 				scanneredNumber = -1;
 			}
 		}
+
 		return scanneredNumber;
 	}
 
 	public String[] getRoomServicesFromKeyboard() {
-		int serviceCounter = 0;
-		boolean continueScanneringUserInput = true;
-		Scanner keyboard = new Scanner(System.in);
-		String scanneredService = "";
-		String[] scanneredServices = new String[5];
+		int serviceCounter = 0, pairNumber = 0;
+		boolean continueScanneringUserInput = true, stopScanneringInput = true;
 
-		while (serviceCounter < 5) {
-			System.out.println("Please enter the type of services that you want in your room: ");
-			try {
-				scanneredService = keyboard.nextLine();
-				if (scanneredService.isEmpty() == true) {
-					System.out.println("Choice not valid!\nPlease entered a valid service");
+		String scanneredService = "", scanneredChoice = "";
+		String[] scanneredServices = new String[50];
+
+		try (Scanner keyboard = new Scanner(System.in)) {
+			while (continueScanneringUserInput == true) {
+				System.out.println("Please enter the type of services that you want in your room: ");
+				try {
+					scanneredService = keyboard.nextLine();
+					if (scanneredService.isEmpty() == true) {
+						System.out.println("Choice not valid!\nPlease entered a valid service");
+					}
+					if (scanneredService.matches("[0-9]+") && scanneredService.length() > 0) {
+						System.out.println("Choice not valid!\nPlease entered a valid service");
+					} else {
+						scanneredServices[serviceCounter] = scanneredService;
+						serviceCounter += 1;
+						stopScanneringInput = true;
+						if ((serviceCounter % 4) == 0) {
+							while (stopScanneringInput == true) {
+								System.out.println("Do you want to stop type? Please digit yes/no: ");
+								scanneredChoice = keyboard.nextLine();
+								if (scanneredChoice.equalsIgnoreCase("yes")) {
+									stopScanneringInput = false;
+									continueScanneringUserInput = false;
+								} else if (scanneredChoice.isEmpty() == true) {
+									System.out.println("Choice not valid!");
+								} else if (scanneredChoice.equalsIgnoreCase("no")) {
+									stopScanneringInput = false;
+								} else {
+									System.out.println("Choice not valid!");
+								}
+							}
+						}
+					}
+				} catch (InputMismatchException ex) {
+					System.out.println("User input is not a valid value for this method.");
+					System.out.println("Exception caught: User cannot put that value as menu choice.");
+					continueScanneringUserInput = false;
 				}
-				if (scanneredService.matches("[0-9]+") && scanneredService.length() > 0) {
-					System.out.println("Choice not valid!\nPlease entered a valid service");
-				} else {
-					scanneredServices[serviceCounter] = scanneredService;
-					serviceCounter += 1;
-				}
-			} catch (InputMismatchException ex) {
-				System.out.println("User input is not a valid value for this method.");
-				System.out.println("Exception caught: User cannot put that value as menu choice.");
-				continueScanneringUserInput = false;
-				serviceCounter = 5;
 			}
 		}
-		return scanneredServices;
+
+		String[] services = new String[serviceCounter];
+
+		for (int i = 0; i < serviceCounter; i++) {
+			services[i] = scanneredServices[i];
+		}
+		return services;
 	}
 	
 	public int getCostumerIdFromKeyboard(){
@@ -252,3 +272,4 @@ public class ControllerConcrete extends Controller {
 	}
 
 }
+
