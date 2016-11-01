@@ -124,7 +124,7 @@ public class Sys {
 
 	}
 	
-	public void showRoom(Predicate<Room> pred) {
+	public List<Room> showRoom(Predicate<Room> pred) {
 		if (pred!= null) {
 			List<Room> filteredList = new ArrayList<Room>();
 			
@@ -132,9 +132,8 @@ public class Sys {
 				if (pred.test(p))
 					filteredList.add(p);
 
-		filteredList.forEach(r -> System.out.println(r));
-		} else
-			roomList.forEach(r -> System.out.println(r));
+			return filteredList;
+		}
 		/* Old implementation:
 		System.out.println("1: Visualizza tutte le stanze\n"
 				+ "2: Visualizza le stanze libere\n"
@@ -170,10 +169,11 @@ public class Sys {
 				pred = p -> Arrays.asList(p.getServices()).contains(service);
 				break;
 		}*/
+		return roomList;
 	}
 
 	
-	public void showCustomer(Predicate<Customer> pred) {
+	public List<Customer> showCustomer(Predicate<Customer> pred) {
 		if (pred!= null) {
 			List<Customer> filteredList = new ArrayList<Customer>();
 			
@@ -181,9 +181,9 @@ public class Sys {
 				if (pred.test(p))
 					filteredList.add(p);
 		
-				filteredList.forEach(r -> System.out.println(r));
+				return filteredList;
 		} else
-			customerList.forEach(r -> System.out.println(r));
+			return customerList;
 		/* Old implementation:
 		System.out.println("1: Visualizza tutti i clienti\n"
 				+ "2: Visualizza i clienti aventi lo stesso cognome");
@@ -204,7 +204,7 @@ public class Sys {
 		}*/
 	}
 	
-	public void showReservation(Predicate<Reservation> pred) {
+	public List<Reservation> showReservation(Predicate<Reservation> pred) {
 		if (pred!= null) {
 			List<Reservation> filteredList = new ArrayList<Reservation>();
 			
@@ -212,9 +212,10 @@ public class Sys {
 				if (pred.test(p))
 					filteredList.add(p);
 	 
-		filteredList.forEach(r -> System.out.println(r));
-		} else
-			reservationList.forEach(r -> System.out.println(r));
+			return filteredList;
+			}
+		
+		return reservationList;
 		
 		/* Old implementation:
 		System.out.println("1: Visualizza tutte le prenotazioni\n"
