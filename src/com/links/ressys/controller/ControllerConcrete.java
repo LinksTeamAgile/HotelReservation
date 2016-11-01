@@ -1,4 +1,4 @@
-package com.links.ressys.controller;
+	package com.links.ressys.controller;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -34,7 +34,18 @@ public class ControllerConcrete extends Controller {
 				super.sys.showRoom();
 				break;
 			case 4: // createCustomer(,...)
-				System.out.println("method for CreateCustomer");
+				String taxCode = this.gui.getInput("Insert tax code:");
+				String name = this.gui.getInput("Insert name:");
+				String surName = this.gui.getInput("Insert surname:");
+				String cellPhone = this.gui.getInput("Insert phone number:");
+				String mail = this.gui.getInput("Insert email:");
+				String cardNumber = this.gui.getInput("Insert card number:");
+				int success = sys.createCustomer(taxCode, name, surName, cellPhone, mail, cardNumber);
+				if (success == 100) {
+					System.out.println("Customer create successfully!");
+				} else {
+					System.out.println("Customer not create!");
+				}
 				break;
 			case 5: // deleteCustomer(,...)
 				System.out.println("method for DeleteRoom");
