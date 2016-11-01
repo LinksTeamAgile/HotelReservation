@@ -49,7 +49,7 @@ public class ControllerConcrete extends Controller {
 				int[] idRoom = getRoomIdFromKeyboard();
 				LocalDate[] dates = getDatesFromKeyboard();
 				try {
-					super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1]);
+					//super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1]);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
