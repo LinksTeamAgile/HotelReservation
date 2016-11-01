@@ -6,9 +6,9 @@ public class ReservationConcrete extends Reservation {
 
 	private Customer customer;
 	private Room[] rooms;
-	private int reservationId;
 	private LocalDate startDate;
 	private LocalDate endDate;
+	private int reservationId = 0;
 
 	public ReservationConcrete(Customer customer, Room[] rooms, int reservationId, LocalDate localDateTime, LocalDate localDateTime2) {
 		super();

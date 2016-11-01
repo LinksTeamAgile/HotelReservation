@@ -3,9 +3,7 @@ package com.links.ressys;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 import java.util.function.Predicate;
 
 import com.links.ressys.checker.Checker;
@@ -134,7 +132,9 @@ public class Sys {
 
 			return filteredList;
 		}
+		
 		return roomList;
+		
 		/* Old implementation:
 		System.out.println("1: Visualizza tutte le stanze\n"
 				+ "2: Visualizza le stanze libere\n"
