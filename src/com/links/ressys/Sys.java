@@ -3,6 +3,10 @@ package com.links.ressys;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.function.Predicate;
 
 import com.links.ressys.checker.Checker;
 import com.links.ressys.checker.CheckerCustomer;
@@ -25,6 +29,7 @@ public class Sys {
 	
 	public Sys(DBConnection db){
 		this.db = db;
+		
 		try {
 			this.customerList = this.db.getCustomers();
 			this.roomList = this.db.getRooms();
@@ -34,9 +39,29 @@ public class Sys {
 			e.printStackTrace();
 		}
 		
+		String[] services1 = { "fridge"};
+		Room roomCrt1 = new RoomConcrete(201, true, true, 3,services1);
+		roomList.add(roomCrt1);
+		String[] services3 = {"television"};
+		Room roomCrt3 = new RoomConcrete(203, false, false, 1,services3);
+		roomList.add(roomCrt3);
+		String[] services4 = { "fridge", "television" };
+		Room roomCrt4 = new RoomConcrete(204, true, true, 1,services4);
+		roomList.add(roomCrt4);
+
+		Customer customerCrt1 = new CustomerConcrete("MARRSSJ92B4N7142", "Mario", "Rossi", "3245965943", "mariorossi@gmail.com", "49237550475965433");
+		customerList.add(customerCrt1);
+		Customer customerCrt2 = new CustomerConcrete("FABRSS90U0T89193", "Fabio", "Rossi", "3245965949", "fabiorossi@gmail.com", "49237550475965434");
+		customerList.add(customerCrt2);
+		Customer customerCrt3 = new CustomerConcrete("FABNER90U0H87194", "Fabio", "Neri", "3245965944", "fabioneri@gmail.com", "49237550475965435");
+		customerList.add(customerCrt3);
+		
+		Room[] roomArrayCrt3 = {roomCrt3, roomCrt4};
 		Room[] roomArrayCrt1 = {roomList.get(0)};
-		Reservation reservationCrt1= new ReservationConcrete(customerList.get(0), roomArrayCrt1, 1, LocalDate.of(2014, Month.FEBRUARY, 11), LocalDate.of(2014, Month.FEBRUARY, 23));
+		Reservation reservationCrt1= new ReservationConcrete(customerList.get(0), roomArrayCrt1, 201, LocalDate.of(2014, Month.FEBRUARY, 11), LocalDate.of(2014, Month.FEBRUARY, 23));
 		reservationList.add(reservationCrt1);
+		Reservation reservationCrt2= new ReservationConcrete(customerCrt2, roomArrayCrt3, 202, LocalDate.of(2015, Month.FEBRUARY, 15), LocalDate.of(2015, Month.FEBRUARY, 17));
+		reservationList.add(reservationCrt2);
 	}
 	
 	
@@ -99,19 +124,117 @@ public class Sys {
 
 	}
 	
-	public void showRoom() {
-		roomList.forEach(r -> System.out.println(r));
-	}
+	public void showRoom(Predicate<Room> pred) {
+		if (pred!= null) {
+			List<Room> filteredList = new ArrayList<Room>();
+			
+			for (Room p:roomList)
+				if (pred.test(p))
+					filteredList.add(p);
+
+		filteredList.forEach(r -> System.out.println(r));
+		} else
+			roomList.forEach(r -> System.out.println(r));
+		/* Old implementation:
+		System.out.println("1: Visualizza tutte le stanze\n"
+				+ "2: Visualizza le stanze libere\n"
+				+ "3: Visualizza le stanze libere ma non ancora disponibili\n"
+				+ "4: Visualizza le stanze che possono ospitare un minimo numero di persone\n"
+				+ "5: Visualizza le stanze che forniscono certi servizi\n");
+		
+		Scanner keyboard = new Scanner(System.in);
 	
-	public void showCustomer() {
-		customerList.forEach(r -> System.out.println(r));
-	}
-	
-	public void showReservation() {
-		reservationList.forEach(r -> System.out.println(r));
+		switch(keyboard.nextInt()) {
+			case(1):
+				roomList.forEach(r -> System.out.println(r));
+				break;
+			
+			case(2):
+				pred = p -> p.isAvailable() && p.isServiceable();
+				break;
+			
+			case(3):
+				pred = p -> p.isAvailable() && !p.isServiceable();
+			break;
+			case(4): {
+				System.out.println("Inserire il numero minimo di persone che la stanza dovra' contenere");
+				int pNumber = keyboard.nextInt();
+				pred = p -> p.getMaxGuests() >= pNumber;
+				break;	
+			}
+
+			case(5):		
+				System.out.println("Inserire il servizio richiesto:");
+				String service = keyboard.next().toLowerCase();
+				
+				pred = p -> Arrays.asList(p.getServices()).contains(service);
+				break;
+		}*/
 	}
 
 	
+	public void showCustomer(Predicate<Customer> pred) {
+		if (pred!= null) {
+			List<Customer> filteredList = new ArrayList<Customer>();
+			
+			for (Customer p: customerList)
+				if (pred.test(p))
+					filteredList.add(p);
+		
+				filteredList.forEach(r -> System.out.println(r));
+		} else
+			customerList.forEach(r -> System.out.println(r));
+		/* Old implementation:
+		System.out.println("1: Visualizza tutti i clienti\n"
+				+ "2: Visualizza i clienti aventi lo stesso cognome");
+		
+		Scanner keyboard = new Scanner(System.in);
+	
+		switch(keyboard.nextInt()) {
+			case(1):
+				customerList.forEach(r -> System.out.println(r));
+				break;
+			
+			case(2): {
+				System.out.println("Inserire il cognome del cliente:");
+				String pSurname = keyboard.next();
+				pred = p -> p.getSurname().compareToIgnoreCase(pSurname) == 0;
+				break;	
+			}
+		}*/
+	}
+	
+	public void showReservation(Predicate<Reservation> pred) {
+		if (pred!= null) {
+			List<Reservation> filteredList = new ArrayList<Reservation>();
+			
+			for (Reservation p:reservationList)
+				if (pred.test(p))
+					filteredList.add(p);
+	 
+		filteredList.forEach(r -> System.out.println(r));
+		} else
+			reservationList.forEach(r -> System.out.println(r));
+		
+		/* Old implementation:
+		System.out.println("1: Visualizza tutte le prenotazioni\n"
+				+ "2: Visualizza le prenotazioni eseguite da un cliente\n");
+		
+		Scanner keyboard = new Scanner(System.in);
+	
+		switch(keyboard.nextInt()) {
+			case(1):
+				reservationList.forEach(r -> System.out.println(r));
+				break;
+			
+			case(2): {
+				System.out.println("Inserire il codice fiscale del cliente:");
+				String pSurname = keyboard.next();
+				pred = p -> p.getCustomer().getTaxCode().compareToIgnoreCase(pSurname) == 0;
+				break;	
+			}
+		}*/
+	}
 
 	public boolean deleteRoom(int roomId){
 		boolean roomRemoved = false;
