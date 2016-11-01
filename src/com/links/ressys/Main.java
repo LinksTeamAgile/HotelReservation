@@ -13,8 +13,11 @@ import com.links.ressys.gui.*;
 
 public class Main {
 	
-	public static void setProperties(){
-		Properties prop = new Properties();
+	private static Main mn = null;
+	private Properties prop;
+	
+	private Main(){
+		prop = new Properties();
 		try(InputStream input = new FileInputStream("res/configs/config.properties")) {
 			prop.load(input);
 		} catch (IOException ex) {
@@ -24,8 +27,21 @@ public class Main {
 		}
 	}
 	
+	public static Main getMain(){
+		if(mn == null){
+			mn = new Main();
+		}
+		return mn;
+	}
+		
+	
+	public String getProperty(String key){
+		return prop.getProperty(key);
+	}
+	
+	
+	
 	public static void main(String[] args) {
-		Main.setProperties();
 		DBConnection db = new SQLiteDBC();
 		Sys sys = new Sys(db);
 		Gui gui = new GuiBash();

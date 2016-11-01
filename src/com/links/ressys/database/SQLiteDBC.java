@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Properties;
 
+import com.links.ressys.Main;
 import com.links.ressys.core.Customer;
 import com.links.ressys.core.CustomerConcrete;
 import com.links.ressys.core.Reservation;
@@ -18,29 +18,46 @@ import com.links.ressys.core.RoomConcrete;
 public class SQLiteDBC implements DBConnection {
 
 	private final String JDBC_TYPE = "jdbc:sqlite:";
-	private final String DB_PATH = new Properties().getProperty("db_path");
-//	private final String DB_PATH = "/Users/userm01/Desktop/Workspace/HotelReservation/res/db/HotelReservation.sqlite";
+	private final String DB_PATH = Main.getMain().getProperty("db_path");
 	private final String S_DRIVER_NAME = "org.sqlite.JDBC";
 	
-	public void initializationDriver() throws Exception{
-		Class.forName(S_DRIVER_NAME);
+	public void initializationDriver(){
+		try {
+			Class.forName(S_DRIVER_NAME);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public ResultSet connectionResulSet(String query) throws Exception{
-		Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
-		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery(query);
+	public ResultSet connectionResulSet(String query){
+		Connection con = null;
+		ResultSet rs = null;
+		try {
+			con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
+			Statement stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 		return rs;
 	}
 	
-	public PreparedStatement connectionPreparedStatement(String query) throws Exception{
-		Connection con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
-		PreparedStatement ps = con.prepareStatement(query);
+	public PreparedStatement connectionPreparedStatement(String query){
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			con = DriverManager.getConnection(JDBC_TYPE+DB_PATH);
+			ps = con.prepareStatement(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 		return ps;
 	}
 	
 	@Override
-	public ArrayList<Customer> getCustomers() throws Exception{
+	public ArrayList<Customer> getCustomers(){
 		String query = "SELECT * FROM customer";
 		ArrayList<Customer> customer = new ArrayList<Customer>();
 		
@@ -61,7 +78,7 @@ public class SQLiteDBC implements DBConnection {
 	}
 
 	@Override
-	public ArrayList<Room> getRooms() throws Exception{
+	public ArrayList<Room> getRooms(){
 		String query = "SELECT * FROM room";
 		ArrayList<Room> room = new ArrayList<Room>();
 		
@@ -80,7 +97,7 @@ public class SQLiteDBC implements DBConnection {
 	}
 	
 	@Override
-	public boolean createCustomer(Customer c) throws Exception{
+	public boolean createCustomer(Customer c){
 		boolean result = false;
 		
 		String name = c.getName();
@@ -115,7 +132,7 @@ public class SQLiteDBC implements DBConnection {
 	}
 	
 	@Override
-	public boolean createRoom(Room r) throws Exception{
+	public boolean createRoom(Room r){
 		boolean result = false;
 		
 		int maxGuest = r.getMaxGuests();
@@ -152,7 +169,7 @@ public class SQLiteDBC implements DBConnection {
 	
 	
 	@Override
-	public boolean createReservation(Reservation r) throws Exception{
+	public boolean createReservation(Reservation r){
 		boolean result = false;
 		
 		int idCustomer = getCustomerId(r.getCustomer());
@@ -176,7 +193,7 @@ public class SQLiteDBC implements DBConnection {
 			ps.executeUpdate();
 			
 			result = true;
-					
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -185,11 +202,11 @@ public class SQLiteDBC implements DBConnection {
 	}
 	
 	@Override
-	public boolean deleteRoom(int roomIndex) throws Exception{
+	public boolean deleteRoom(int roomIndex){
 		boolean result = false;
 		
 		String sql = "DELETE FROM room WHERE idRoom = ?";
-		
+
 		initializationDriver();
 		
 		try(PreparedStatement ps = connectionPreparedStatement(sql)) {
@@ -206,7 +223,7 @@ public class SQLiteDBC implements DBConnection {
 	}
 	
 	@Override
-	public boolean deleteCustomer(String mailAdd) throws Exception{
+	public boolean deleteCustomer(String mailAdd){
 		boolean result = false;
 		
 		String sql = "DELETE FROM customer WHERE mailAddress = ?";
@@ -227,7 +244,7 @@ public class SQLiteDBC implements DBConnection {
 	}
 	
 	@Override
-	public int getMaxRoomId() throws Exception{
+	public int getMaxRoomId(){
 		int maxId = 0;
 		String query = "SELECT MAX(idRoom) AS maxIdRoom FROM room";
 		
@@ -247,7 +264,7 @@ public class SQLiteDBC implements DBConnection {
 		return maxId;
 	}
 	
-	private int getCustomerId(Customer customer) throws Exception{
+	private int getCustomerId(Customer customer){
 		int maxId = 0;
 		String query = "SELECT idCustomer FROM customer WHERE mailAddress = '"+customer.getMailAddress()+"'";
 		
