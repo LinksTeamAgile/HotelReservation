@@ -37,21 +37,7 @@ public class Sys {
 		reservationList.add(reservationCrt1);
 	}
 	
-	public int getMaxId(String item) throws Exception {
-		SQLiteDBC db = new SQLiteDBC();
-		int id;
-		if(item.compareTo("room") == 0) {
-			id = db.getMaxRoomId() + 1;
-		} else if(item.compareTo("customer") == 0) {
-			id = db.getMaxCustomerId() + 1;
-		} else if (item.compareTo("reservation") == 0) {
-			id = db.getMaxReservationId() + 1;
-		} else
-			throw new Exception("Item string must be room/customer/reservation");
-		return id;
-	}
-	
-	private int checkErrors(ArrayList<Integer> errors, String item) {
+	private int checkErrors(ArrayList<Integer> errors) {
 		boolean success = true;
 		for(Integer i : errors) {
 			if(i != 100)
@@ -60,36 +46,48 @@ public class Sys {
 				;
 		}
 		if(success == true) {
-			System.out.println(item + " inserted");
 			return 100;
 		} else 
 			return errors.get(0);
 	}
 	
 	public int createRoom(int maxGuests, String[] services) throws Exception {
-		String item = "room";
-		int id = getMaxId(item);
+		int id = 10;
 		Room room = new RoomConcrete(id, true, true, maxGuests, services);
 		Checker checker = new CheckerRoom(room);
 		ArrayList<Integer> errors = checker.check();
-		return checkErrors(errors, item);
+		int checking = checkErrors(errors);
+		if(checking == 100) {
+			roomList.add(room);
+			System.out.println("Room inserted");
+		}
+		return checking;
 	}
 
 	public int createCustomer(String taxCode, String name, String surname, String cellPhoneNumber, String mailAddress,
 			String cardNumber){
-		String item = "customer";
 		Customer customer = new CustomerConcrete(taxCode, name, surname, cellPhoneNumber, mailAddress, cardNumber);
 		Checker checker = new CheckerCustomer(customer);
 		ArrayList<Integer> errors = checker.check();
-		return checkErrors(errors, item);
+		int checking = checkErrors(errors);
+		if(checking == 100) {
+			customerList.add(customer);
+			System.out.println("Customer inserted");
+		}
+		return checking;
 	}
 	
 	public int createReservation(Customer customer, Room[] rooms, LocalDate startDate, LocalDate endDate) throws Exception{
-		String item = "reservation";
-		int reservationId = getMaxId(item);
+		int reservationId = 10;
 		Checker checkerReservation = new CheckerReservation(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
+		Reservation reservation = new ReservationConcrete(customer, rooms, 20, startDate, endDate);
 		ArrayList<Integer> errors = checkerReservation.check();
-		return checkErrors(errors, item);
+		int checking = checkErrors(errors);
+		if(checking == 100) {
+			reservationList.add(reservation);
+			System.out.println("Reservation inserted");
+		}
+		return checking;
 
 	}
 	
