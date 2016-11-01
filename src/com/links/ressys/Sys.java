@@ -3,9 +3,7 @@ package com.links.ressys;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 import java.util.function.Predicate;
 
 import com.links.ressys.checker.Checker;
@@ -39,28 +37,11 @@ public class Sys {
 			e.printStackTrace();
 		}
 		
-		String[] services1 = { "fridge"};
-		Room roomCrt1 = new RoomConcrete(201, true, true, 3,services1);
-		roomList.add(roomCrt1);
-		String[] services3 = {"television"};
-		Room roomCrt3 = new RoomConcrete(203, false, false, 1,services3);
-		roomList.add(roomCrt3);
-		String[] services4 = { "fridge", "television" };
-		Room roomCrt4 = new RoomConcrete(204, true, true, 1,services4);
-		roomList.add(roomCrt4);
-
-		Customer customerCrt1 = new CustomerConcrete("MARRSSJ92B4N7142", "Mario", "Rossi", "3245965943", "mariorossi@gmail.com", "49237550475965433");
-		customerList.add(customerCrt1);
-		Customer customerCrt2 = new CustomerConcrete("FABRSS90U0T89193", "Fabio", "Rossi", "3245965949", "fabiorossi@gmail.com", "49237550475965434");
-		customerList.add(customerCrt2);
-		Customer customerCrt3 = new CustomerConcrete("FABNER90U0H87194", "Fabio", "Neri", "3245965944", "fabioneri@gmail.com", "49237550475965435");
-		customerList.add(customerCrt3);
-		
-		Room[] roomArrayCrt3 = {roomCrt3, roomCrt4};
 		Room[] roomArrayCrt1 = {roomList.get(0)};
 		Reservation reservationCrt1= new ReservationConcrete(customerList.get(0), roomArrayCrt1, 201, LocalDate.of(2014, Month.FEBRUARY, 11), LocalDate.of(2014, Month.FEBRUARY, 23));
 		reservationList.add(reservationCrt1);
-		Reservation reservationCrt2= new ReservationConcrete(customerCrt2, roomArrayCrt3, 202, LocalDate.of(2015, Month.FEBRUARY, 15), LocalDate.of(2015, Month.FEBRUARY, 17));
+		Room[] roomArrayCrt2 = {roomList.get(1), roomList.get(2)};
+		Reservation reservationCrt2= new ReservationConcrete(customerList.get(1), roomArrayCrt2, 202, LocalDate.of(2015, Month.FEBRUARY, 15), LocalDate.of(2015, Month.FEBRUARY, 17));
 		reservationList.add(reservationCrt2);
 	}
 	
@@ -104,8 +85,18 @@ public class Sys {
 			return errors.get(0);
 	}
 	
-	public int createReservation(Customer customer, Room[] rooms, int reservationId, LocalDate startDate, LocalDate endDate){
-		Checker checkerReservation = new CheckerReservation(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
+	public int createReservation(int customerId, int[] roomsIds, LocalDate startDate, LocalDate endDate) throws Exception{
+		ArrayList<Customer> customers = db.getCustomers();
+		Customer customer = customers.get(customerId);
+		
+		ArrayList<Room> allRooms = db.getRooms();
+		Room[] rooms = new Room[roomsIds.length];
+		
+		for (int i=0; i < roomsIds.length; i++){
+			rooms[i] = allRooms.get(roomsIds[i]);
+		}
+		
+		Checker checkerReservation = new CheckerReservation(new ReservationConcrete(customer, rooms, 201, startDate, endDate));
 		ArrayList<Integer> status = new ArrayList<Integer>();
 		boolean success = true;
 
@@ -116,7 +107,7 @@ public class Sys {
 				success = false;
 
 		if(success == true){
-			reservationList.add(new ReservationConcrete(customer, rooms, reservationId, startDate, endDate));
+			reservationList.add(new ReservationConcrete(customer, rooms, 202, startDate, endDate));
 			System.out.println("Reservation created");	
 			return 100;
 		}else
