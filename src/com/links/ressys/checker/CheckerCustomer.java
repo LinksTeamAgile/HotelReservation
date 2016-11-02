@@ -25,21 +25,23 @@ public class CheckerCustomer implements Checker{
 	}
 	
 	private int checkName(){
-		if(!customer.getName().equals(""))
-			return 100;
-		else
+		if(customer.getName().equals(""))
 			return CustomerCode.EMPTY_NAME.getCode();
+		else if(customer.getName().length()<255)
+			return CustomerCode.WRONG_NAME.getCode();
+		else 
+			return 100;
 	}
 	
 	private int checkSurname(){
-		if(!customer.getSurname().equals(""))
+		if(!customer.getSurname().equals("") && customer.getSurname().length()<255)
 			return 100;
 		else
 			return CustomerCode.EMPTY_SURNAME.getCode();
 	}
 	
 	private int checkTaxCode(){
-		if(!customer.getTaxCode().equals(""))
+		if(!customer.getTaxCode().equals("") )
 			return 100;
 		else
 			return CustomerCode.EMPTY_TAXCODE.getCode();
