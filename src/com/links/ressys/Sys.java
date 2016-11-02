@@ -242,8 +242,7 @@ public class Sys {
 			}else{
 				;
 		    }
-		}
-		return customerRemoved;
+		}return customerRemoved;
 	}
 		
 
@@ -259,8 +258,12 @@ public class Sys {
 			}else{
 				;
 			}
+		}if(reservationRemoved){
+			return reservationRemoved;
+		}else{
+			System.out.println("Reservation not found");
+			return reservationRemoved;
 		}
-		return reservationRemoved;
 	}
 
 
