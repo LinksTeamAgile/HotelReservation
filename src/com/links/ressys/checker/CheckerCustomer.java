@@ -41,7 +41,13 @@ public class CheckerCustomer implements Checker{
 		else
 			return 100;
 	}
-	
+	/**else{
+		for(int i=0; i<5;i++){
+			if(customer.getTaxCode().charAt(i)<'A' && customer.getTaxCode().charAt(i)>'Z'){
+				return 532;
+			}
+		}
+	}	**/	
 	private int checkTaxCode(){
 		if(!customer.getTaxCode().equals("") )
 			return 531;
@@ -53,9 +59,13 @@ public class CheckerCustomer implements Checker{
 	
 	private int checkCellPhoneNumber(){
 		if(!customer.getCellPhoneNumber().equals(""))
+			return 541;
+		try{
+			Integer.parseInt(customer.getCellPhoneNumber());
 			return 100;
-		else
-			return CustomerCode.EMPTY_PHONENUM.getCode();
+		}catch(NumberFormatException e){
+			return 542;
+		}
 	}
 	
 	private int checkMailAddress(){
