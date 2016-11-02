@@ -18,7 +18,7 @@ import com.links.ressys.core.RoomConcrete;
 public class SQLiteDBC implements DBConnection {
 
 	private final String JDBC_TYPE = "jdbc:sqlite:";
-	private final String DB_PATH = Main.getMain().getProperty("db_path");
+	private final String DB_PATH = new Main().getProperty("db_path");
 	private final String S_DRIVER_NAME = "org.sqlite.JDBC";
 	
 	private void initializationDriver(){
