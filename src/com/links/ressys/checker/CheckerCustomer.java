@@ -42,7 +42,7 @@ public class CheckerCustomer implements Checker {
 	}
 
 	private int checkSurname() {
-		if (!customer.getSurname().equals(""))
+		if (customer.getSurname().equals(""))
 			return CustomerCode.EMPTY_SURNAME.getCode();
 		else if (customer.getSurname().length() < 255)
 			return CustomerCode.WRONG_SURNAME.getCode();
@@ -56,7 +56,7 @@ public class CheckerCustomer implements Checker {
 	}
 	
 	private int checkTaxCode() {
-		if (!customer.getTaxCode().equals(""))
+		if (customer.getTaxCode().equals(""))
 			return CustomerCode.EMPTY_TAXCODE.getCode();
 		else if (customer.getTaxCode().length() != 16)
 			return CustomerCode.WRONG_TAXCODE.getCode();
@@ -65,7 +65,7 @@ public class CheckerCustomer implements Checker {
 	}
 
 	private int checkCellPhoneNumber() {
-		if (!customer.getCellPhoneNumber().equals(""))
+		if (customer.getCellPhoneNumber().equals(""))
 			return CustomerCode.EMPTY_PHONENUM.getCode();
 		try {
 			Integer.parseInt(customer.getCellPhoneNumber());
@@ -76,7 +76,7 @@ public class CheckerCustomer implements Checker {
 	}
 
 	private int checkMailAddress() {
-		if (!customer.getMailAddress().equals(""))
+		if (customer.getMailAddress().equals(""))
 			return CustomerCode.EMPTY_MAIL.getCode();
 		String regex = "^(.+)@(.+)$";
 		Pattern pattern = Pattern.compile(regex);
@@ -88,7 +88,7 @@ public class CheckerCustomer implements Checker {
 	}
 
 	private int checkCardNumber() {
-		if (!customer.getCardNumber().equals(""))
+		if (customer.getCardNumber().equals(""))
 			return CustomerCode.EMPTY_CARDNUM.getCode();
 		else if(customer.getCardNumber().length()!=16)
 			return CustomerCode.WRONG_CARDNUM.getCode();
