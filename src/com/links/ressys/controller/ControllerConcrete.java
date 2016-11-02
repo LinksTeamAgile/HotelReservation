@@ -1,6 +1,7 @@
 package com.links.ressys.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -219,6 +220,7 @@ public class ControllerConcrete extends Controller {
 				continueScanneringUserInput = false;
 			}
 		}
+		System.out.println(scanneredCustomerId);
 		return scanneredCustomerId;
 	}
 
@@ -227,7 +229,8 @@ public class ControllerConcrete extends Controller {
 		boolean continueScanneringUserInput = true;
 		int idCounter = 0;
 		int scanneredRoomId = 0;
-		int[] scanneredRoomIds = new int[10];
+		ArrayList<Integer> scanneredRoomIds = new ArrayList<Integer>();
+		int i = 0;
 
 		while(continueScanneringUserInput == true){
 			System.out.println("Please insert the rooms' id: ");
@@ -236,7 +239,7 @@ public class ControllerConcrete extends Controller {
 				if (scanneredRoomId == 0){
 					System.out.println("Choice not valid!\nPlease enter a vail id");
 				} else {
-					scanneredRoomIds[idCounter] = scanneredRoomId;
+					scanneredRoomIds.add(idCounter, scanneredRoomId);
 					idCounter += 1;
 					continueScanneringUserInput = false;
 				}
@@ -246,7 +249,15 @@ public class ControllerConcrete extends Controller {
 				continueScanneringUserInput = false;
 			}
 		}
-		return scanneredRoomIds;
+		
+		int[] roomIds = new int[scanneredRoomIds.size()];
+		
+		for(Integer s : scanneredRoomIds){
+			roomIds[i] = s.intValue();
+			i++;
+		}
+		
+		return roomIds;
 	}
 
 	public LocalDate[] getDatesFromKeyboard(){
@@ -293,7 +304,7 @@ public class ControllerConcrete extends Controller {
 		}
 
 		String[] end = new String[3];
-		end = scanneredDate[0].split("-");
+		end = scanneredDate[1].split("-");
 		for(int i=0; i<3; i++){
 			endDate[i] = Integer.parseInt(end[i]);
 		}
