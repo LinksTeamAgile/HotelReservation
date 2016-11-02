@@ -1,5 +1,6 @@
 package com.links.ressys.test;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,6 +18,11 @@ public class CustomerTest extends TestCase{
 				"4000_5328");
 	}
 
+	@After
+	public void tearDown() {
+		customerConcrete = null;
+	}
+	
 	@Test
 	public void testWorkingGetTaxCode() {
 		assertEquals("PRSFLC90E09B408T", customerConcrete.getTaxCode());
@@ -75,20 +81,13 @@ public class CustomerTest extends TestCase{
 
 	@Test
 	public void testWorkingGetCardNumber() {
-		assertEquals(4000_5328, customerConcrete.getCardNumber());
-
+		assertEquals("4000_5328", customerConcrete.getCardNumber());
 
 	}
 
 	@Test
 	public void testWorkingSetCardNumber() {
 		customerConcrete.setCardNumber("4000_5328");
-		assertEquals(4000_5328, customerConcrete.getCardNumber());
+		assertEquals("4000_5328", customerConcrete.getCardNumber());
 	}
-
-
-
-
-
-
 }
