@@ -84,7 +84,11 @@ public class Sys {
 	    Room[] rooms = new Room[roomIds.length];
 	    
 	    for (int i=0; i < roomIds.length; i++){
-	      rooms[i] = this.roomList.get(roomIds[i]);
+	    	for(Room r : this.roomList){
+	    		if(r.getRoomId() == roomIds[i]){
+	    			rooms[i] = r;
+	    		}
+	    	}
 	    }
 	    
 	    Reservation reservation = new ReservationConcrete(customer, rooms, this.db.getMaxReservationId()+1, startDate, endDate);
