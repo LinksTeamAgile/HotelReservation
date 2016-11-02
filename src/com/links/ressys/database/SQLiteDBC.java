@@ -6,12 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import com.links.ressys.Main;
 import com.links.ressys.core.Customer;
 import com.links.ressys.core.CustomerConcrete;
 import com.links.ressys.core.Reservation;
+import com.links.ressys.core.ReservationConcrete;
 import com.links.ressys.core.Room;
 import com.links.ressys.core.RoomConcrete;
 
@@ -20,6 +22,8 @@ public class SQLiteDBC implements DBConnection {
 	private final String JDBC_TYPE = "jdbc:sqlite:";
 	private final String DB_PATH = Main.getMain().getProperty("db_path");
 	private final String S_DRIVER_NAME = "org.sqlite.JDBC";
+	
+	//private static final String DB_PATH = "/Users/userm06/git/HotelReservation/res/db/HotelReservation.sqlite";
 	
 	private void initializationDriver(){
 		try {
@@ -201,6 +205,135 @@ public class SQLiteDBC implements DBConnection {
 		return result;
 	}
 	
+	public ArrayList<Reservation> getReservations(){
+		boolean result = false;
+		String query = "SELECT idReservation, idCustomer, startDate, endDate FROM reservation GROUP BY idCustomer, startDate, endDate";
+		ArrayList<Reservation> reservations = new ArrayList<Reservation>();
+		
+		ArrayList<String> arrayRS = new ArrayList<String>();
+		
+		initializationDriver();
+		
+		try(ResultSet rs = connectionResulSet(query)) {
+			
+			while(rs.next()) {
+				String temp="";
+				
+				temp+=rs.getInt("idReservation")+",";
+				temp+=rs.getInt("idCustomer")+",";
+				temp+=rs.getString("startDate")+",";
+				temp+=rs.getString("endDate")+",";
+				
+				arrayRS.add(temp);
+			}
+			
+			for(String s : arrayRS){
+				//System.out.println(s);
+				reservations.add(mergeReservation(s));
+			}
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return reservations;
+	}
+	
+	private Reservation mergeReservation(String result){
+		Reservation reservation = null;
+		
+		ArrayList<Integer> roomId = new ArrayList<Integer>();
+		ArrayList<Room> room = new ArrayList<Room>();
+		Customer customer = null;
+		
+		String reservationId = result.split(",")[0];
+		String customerId = result.split(",")[1];
+		String startDate = result.split(",")[2];
+		String endDate = result.split(",")[3];
+		
+		String query ="SELECT idRoom FROM reservation WHERE idCustomer = "+customerId+
+						" AND startDate = '"+startDate+"' AND endDate = '"+endDate+"' ";
+		initializationDriver();
+		
+		try(ResultSet rs = connectionResulSet(query)) {
+			
+			while(rs.next()) {
+				roomId.add(rs.getInt("idRoom"));
+			}
+			customer = getCustomer( Integer.parseInt(customerId) );
+			
+			for(Integer i : roomId)
+				room.add(getRoom(i));
+			
+			Room[] roomArray = new Room[room.size()];
+
+			//da rifare assolutamente con dateformatter
+			String[] startDateArray = startDate.split("/");
+			String[] endDateArray = endDate.split("/");
+			
+			LocalDate startDateLD = LocalDate.of(Integer.parseInt(startDateArray[2]), Integer.parseInt(startDateArray[0]), Integer.parseInt(startDateArray[1]));
+			LocalDate endDateLD = LocalDate.of(Integer.parseInt(endDateArray[2]), Integer.parseInt(endDateArray[0]), Integer.parseInt(endDateArray[1]));
+			
+			
+			reservation = new ReservationConcrete(customer, 
+											      room.toArray(roomArray), 
+											      Integer.parseInt(reservationId), 
+											      startDateLD,
+											      endDateLD);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return reservation;
+	}
+	
+	private Room getRoom(int id){
+		Room room = null;
+		
+		String query = "SELECT * FROM room WHERE idRoom="+id;
+		
+		initializationDriver();
+		
+		try(ResultSet rs = connectionResulSet(query)) {
+			
+			while(rs.next()) {
+				room = new RoomConcrete(rs.getInt("idRoom"), rs.getBoolean("isServiceable"), 
+						rs.getBoolean("isAvailable"), rs.getInt("maxGuest"), rs.getString("services").split(" "));
+			}		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return room;
+	}
+	
+	private Customer getCustomer(int id){
+		Customer customer = null;
+		String query = "SELECT * FROM customer WHERE idCustomer="+id;
+		
+		String name = "", surname = "", mailAddress = "", cellPhone = "", cardNumber = "", taxCode = "";
+		
+		
+		initializationDriver();
+		
+		try(ResultSet rs = connectionResulSet(query)) {
+			
+			while(rs.next()) {
+				name = rs.getString("name");
+				surname = rs.getString("surname");
+				mailAddress = rs.getString("mailAddress");
+				cellPhone = rs.getString("cellPhoneNumber");
+				cardNumber = rs.getString("cardNumber");
+				taxCode = rs.getString("taxCode");
+			}		
+			customer = new CustomerConcrete(name, surname, mailAddress, cellPhone, cardNumber, taxCode);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		return customer;
+	}
+	
 	@Override
 	public boolean deleteRoom(int roomIndex){
 		boolean result = false;
@@ -313,12 +446,12 @@ public class SQLiteDBC implements DBConnection {
 ////			System.out.println(deleteCustomer("sdasdas65sadasd"));
 ////			System.out.println( getMaxRoomId() );
 //			
-//			DBConnection db = new SQLiteDBC();
-//			ArrayList<Customer> listcust = db.getCustomers();
-//			
-//			for (Customer customer : listcust) {
-//				System.out.println(customer);
-//			}
+////			DBConnection db = new SQLiteDBC();
+////			ArrayList<Customer> listcust = db.getCustomers();
+////			
+////			for (Customer customer : listcust) {
+////				System.out.println(customer);
+////			}
 //			
 //			
 ////			ArrayList<Room> listroom = getRooms();
@@ -328,6 +461,10 @@ public class SQLiteDBC implements DBConnection {
 ////			System.out.println( getCustomerId(new CustomerConcrete("", "", "", "", "jbanksrr@squidoo.com",	55565) ) );
 ////			ReservationConcrete rescon = new ReservationConcrete(cust, rooom, 1000, new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime(), new GregorianCalendar(2014, Calendar.MARCH, 11).getTime());
 ////			System.out.println( createReservation(rescon) );
+//			//System.out.println(getRoom(202).toString());
+//			ArrayList<Reservation> reservations = getReservations();
+//			for(Reservation r : reservations)
+//				System.out.println(r.toString());
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
