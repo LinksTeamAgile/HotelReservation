@@ -15,13 +15,12 @@ public enum ReservationCode {
 	WRONG_RESERVATIONID(432, "Reservation id not valid"),
     WRONG_STARTDATE(442, "Start date format not valid"),
 	WRONG_ENDDATE(452, "End date format not valid"),
-	
     //DUPLICATE_CUSTOMER(413, "Duplicate customer field"),
 	//DUPLICATE_ROOM(423, "Duplicate room field"),
 	DUPLICATE_RSERVATIONID(433, "Duplicate reservation id"),
 	//DUPLICATE_STARTDATE(443, "Duplicate start date field"),
 	//DUPLICATE_ENDDATE(453, "Duplicate end date field");
-	;
+	INVALID_DATE(403, "Invalid start date format");
 	
 	
 	private final int code;
