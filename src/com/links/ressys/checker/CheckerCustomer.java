@@ -46,7 +46,7 @@ public class CheckerCustomer implements Checker{
 		if(!customer.getTaxCode().equals("") )
 			return 531;
 		else if(customer.getTaxCode().length()!=16)
-			return 532;
+			return 532;	
 		else
 			return 100;
 	}
