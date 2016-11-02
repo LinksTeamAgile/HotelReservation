@@ -38,7 +38,7 @@ public class CheckerReservation implements Checker{
 	}	
 		
 	
-	private int checkRooms(){
+	private int checkRooms(){ 
 		Room[] roomArray = res.getRooms();
 		
 		for(Room r:roomArray){
