@@ -29,62 +29,74 @@ public class CheckerCustomer implements Checker {
 
 	private int checkName() {
 		if (customer.getName().equals(""))
-			return 511;
+			return CustomerCode.EMPTY_NAME.getCode();
 		else if (customer.getName().length() < 255)
-			return 512;
-		else
-			return 100;
+			return CustomerCode.WRONG_NAME.getCode();
+		String regex = "^[A-Za-z\\s]+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(customer.getName());
+		if(!matcher.matches())
+			return CustomerCode.WRONG_NAME.getCode();
+		else 
+			return CustomerCode.SUCCESS_CUSTOMER.getCode();
 	}
 
 	private int checkSurname() {
 		if (!customer.getSurname().equals(""))
-			return 521;
+			return CustomerCode.EMPTY_SURNAME.getCode();
 		else if (customer.getSurname().length() < 255)
-			return 522;
-		else
-			return 100;
+			return CustomerCode.WRONG_SURNAME.getCode();
+		String regex = "^[A-Za-z\\s]+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(customer.getSurname());
+		if(!matcher.matches())
+			return CustomerCode.WRONG_SURNAME.getCode();
+		else 
+			return CustomerCode.SUCCESS_CUSTOMER.getCode();
 	}
-
-	/**
-	 * else{ for(int i=0; i<5;i++){ if(customer.getTaxCode().charAt(i)<'A' &&
-	 * customer.getTaxCode().charAt(i)>'Z'){ return 532; } } }
-	 **/
+	
 	private int checkTaxCode() {
 		if (!customer.getTaxCode().equals(""))
-			return 531;
+			return CustomerCode.EMPTY_TAXCODE.getCode();
 		else if (customer.getTaxCode().length() != 16)
-			return 532;
+			return CustomerCode.WRONG_TAXCODE.getCode();
 		else
-			return 100;
+			return CustomerCode.SUCCESS_CUSTOMER.getCode();
 	}
 
 	private int checkCellPhoneNumber() {
 		if (!customer.getCellPhoneNumber().equals(""))
-			return 541;
+			return CustomerCode.EMPTY_PHONENUM.getCode();
 		try {
 			Integer.parseInt(customer.getCellPhoneNumber());
-			return 100;
+			return CustomerCode.SUCCESS_CUSTOMER.getCode();
 		} catch (NumberFormatException e) {
-			return 542;
+			return CustomerCode.WRONG_PHONENUM.getCode();
 		}
 	}
 
 	private int checkMailAddress() {
 		if (!customer.getMailAddress().equals(""))
-			return 551;
+			return CustomerCode.EMPTY_MAIL.getCode();
 		String regex = "^(.+)@(.+)$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(customer.getMailAddress());
 		if(!matcher.matches())
-			return 552;
+			return CustomerCode.WRONG_MAIL.getCode();
 		else 
-			return 100;
+			return CustomerCode.SUCCESS_CUSTOMER.getCode();
 	}
 
 	private int checkCardNumber() {
 		if (!customer.getCardNumber().equals(""))
-			return 561;
-		else
-			return 100;
+			return CustomerCode.EMPTY_CARDNUM.getCode();
+		else if(customer.getCardNumber().length()!=16)
+			return CustomerCode.WRONG_CARDNUM.getCode();
+		try {
+			Integer.parseInt(customer.getCardNumber());
+			return CustomerCode.SUCCESS_CUSTOMER.getCode();
+		} catch (NumberFormatException e) {
+			return CustomerCode.WRONG_CARDNUM.getCode();
+		}
 	}
 }
