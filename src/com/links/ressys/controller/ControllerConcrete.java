@@ -1,5 +1,8 @@
 package com.links.ressys.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -24,8 +27,14 @@ public class ControllerConcrete extends Controller {
 			case 1:
 				this.makeCreateRoom();
 				break;
-			case 2: // deleteRoom(,...)
-				System.out.println("method for DeleteRoom");
+			case 2: 
+					String es=this.gui.getInput("Insert the ID room to delete: ");
+					int idRoom=Integer.parseInt(es);
+					if(super.sys.deleteRoom(idRoom)){
+						System.out.println("Room with ID "+idRoom+" deleted ");
+					}else{
+						System.out.println("The room with ID "+idRoom+" has not found");
+					}	
 				break;
 			case 3:
 				super.sys.showRoom(null);
@@ -33,8 +42,13 @@ public class ControllerConcrete extends Controller {
 			case 4:
 				this.makeCreateCustomer();
 				break;
-			case 5: // deleteCustomer(,...)
-				System.out.println("method for DeleteRoom");
+			case 5:
+					String es1=this.gui.getInput("Insert the mail address of the customer to delete: ");
+					if(super.sys.deleteCustomer(es1)){
+						System.out.println("Customer with mail address "+es1+" deleted ");
+					}else{
+						System.out.println("The mail address "+es1+" has not found");
+					}
 				break;
 			case 6:
 				super.sys.showCustomer(null);				
@@ -42,13 +56,19 @@ public class ControllerConcrete extends Controller {
 			case 7:
 				this.makeCreateReservation();
 				break;
-			case 8: // deleteReservation(,...)
-				System.out.println("method for DeleteReservation");
+			case 8:
+					String es2=this.gui.getInput("Insert the ID reservation to delete: ");
+					int idReservation=Integer.parseInt(es2);
+					if(super.sys.deleteReservation(idReservation)){
+						System.out.println("Reservation with ID "+idReservation+" deleted ");
+					}else{
+						System.out.println("The reservation ID "+idReservation+" has not found");
+					}
 				break;
 			case 9:
 				super.sys.showReservation(null);	
 				break;
-			case 0:
+			case 13:
 				System.out.println("Exit!");
 				System.exit(0);
 				break;
