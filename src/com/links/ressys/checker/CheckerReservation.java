@@ -1,5 +1,7 @@
 package com.links.ressys.checker;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import com.links.ressys.core.Reservation;
 import com.links.ressys.core.Room;
@@ -50,17 +52,21 @@ public class CheckerReservation implements Checker{
 	}
 	
 	private int checkStartDate(){
-		if(res.getStartDate()!=null)
-			return 100;
-		else
+		if(res.getStartDate()==null)
 			return ReservationCode.EMPTY_STARTDATE.getCode();
+		else if(res.getStartDate().isBefore(LocalDate.now()))
+			return ReservationCode.INVALID_DATE.getCode();
+		else
+			return ReservationCode.SUCCESS_RESERVATION.getCode();
 	}
 	
 	private int checkEndDate(){
-		if(res.getEndDate()!=null)
-			return 100;
-		else
+		if(res.getEndDate()==null)
 			return ReservationCode.EMPTY_ENDDATE.getCode();
+		else if(res.getEndDate().isAfter(res.getStartDate()) || res.getEndDate().isAfter(LocalDate.now().plusDays(1)))
+			return ReservationCode.INVALID_DATE.getCode();
+		else
+			return ReservationCode.SUCCESS_RESERVATION.getCode();
 	}
 	
 }
