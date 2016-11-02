@@ -1,5 +1,8 @@
 package com.links.ressys.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -24,8 +27,15 @@ public class ControllerConcrete extends Controller {
 			case 1:
 				this.makeCreateRoom();
 				break;
-			case 2: // deleteRoom(,...)
-				System.out.println("method for DeleteRoom");
+			case 2: 
+				try{
+				String es=this.gui.getInput("Insert the ID room to delete: ");
+				int idRoom=Integer.parseInt(es);
+				super.sys.deleteRoom(idRoom);
+				System.out.println("Room "+idRoom+" deleted");
+				} catch(Exception e){
+					System.out.println("Room ID not valid, try again");
+				}
 				break;
 			case 3:
 				super.sys.showRoom(null);
@@ -33,8 +43,14 @@ public class ControllerConcrete extends Controller {
 			case 4:
 				this.makeCreateCustomer();
 				break;
-			case 5: // deleteCustomer(,...)
-				System.out.println("method for DeleteRoom");
+			case 5:
+				try{
+				String es1=this.gui.getInput("Insert the mail address of the customer to delete: ");
+				super.sys.deleteCustomer(es1);
+				System.out.println("Customer "+es1+" deleted");
+				}catch(Exception e){
+					System.out.println("Customer mail address not valid, try again");
+				}
 				break;
 			case 6:
 				super.sys.showCustomer(null);				
@@ -42,13 +58,19 @@ public class ControllerConcrete extends Controller {
 			case 7:
 				this.makeCreateReservation();
 				break;
-			case 8: // deleteReservation(,...)
-				System.out.println("method for DeleteReservation");
+			case 8:try{
+				String es2=this.gui.getInput("Insert the ID reservation to delete: ");
+				int idReservation=Integer.parseInt(es2);
+				super.sys.deleteReservation(idReservation);
+				System.out.println("Reservation "+idReservation+" deleted");
+				} catch(Exception e){
+					System.out.println("Reservation ID not valid, try again");
+				}
 				break;
 			case 9:
 				super.sys.showReservation(null);	
 				break;
-			case 0:
+			case 13:
 				System.out.println("Exit!");
 				System.exit(0);
 				break;
