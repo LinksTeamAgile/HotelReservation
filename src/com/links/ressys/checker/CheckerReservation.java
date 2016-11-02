@@ -1,12 +1,18 @@
 package com.links.ressys.checker;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import com.links.ressys.core.Reservation;
+import com.links.ressys.core.Room;
+import com.links.ressys.statuscodes.CustomerCode;
 import com.links.ressys.statuscodes.ReservationCode;
+import com.links.ressys.statuscodes.RoomCode;
 
 public class CheckerReservation implements Checker{
 
 	private Reservation res;
+
 	
 	public CheckerReservation(Reservation r){
 		this.res = r;
@@ -23,31 +29,44 @@ public class CheckerReservation implements Checker{
 	}
 	
 	private int checkCustomer(){
-		if(res.getCustomer()!=null)
-			return 100;
-		else
-			return ReservationCode.EMPTY_CUSTOMER.getCode();
-	}
+		CheckerCustomer custchecker = new CheckerCustomer(res.getCustomer());
+		ArrayList<Integer> errorList = custchecker.check();
+		for (Integer i:errorList)
+			if(!i.equals(CustomerCode.SUCCESS_CUSTOMER.getCode()))
+				return i;
+		return ReservationCode.SUCCESS_RESERVATION.getCode();
+	}	
+		
 	
-	private int checkRooms(){
-		if(res.getRooms()!=null)
-			return 100;
-		else
-			return ReservationCode.EMPTY_ROOMS.getCode();
+	private int checkRooms(){ 
+		Room[] roomArray = res.getRooms();
+		
+		for(Room r:roomArray){
+			CheckerRoom custrooms = new CheckerRoom(r);
+			ArrayList<Integer> errorListRooms = custrooms.check();
+			for (Integer i:errorListRooms)
+				if(!i.equals(RoomCode.SUCCESS_ROOM.getCode()))
+					return i;
+		}
+			return ReservationCode.SUCCESS_RESERVATION.getCode();
 	}
 	
 	private int checkStartDate(){
-		if(res.getStartDate()!=null)
-			return 100;
-		else
+		if(res.getStartDate()==null)
 			return ReservationCode.EMPTY_STARTDATE.getCode();
+		else if(res.getStartDate().isBefore(LocalDate.now()))
+			return ReservationCode.INVALID_DATE.getCode();
+		else
+			return ReservationCode.SUCCESS_RESERVATION.getCode();
 	}
 	
 	private int checkEndDate(){
-		if(res.getEndDate()!=null)
-			return 100;
-		else
+		if(res.getEndDate()==null)
 			return ReservationCode.EMPTY_ENDDATE.getCode();
+		else if(res.getEndDate().isAfter(res.getStartDate()) || res.getEndDate().isAfter(LocalDate.now().plusDays(1)))
+			return ReservationCode.INVALID_DATE.getCode();
+		else
+			return ReservationCode.SUCCESS_RESERVATION.getCode();
 	}
 	
 }
