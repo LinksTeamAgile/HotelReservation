@@ -7,7 +7,7 @@ import com.links.ressys.statuscodes.RoomCode;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class CheckerRoom.
+ * The Class CheckerRoom checks the validity of the maximum number of guests and the services of a room.
  */
 public class CheckerRoom implements Checker{
 
@@ -26,6 +26,13 @@ public class CheckerRoom implements Checker{
 	/* (non-Javadoc)
 	 * @see com.links.ressys.checker.Checker#check()
 	 */
+	
+	/**
+	 * This method instantiates the ArrayList check and fills it with the codes resulting from 
+	 * the check on the fields of a room.
+	 * 
+	 * @return the ArrayList check containing the codes resulting from the check on the fields of a customer.
+	 */
 	@Override
 	public ArrayList<Integer> check() {
 		
@@ -38,9 +45,9 @@ public class CheckerRoom implements Checker{
 	}
 	
 	/**
-	 * Check max guests.
+	 * This method checks the validity of the maximum number of guests of a room.
 	 *
-	 * @return the int
+	 * @return the int containing the code that indicates if the string maxGuests is empty, wrong or valid.
 	 */
 	private int checkMaxGuests(){
 		if(room.getMaxGuests()>0)
@@ -50,9 +57,9 @@ public class CheckerRoom implements Checker{
 	}
 	
 	/**
-	 * Check services.
+	 * This method checks the validity of the services of a room.
 	 *
-	 * @return the int
+	 * @return the int containing the code that indicates if the array of strings services is empty, wrong or valid.
 	 */
 	private int checkServices(){
 		if(room.getServices()!=null)

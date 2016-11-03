@@ -9,7 +9,8 @@ import com.links.ressys.statuscodes.*;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class CheckerCustomer.
+ * The Class CheckerCustomer checks the validity of customer's name, surname, tax code,
+ * cellphone number, mail address and card number.
  */
 public class CheckerCustomer implements Checker {
 
@@ -28,6 +29,13 @@ public class CheckerCustomer implements Checker {
 	/* (non-Javadoc)
 	 * @see com.links.ressys.checker.Checker#check()
 	 */
+	
+	/**
+	 * This method instantiates the ArrayList check and fills it with the codes resulting from 
+	 * the check on the customer's fields.
+	 * 
+	 * @return the ArrayList check containing the codes resulting from the check on the customer's fields.
+	 */
 	@Override
 	public ArrayList<Integer> check() {
 		ArrayList<Integer> check = new ArrayList<Integer>();
@@ -41,9 +49,9 @@ public class CheckerCustomer implements Checker {
 	}
 
 	/**
-	 * Check name.
+	 * This method checks the validity of customer's name.
 	 *
-	 * @return the int
+	 * @return the int containing the code that indicates if the string name is empty, wrong or valid.
 	 */
 	private int checkName() {
 		if (customer.getName().equals(""))
@@ -60,9 +68,9 @@ public class CheckerCustomer implements Checker {
 	}
 
 	/**
-	 * Check surname.
+	 * This method checks the validity of customer's surname.
 	 *
-	 * @return the int
+	 * @return the int containing the code that indicates if the string surname is empty, wrong or valid.
 	 */
 	private int checkSurname() {
 		if (customer.getSurname().equals(""))
@@ -79,9 +87,9 @@ public class CheckerCustomer implements Checker {
 	}
 	
 	/**
-	 * Check tax code.
+	 * This method checks the validity of customer's tax code.
 	 *
-	 * @return the int
+	 * @return the int containing the code that indicates if the string taxCode is empty, wrong or valid.
 	 */
 	private int checkTaxCode() {
 		if (customer.getTaxCode().equals(""))
@@ -93,9 +101,9 @@ public class CheckerCustomer implements Checker {
 	}
 
 	/**
-	 * Check cell phone number.
+	 * This method checks the validity of customer's cellphone number.
 	 *
-	 * @return the int
+	 * @return the int containing the code that indicates if the string cellPhoneNumber is empty, wrong or valid.
 	 */
 	private int checkCellPhoneNumber() {
 		if (customer.getCellPhoneNumber().equals(""))
@@ -109,9 +117,9 @@ public class CheckerCustomer implements Checker {
 	}
  
 	/**
-	 * Check mail address.
+	 * This method checks the validity of customer's mail address.
 	 *
-	 * @return the int
+	 * @return the int containing the code that indicates if the string mailAddress is empty, wrong or valid.
 	 */
 	private int checkMailAddress() {
 		if (customer.getMailAddress().equals(""))
@@ -126,9 +134,9 @@ public class CheckerCustomer implements Checker {
 	}
 
 	/**
-	 * Check card number.
+	 * This method checks the validity of customer's card number.
 	 *
-	 * @return the int
+	 * @return the int containing the code that indicates if the string cardNumber is empty, wrong or valid.
 	 */
 	private int checkCardNumber() {
 		if (customer.getCardNumber().equals(""))

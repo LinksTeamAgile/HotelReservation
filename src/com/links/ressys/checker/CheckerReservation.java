@@ -10,7 +10,7 @@ import com.links.ressys.statuscodes.RoomCode;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class CheckerReservation.
+ * The Class CheckerReservation checks the validity of a reservation.
  */
 public class CheckerReservation implements Checker{
 
@@ -30,6 +30,13 @@ public class CheckerReservation implements Checker{
 	/* (non-Javadoc)
 	 * @see com.links.ressys.checker.Checker#check()
 	 */
+	
+	/**
+	 * This method instantiates the ArrayList check and fills it with the codes resulting from 
+	 * the check on the fields of a reservation.
+	 * 
+	 * @return the ArrayList check containing the codes resulting from the check on the fields of a reservation.
+	 */
 	@Override
 	public ArrayList<Integer> check() {
 		ArrayList<Integer> check = new ArrayList<Integer>();
@@ -41,9 +48,10 @@ public class CheckerReservation implements Checker{
 	}
 	
 	/**
-	 * Check customer.
+	 * This method checks the validity of the customer's fields calling the check method 
+	 * from CheckerCustomer class.
 	 *
-	 * @return the int
+	 * @return the int containing the code that indicates the status of the customer. 
 	 */
 	private int checkCustomer(){
 		CheckerCustomer custchecker = new CheckerCustomer(res.getCustomer());
@@ -56,9 +64,10 @@ public class CheckerReservation implements Checker{
 		
 	
 	/**
-	 * Check rooms.
+	 * This method checks the validity of the fields of a room calling the check method
+	 * from CheckerRoom class.
 	 *
-	 * @return the int
+	 * @return the int containing the code that indicates the status of the room.
 	 */
 	private int checkRooms(){ 
 		Room[] roomArray = res.getRooms();
@@ -74,9 +83,9 @@ public class CheckerReservation implements Checker{
 	}
 	
 	/**
-	 * Check start date.
+	 * This method checks the validity of the start date.
 	 *
-	 * @return the int
+	 * @return the int containing the code that indicates if the string startDate is empty, invalid or valid.
 	 */
 	private int checkStartDate(){
 		if(res.getStartDate()==null)
@@ -88,9 +97,9 @@ public class CheckerReservation implements Checker{
 	}
 	
 	/**
-	 * Check end date.
+	 * This method checks the validity of the end date.
 	 *
-	 * @return the int
+	 * @return the int containing the code that indicates if the string endDate is empty, invalid or valid.
 	 */
 	private int checkEndDate(){
 		if(res.getEndDate()==null)
