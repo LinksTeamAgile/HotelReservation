@@ -1,22 +1,28 @@
-## Important things
-- <b>DON'T PUSH/MERGE TO <i>master</i> BRANCH</b>;
-- to integrate code: <i>your branch</i>-> pull-request-> <i>alpha</i> [-> refactoring-> pull-request-><i>master</i>];
-- make all pull-requests to <i>alpha</i> and wait for a response;
-- don't merge a pull-request from a normal branch to <i>master</i>;
-
-## Configs files
-| RESOURCE | PARAM | VALUE |
-|------------|-------|------------|
-| **res/configs/config.properties** | db_path |/your/path/HotelReservation.sqlite|
+# Hotel Reservation System
 
 
-## Team Members
-- TheRealkam
-- gianlucadv
-- Apocaliss92
-- federica
-- albiSan
-- davide
-- Annalisa
-- Antonio
-- Dale
+## Getting Started
+
+### Prerequisities
+
+```
+JRE v1.8 installed
+(Optional) Eclipse IDE
+
+```
+
+### Installation and usage
+
+```
+1. Import the repository into the Eclipse IDE Workspace as new Java project 
+2. Compile and execute the project
+
+```
+
+OR
+
+```
+1. Download the project binary release
+2. Execute the binary file
+
+```
