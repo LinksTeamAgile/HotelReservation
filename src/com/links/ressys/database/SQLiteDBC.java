@@ -269,6 +269,7 @@ public class SQLiteDBC implements DBConnection {
 			String[] startDateArray = startDate.split("/");
 			String[] endDateArray = endDate.split("/");
 			
+			
 			LocalDate startDateLD = LocalDate.of(Integer.parseInt(startDateArray[2]), Integer.parseInt(startDateArray[0]), Integer.parseInt(startDateArray[1]));
 			LocalDate endDateLD = LocalDate.of(Integer.parseInt(endDateArray[2]), Integer.parseInt(endDateArray[0]), Integer.parseInt(endDateArray[1]));
 			

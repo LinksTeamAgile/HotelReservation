@@ -40,8 +40,13 @@ public class ControllerConcrete extends Controller {
 	
 	@Override
 	protected void makeDeleteRoom() {
-		// TODO Auto-generated method stub
-		
+		String es=this.gui.getInput("Insert the ID room to delete: ");
+		int idRoom=Integer.parseInt(es);
+		if(super.sys.deleteRoom(idRoom)){
+			System.out.println("Room with ID "+idRoom+" deleted ");
+		}else{
+			System.out.println("The room with ID "+idRoom+" has not found");
+		}
 	}
 
 	@Override
@@ -68,8 +73,12 @@ public class ControllerConcrete extends Controller {
 	
 	@Override
 	protected void makeDeleteCustomer() {
-		// TODO Auto-generated method stub
-		
+		String es1=this.gui.getInput("Insert the mail address of the customer to delete: ");
+		if(super.sys.deleteCustomer(es1)){
+			System.out.println("Customer with mail address "+es1+" deleted ");
+		}else{
+			System.out.println("The mail address "+es1+" has not found");
+		}
 	}
 
 	@Override
@@ -93,8 +102,13 @@ public class ControllerConcrete extends Controller {
 
 	@Override
 	protected void makeModifyReservation() {
-		// TODO Auto-generated method stub
-		
+		String es2=this.gui.getInput("Insert the ID reservation to delete: ");
+		int idReservation=Integer.parseInt(es2);
+		if(super.sys.deleteReservation(idReservation)){
+			System.out.println("Reservation with ID "+idReservation+" deleted ");
+		}else{
+			System.out.println("The reservation ID "+idReservation+" has not found");
+		}
 	}
 
 	@Override
