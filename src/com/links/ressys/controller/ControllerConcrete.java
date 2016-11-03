@@ -40,6 +40,19 @@ public class ControllerConcrete extends Controller {
 
 	}
 	
+	private int[] transformInIntegers(String s){
+		String[] array = s.split(",");
+	    ArrayList list = new ArrayList();
+	    int i = 0;
+	    for(String str : array) {
+	      list.add(str.trim());
+	    }
+	    String[] strings = new String[list.size()];
+	    list.toArray(array);
+	    return array;
+
+	}
+	
 	private String controlIfDate(String s){
 		try {
 		      String parsedDate = LocalDate.parse(s).toString();
@@ -47,28 +60,35 @@ public class ControllerConcrete extends Controller {
 		    } catch (DateTimeParseException e) {
 		      return null;
 		    }
-
 	}
 	
 	protected void makeCreateRoom(){
 		int maxGuest = this.controlIfInteger(this.gui.getInput("Max guest for room: "));
-		String[] services = this.transformInArray(this.gui.getInput("Insert services (separated by comma): "));
-		super.sys.createRoom(maxGuest, services);
-		if(!super.sys.isThereAnError()) {
-			System.out.println("Room created");
+		if(maxGuest == -1){
+			System.out.println("Room not created: insert a numeric value");
 		} else {
-			this.prinErrors(super.sys.getLastErrors());
-			System.out.println("Room not created");
+			String[] services = this.transformInArray(this.gui.getInput("Insert services (separated by comma): "));
+			super.sys.createRoom(maxGuest, services);
+			if(!super.sys.isThereAnError()) {
+				System.out.println("Room created");
+			} else {
+				this.prinErrors(super.sys.getLastErrors());
+				System.out.println("Room not created");
+			}
 		}
 	}
 	
 	@Override
 	protected void makeDeleteRoom() {
 		int idRoom = this.controlIfInteger(this.gui.getInput("Insert the ID room to delete: "));
-		if(super.sys.deleteRoom(idRoom)){
-			System.out.println("Room with ID "+idRoom+" deleted ");
-		}else{
-			System.out.println("The room with ID "+idRoom+" has not found");
+		if(idRoom == -1){
+			System.out.println("Not valid idRoom: insert a numeric value");
+		} else {
+			if(super.sys.deleteRoom(idRoom)){
+				System.out.println("Room with ID "+idRoom+" deleted ");
+			}else{
+				System.out.println("The room with ID "+idRoom+" has not found");
+			}
 		}
 	}
 
@@ -114,8 +134,8 @@ public class ControllerConcrete extends Controller {
 		String idCostumer = super.gui.getInput("Please insert the customer's email: ");
 		int maxGuests = Integer.parseInt(super.gui.getInput("Please insert the number of guests: "));
 		this.sys.showRoom(s -> s.getMaxGuests() <= maxGuests);
-		String[] services = this.transformInArray(this.gui.getInput("Insert services (separated by comma): "));
-		int[] idRoom = this.controlIfInteger(this.gui.getInput("Insert the ID room to delete: "));
+		String[] idRoomString = this.transformInArray(this.gui.getInput("Insert the ID room to delete: "));
+		int[] = 
 		LocalDate[] dates = getDatesFromKeyboard();
 		
 		super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1]);
