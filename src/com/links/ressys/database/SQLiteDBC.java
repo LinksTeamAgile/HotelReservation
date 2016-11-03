@@ -23,7 +23,7 @@ public class SQLiteDBC implements DBConnection {
 	private final String DB_PATH = new Main().getProperty("db_path");
 	private final String S_DRIVER_NAME = "org.sqlite.JDBC";
 	
-	//private static final String DB_PATH = "/Users/userm06/git/HotelReservation/res/db/HotelReservation.sqlite";
+	//private static final String DB_PATH = "/Users/userm01/Desktop/Workspace/HotelReservation/res/db/HotelReservation.sqlite";
 	
 	private void initializationDriver(){
 		try {
@@ -377,6 +377,45 @@ public class SQLiteDBC implements DBConnection {
 	}
 	
 	@Override
+	public boolean deleteReservation(Reservation reservation){
+		boolean result = false;
+		
+		for (Room r : reservation.getRooms()) {
+			deleteSingleReservation(reservation.getCustomer(), r, reservation.getStartDate(), reservation.getEndDate());
+		}
+		
+		return result;
+	}
+	
+	private boolean deleteSingleReservation(Customer c, Room r, LocalDate sD, LocalDate eD){
+		boolean result = false;
+		
+		int idC = getCustomerId(c);
+		int idR = r.getRoomId();
+		String startDate = sD.toString();
+		String endDate = eD.toString();
+		
+		String sql = "DELETE FROM reservation WHERE idCustomer = ? AND idRoom = ? AND startDate = ? AND endDate = ?";
+		
+		initializationDriver();
+		
+		try(PreparedStatement ps = connectionPreparedStatement(sql)) {
+			
+			ps.setInt(1, idC);
+			ps.setInt(2, idR);
+			ps.setString(3, startDate);
+			ps.setString(4, endDate);
+			ps.executeUpdate();
+			result = true;
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	@Override
 	public int getMaxRoomId(){
 		int maxId = 0;
 		String query = "SELECT MAX(idRoom) AS maxIdRoom FROM room";
@@ -462,9 +501,21 @@ public class SQLiteDBC implements DBConnection {
 ////			ReservationConcrete rescon = new ReservationConcrete(cust, rooom, 1000, new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime(), new GregorianCalendar(2014, Calendar.MARCH, 11).getTime());
 ////			System.out.println( createReservation(rescon) );
 //			//System.out.println(getRoom(202).toString());
-//			ArrayList<Reservation> reservations = getReservations();
-//			for(Reservation r : reservations)
-//				System.out.println(r.toString());
+//			
+//			Customer c = new CustomerConcrete("830", "Anaël", "Cunningham", "86-(346)230-2445", "bcunninghamn1@independent.co.uk", "1774163401189303");
+//			Room r1 = new RoomConcrete(94, true, true, 4, "potenti in eleifend quam".split(" "));
+//			Room r2 = new RoomConcrete(32, false, false, 3, "platea dictumst morbi vestibulum velit id pretium iaculis diam erat fermentum justo nec".split(" "));
+//			Room r3 = new RoomConcrete(19, false, true, 3, "massa id nisl venenatis lacinia".split(" "));
+//			LocalDate sD = LocalDate.of(2017, 2, 28);
+//			LocalDate eD = LocalDate.of(2017, 4, 1);
+//			Room[] rs = new RoomConcrete[3];
+//			rs[0] = r1;
+//			rs[1] = r2;
+//			rs[2] = r3;
+//			
+//			Reservation r = new ReservationConcrete(c, rs, 500, sD, eD);
+//			
+//			deleteReservation(r);
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
