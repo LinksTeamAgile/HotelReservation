@@ -11,6 +11,8 @@ public interface DBConnection {
 	ArrayList<Customer> getCustomers();
 
 	ArrayList<Room> getRooms();
+	
+	ArrayList<Reservation> getReservations();
 
 	boolean createCustomer(Customer c);
 

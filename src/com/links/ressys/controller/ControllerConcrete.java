@@ -1,7 +1,9 @@
 package com.links.ressys.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import com.links.ressys.Sys;
@@ -28,10 +30,10 @@ public class ControllerConcrete extends Controller {
 		if(codeOperation == 100){
 			super.sys.createRoom(maxGuests, services);
 			if (!super.sys.isThereAnError()) {
-				System.out.println("Room create successfully!");
+				System.out.println("Room created successfully!");
 			} else {
-				System.out.println(super.sys.getLastErrors());
-				System.out.println("Room not create!");
+				this.prinErrors(super.sys.getLastErrors());
+				System.out.println("Room not created!");
 			}
 		}
 	}
@@ -44,8 +46,7 @@ public class ControllerConcrete extends Controller {
 
 	@Override
 	protected void makeShowRooms() {
-		// TODO Auto-generated method stub
-		
+		this.sys.showRoom(null);
 	}
 
 	@Override
@@ -58,10 +59,10 @@ public class ControllerConcrete extends Controller {
 		String cardNumber = this.gui.getInput("Insert card number:");
 		super.sys.createCustomer(taxCode, name, surName, cellPhone, mail, cardNumber);
 		if (!super.sys.isThereAnError()) {
-			System.out.println("Customer create successfully!");
+			System.out.println("Customer created successfully!");
 		} else {
-			System.out.println(super.sys.getLastErrors());
-			System.out.println("Customer not create!");
+			this.prinErrors(super.sys.getLastErrors());
+			System.out.println("Customer not created!");
 		}
 	}
 	
@@ -73,21 +74,20 @@ public class ControllerConcrete extends Controller {
 
 	@Override
 	protected void makeShowCustomers() {
-		// TODO Auto-generated method stub
-		
+		super.sys.showCustomer(null);
 	}
 	
 	@Override
 	protected void makeCreateReservation(){
-		String idCostumer = super.gui.getInput("Please insert the customer's id: ");
+		String idCostumer = super.gui.getInput("Please insert the customer's email: ");
 		int[] idRoom = getRoomIdFromKeyboard();
 		LocalDate[] dates = getDatesFromKeyboard();
 		super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1]);
 		if (!super.sys.isThereAnError()) {
-			System.out.println("Reservation create successfully!");
+			System.out.println("Reservation created successfully!");
 		} else {
-			System.out.println(super.sys.getLastErrors());
-			System.out.println("Reservation not create!");
+			this.prinErrors(super.sys.getLastErrors());
+			System.out.println("Reservation not created!");
 		}
 	}
 
@@ -99,25 +99,34 @@ public class ControllerConcrete extends Controller {
 
 	@Override
 	protected void makeShowReservations() {
-		// TODO Auto-generated method stub
-		
+		super.sys.showReservation(null);
 	}
 
 	@Override
 	protected void makeCloseApp() {
-		// TODO Auto-generated method stub
+		System.out.println("Closing app");
+		System.exit(0);
 		
 	}
 
 	@Override
 	protected void wrongChoose() {
-		// TODO Auto-generated method stub
+		System.out.println("Selected item from menu' can't be used");
 		
 	}
 
+	private <T> void prinErrors(Iterator<T> it){
+		System.out.println("ERRORS");
+		while(it.hasNext()){
+			System.out.print(it.next()+" ");
+		}
+		System.out.println("===========");
+	}
+
+
 	
-
-
+	
+	
 	private int getRoomGuestsFromKeyboard() {
 		boolean continueScanneringUserInput = true;
 		int scanneredNumber = 0;
@@ -196,12 +205,13 @@ public class ControllerConcrete extends Controller {
 		return services;
 	}
 
-	private int[] getRoomIdFromKeyboard(){
+	public int[] getRoomIdFromKeyboard(){
 		Scanner keyboard = new Scanner(System.in);
 		boolean continueScanneringUserInput = true;
 		int idCounter = 0;
 		int scanneredRoomId = 0;
-		int[] scanneredRoomIds = new int[10];
+		ArrayList<Integer> scanneredRoomIds = new ArrayList<Integer>();
+		int i = 0;
 
 		while(continueScanneringUserInput == true){
 			System.out.println("Please insert the rooms' id: ");
@@ -210,7 +220,7 @@ public class ControllerConcrete extends Controller {
 				if (scanneredRoomId == 0){
 					System.out.println("Choice not valid!\nPlease enter a vail id");
 				} else {
-					scanneredRoomIds[idCounter] = scanneredRoomId;
+					scanneredRoomIds.add(idCounter, scanneredRoomId);
 					idCounter += 1;
 					continueScanneringUserInput = false;
 				}
@@ -220,7 +230,15 @@ public class ControllerConcrete extends Controller {
 				continueScanneringUserInput = false;
 			}
 		}
-		return scanneredRoomIds;
+		
+		int[] roomIds = new int[scanneredRoomIds.size()];
+		
+		for(Integer s : scanneredRoomIds){
+			roomIds[i] = s.intValue();
+			i++;
+		}
+		
+		return roomIds;
 	}
 
 	private LocalDate[] getDatesFromKeyboard(){

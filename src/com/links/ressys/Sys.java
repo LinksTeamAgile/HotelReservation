@@ -1,7 +1,6 @@
 package com.links.ressys;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,18 +32,14 @@ public class Sys {
 		try {
 			this.customerList = this.db.getCustomers();
 			this.roomList = this.db.getRooms();
+			//this.reservationList = this.db.getReservations();
 		} catch (Exception e) {
 			this.customerList = new ArrayList<Customer>();
 			this.roomList = new ArrayList<Room>();
+			//this.reservationList = new ArrayList<Reservation>();
 			e.printStackTrace();
 		}
 		
-		Room[] roomArrayCrt1 = {roomList.get(0)};
-		Reservation reservationCrt1= new ReservationConcrete(customerList.get(0), roomArrayCrt1, 201, LocalDate.of(2014, Month.FEBRUARY, 11), LocalDate.of(2014, Month.FEBRUARY, 23));
-		reservationList.add(reservationCrt1);
-		Room[] roomArrayCrt2 = {roomList.get(1), roomList.get(2)};
-		Reservation reservationCrt2= new ReservationConcrete(customerList.get(1), roomArrayCrt2, 202, LocalDate.of(2015, Month.FEBRUARY, 15), LocalDate.of(2015, Month.FEBRUARY, 17));
-		reservationList.add(reservationCrt2);
 	}
 	
 	public Iterator<Integer> getLastErrors(){
@@ -83,7 +78,6 @@ public class Sys {
 	public void createReservation(String mailAddress, int[] roomIds, LocalDate startDate, LocalDate endDate){
 	    Room[] rooms = new Room[roomIds.length];
 	    Customer customer = null;
-	    
 	    for(Customer c : this.customerList){
     		if(c.getMailAddress().equals(mailAddress)){
     			customer = c;
