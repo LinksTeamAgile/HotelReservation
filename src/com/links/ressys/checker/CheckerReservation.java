@@ -8,15 +8,28 @@ import com.links.ressys.statuscodes.CustomerCode;
 import com.links.ressys.statuscodes.ReservationCode;
 import com.links.ressys.statuscodes.RoomCode;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CheckerReservation.
+ */
 public class CheckerReservation implements Checker{
 
+	/** The res. */
 	private Reservation res;
 
 	
+	/**
+	 * Instantiates a new checker reservation.
+	 *
+	 * @param r the r
+	 */
 	public CheckerReservation(Reservation r){
 		this.res = r;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.links.ressys.checker.Checker#check()
+	 */
 	@Override
 	public ArrayList<Integer> check() {
 		ArrayList<Integer> check = new ArrayList<Integer>();
@@ -27,6 +40,11 @@ public class CheckerReservation implements Checker{
 	    return check;	
 	}
 	
+	/**
+	 * Check customer.
+	 *
+	 * @return the int
+	 */
 	private int checkCustomer(){
 		CheckerCustomer custchecker = new CheckerCustomer(res.getCustomer());
 		ArrayList<Integer> errorList = custchecker.check();
@@ -37,6 +55,11 @@ public class CheckerReservation implements Checker{
 	}	
 		
 	
+	/**
+	 * Check rooms.
+	 *
+	 * @return the int
+	 */
 	private int checkRooms(){ 
 		Room[] roomArray = res.getRooms();
 		
@@ -50,6 +73,11 @@ public class CheckerReservation implements Checker{
 			return ReservationCode.SUCCESS_RESERVATION.getCode();
 	}
 	
+	/**
+	 * Check start date.
+	 *
+	 * @return the int
+	 */
 	private int checkStartDate(){
 		if(res.getStartDate()==null)
 			return ReservationCode.EMPTY_STARTDATE.getCode();
@@ -59,6 +87,11 @@ public class CheckerReservation implements Checker{
 			return ReservationCode.SUCCESS_RESERVATION.getCode();
 	}
 	
+	/**
+	 * Check end date.
+	 *
+	 * @return the int
+	 */
 	private int checkEndDate(){
 		if(res.getEndDate()==null)
 			return ReservationCode.EMPTY_ENDDATE.getCode();

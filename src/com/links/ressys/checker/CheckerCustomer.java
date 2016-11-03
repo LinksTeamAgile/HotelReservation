@@ -7,14 +7,27 @@ import java.util.regex.Pattern;
 import com.links.ressys.core.Customer;
 import com.links.ressys.statuscodes.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CheckerCustomer.
+ */
 public class CheckerCustomer implements Checker {
 
+	/** The customer. */
 	private Customer customer;
 
+	/**
+	 * Instantiates a new checker customer.
+	 *
+	 * @param c the c
+	 */
 	public CheckerCustomer(Customer c) {
 		this.customer = c;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.links.ressys.checker.Checker#check()
+	 */
 	@Override
 	public ArrayList<Integer> check() {
 		ArrayList<Integer> check = new ArrayList<Integer>();
@@ -27,6 +40,11 @@ public class CheckerCustomer implements Checker {
 		return check;
 	}
 
+	/**
+	 * Check name.
+	 *
+	 * @return the int
+	 */
 	private int checkName() {
 		if (customer.getName().equals(""))
 			return CustomerCode.EMPTY_NAME.getCode();
@@ -41,6 +59,11 @@ public class CheckerCustomer implements Checker {
 			return CustomerCode.SUCCESS_CUSTOMER.getCode();
 	}
 
+	/**
+	 * Check surname.
+	 *
+	 * @return the int
+	 */
 	private int checkSurname() {
 		if (customer.getSurname().equals(""))
 			return CustomerCode.EMPTY_SURNAME.getCode();
@@ -55,6 +78,11 @@ public class CheckerCustomer implements Checker {
 			return CustomerCode.SUCCESS_CUSTOMER.getCode();
 	}
 	
+	/**
+	 * Check tax code.
+	 *
+	 * @return the int
+	 */
 	private int checkTaxCode() {
 		if (customer.getTaxCode().equals(""))
 			return CustomerCode.EMPTY_TAXCODE.getCode();
@@ -64,6 +92,11 @@ public class CheckerCustomer implements Checker {
 			return CustomerCode.SUCCESS_CUSTOMER.getCode();
 	}
 
+	/**
+	 * Check cell phone number.
+	 *
+	 * @return the int
+	 */
 	private int checkCellPhoneNumber() {
 		if (customer.getCellPhoneNumber().equals(""))
 			return CustomerCode.EMPTY_PHONENUM.getCode();
@@ -75,6 +108,11 @@ public class CheckerCustomer implements Checker {
 		}
 	}
  
+	/**
+	 * Check mail address.
+	 *
+	 * @return the int
+	 */
 	private int checkMailAddress() {
 		if (customer.getMailAddress().equals(""))
 			return CustomerCode.EMPTY_MAIL.getCode();
@@ -87,6 +125,11 @@ public class CheckerCustomer implements Checker {
 			return CustomerCode.SUCCESS_CUSTOMER.getCode();
 	}
 
+	/**
+	 * Check card number.
+	 *
+	 * @return the int
+	 */
 	private int checkCardNumber() {
 		if (customer.getCardNumber().equals(""))
 			return CustomerCode.EMPTY_CARDNUM.getCode();

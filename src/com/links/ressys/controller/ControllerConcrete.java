@@ -12,12 +12,25 @@ import java.util.Scanner;
 import com.links.ressys.Sys;
 import com.links.ressys.gui.Gui;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ControllerConcrete.
+ */
 public class ControllerConcrete extends Controller {
 
+	/**
+	 * Instantiates a new controller concrete.
+	 *
+	 * @param sys the sys
+	 * @param gui the gui
+	 */
 	public ControllerConcrete(Sys sys, Gui gui) {
 		super(sys, gui);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.links.ressys.controller.Controller#makeCreateRoom()
+	 */
 	protected void makeCreateRoom(){
 		int maxGuests = getRoomGuestsFromKeyboard();
 		String[] services = getRoomServicesFromKeyboard();
@@ -40,6 +53,9 @@ public class ControllerConcrete extends Controller {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.links.ressys.controller.Controller#makeDeleteRoom()
+	 */
 	@Override
 	protected void makeDeleteRoom() {
 		String es=this.gui.getInput("Insert the ID room to delete: ");
@@ -51,11 +67,17 @@ public class ControllerConcrete extends Controller {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.links.ressys.controller.Controller#makeShowRooms()
+	 */
 	@Override
 	protected void makeShowRooms() {
 		this.sys.showRoom(null);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.links.ressys.controller.Controller#makeCreateCustomer()
+	 */
 	@Override
 	protected void makeCreateCustomer(){
 		String taxCode = this.gui.getInput("Insert tax code:");
@@ -73,6 +95,9 @@ public class ControllerConcrete extends Controller {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.links.ressys.controller.Controller#makeDeleteCustomer()
+	 */
 	@Override
 	protected void makeDeleteCustomer() {
 		String es1=this.gui.getInput("Insert the mail address of the customer to delete: ");
@@ -83,11 +108,17 @@ public class ControllerConcrete extends Controller {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.links.ressys.controller.Controller#makeShowCustomers()
+	 */
 	@Override
 	protected void makeShowCustomers() {
 		super.sys.showCustomer(null);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.links.ressys.controller.Controller#makeCreateReservation()
+	 */
 	@Override
 	protected void makeCreateReservation(){
 		String idCostumer = super.gui.getInput("Please insert the customer's email: ");
@@ -102,6 +133,9 @@ public class ControllerConcrete extends Controller {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.links.ressys.controller.Controller#makeModifyReservation()
+	 */
 	@Override
 	protected void makeModifyReservation() {
 		String es2=this.gui.getInput("Insert the ID reservation to delete: ");
@@ -113,11 +147,17 @@ public class ControllerConcrete extends Controller {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.links.ressys.controller.Controller#makeShowReservations()
+	 */
 	@Override
 	protected void makeShowReservations() {
 		super.sys.showReservation(null);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.links.ressys.controller.Controller#makeCloseApp()
+	 */
 	@Override
 	protected void makeCloseApp() {
 		System.out.println("Closing app");
@@ -125,12 +165,21 @@ public class ControllerConcrete extends Controller {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see com.links.ressys.controller.Controller#wrongChoose()
+	 */
 	@Override
 	protected void wrongChoose() {
 		System.out.println("Selected item from menu' can't be used");
 		
 	}
 
+	/**
+	 * Prin errors.
+	 *
+	 * @param <T> the generic type
+	 * @param it the it
+	 */
 	private <T> void prinErrors(Iterator<T> it){
 		System.out.println("ERRORS");
 		while(it.hasNext()){
@@ -143,6 +192,11 @@ public class ControllerConcrete extends Controller {
 	
 	
 	
+	/**
+	 * Gets the room guests from keyboard.
+	 *
+	 * @return the room guests from keyboard
+	 */
 	private int getRoomGuestsFromKeyboard() {
 		boolean continueScanneringUserInput = true;
 		int scanneredNumber = 0;
@@ -168,6 +222,11 @@ public class ControllerConcrete extends Controller {
 		return scanneredNumber;
 	}
 
+	/**
+	 * Gets the room services from keyboard.
+	 *
+	 * @return the room services from keyboard
+	 */
 	private String[] getRoomServicesFromKeyboard() {
 		int serviceCounter = 0, pairNumber = 0;
 		boolean continueScanneringUserInput = true, stopScanneringInput = true;
@@ -221,6 +280,11 @@ public class ControllerConcrete extends Controller {
 		return services;
 	}
 
+	/**
+	 * Gets the room id from keyboard.
+	 *
+	 * @return the room id from keyboard
+	 */
 	public int[] getRoomIdFromKeyboard(){
 		Scanner keyboard = new Scanner(System.in);
 		boolean continueScanneringUserInput = true;
@@ -257,6 +321,11 @@ public class ControllerConcrete extends Controller {
 		return roomIds;
 	}
 
+	/**
+	 * Gets the dates from keyboard.
+	 *
+	 * @return the dates from keyboard
+	 */
 	private LocalDate[] getDatesFromKeyboard(){
 		Scanner keyboard = new Scanner(System.in);
 		boolean continueScanneringUserInput = true;

@@ -11,8 +11,13 @@ import com.links.ressys.database.SQLiteDBC;
 import com.links.ressys.gui.*;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Main.
+ */
 public class Main {
 	
+	/** The prop. */
 	private static Properties prop;
 	
 	static{
@@ -27,12 +32,23 @@ public class Main {
 	}
 		
 	
+	/**
+	 * Gets the property.
+	 *
+	 * @param key the key
+	 * @return the property
+	 */
 	public String getProperty(String key){
 		return prop.getProperty(key);
 	}
 	
 	
 	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 		DBConnection db = new SQLiteDBC();
 		Sys sys = new Sys(db);

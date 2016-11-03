@@ -17,14 +17,26 @@ import com.links.ressys.core.ReservationConcrete;
 import com.links.ressys.core.Room;
 import com.links.ressys.core.RoomConcrete;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SQLiteDBC.
+ */
 public class SQLiteDBC implements DBConnection {
 
+	/** The jdbc type. */
 	private final String JDBC_TYPE = "jdbc:sqlite:";
+	
+	/** The db path. */
 	private final String DB_PATH = new Main().getProperty("db_path");
+	
+	/** The s driver name. */
 	private final String S_DRIVER_NAME = "org.sqlite.JDBC";
 	
 	//private static final String DB_PATH = "/Users/userm06/git/HotelReservation/res/db/HotelReservation.sqlite";
 	
+	/**
+	 * Initialization driver.
+	 */
 	private void initializationDriver(){
 		try {
 			Class.forName(S_DRIVER_NAME);
@@ -33,6 +45,12 @@ public class SQLiteDBC implements DBConnection {
 		}
 	}
 	
+	/**
+	 * Connection resul set.
+	 *
+	 * @param query the query
+	 * @return the result set
+	 */
 	private ResultSet connectionResulSet(String query){
 		Connection con = null;
 		ResultSet rs = null;
@@ -47,6 +65,12 @@ public class SQLiteDBC implements DBConnection {
 		return rs;
 	}
 	
+	/**
+	 * Connection prepared statement.
+	 *
+	 * @param query the query
+	 * @return the prepared statement
+	 */
 	private PreparedStatement connectionPreparedStatement(String query){
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -60,6 +84,9 @@ public class SQLiteDBC implements DBConnection {
 		return ps;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.links.ressys.database.DBConnection#getCustomers()
+	 */
 	@Override
 	public ArrayList<Customer> getCustomers(){
 		String query = "SELECT * FROM customer";
@@ -81,6 +108,9 @@ public class SQLiteDBC implements DBConnection {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see com.links.ressys.database.DBConnection#getRooms()
+	 */
 	@Override
 	public ArrayList<Room> getRooms(){
 		String query = "SELECT * FROM room";
@@ -100,6 +130,9 @@ public class SQLiteDBC implements DBConnection {
 		return room;		
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.links.ressys.database.DBConnection#getReservations()
+	 */
 	@Override
 	public ArrayList<Reservation> getReservations(){
 		String query = "SELECT idReservation, idCustomer, startDate, endDate FROM reservation GROUP BY idCustomer, startDate, endDate";
@@ -133,6 +166,9 @@ public class SQLiteDBC implements DBConnection {
 		return reservations;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.links.ressys.database.DBConnection#createCustomer(com.links.ressys.core.Customer)
+	 */
 	@Override
 	public boolean createCustomer(Customer c){
 		boolean result = false;
@@ -168,6 +204,9 @@ public class SQLiteDBC implements DBConnection {
 		return result;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.links.ressys.database.DBConnection#createRoom(com.links.ressys.core.Room)
+	 */
 	@Override
 	public boolean createRoom(Room r){
 		boolean result = false;
@@ -205,6 +244,9 @@ public class SQLiteDBC implements DBConnection {
 	
 	
 	
+	/* (non-Javadoc)
+	 * @see com.links.ressys.database.DBConnection#createReservation(com.links.ressys.core.Reservation)
+	 */
 	@Override
 	public boolean createReservation(Reservation r){
 		boolean result = false;
@@ -238,6 +280,12 @@ public class SQLiteDBC implements DBConnection {
 		return result;
 	}
 	
+	/**
+	 * Merge reservation.
+	 *
+	 * @param result the result
+	 * @return the reservation
+	 */
 	private Reservation mergeReservation(String result){
 		Reservation reservation = null;
 		
@@ -287,6 +335,12 @@ public class SQLiteDBC implements DBConnection {
 		return reservation;
 	}
 	
+	/**
+	 * Gets the room.
+	 *
+	 * @param id the id
+	 * @return the room
+	 */
 	private Room getRoom(int id){
 		Room room = null;
 		
@@ -307,6 +361,12 @@ public class SQLiteDBC implements DBConnection {
 		return room;
 	}
 	
+	/**
+	 * Gets the customer.
+	 *
+	 * @param id the id
+	 * @return the customer
+	 */
 	private Customer getCustomer(int id){
 		Customer customer = null;
 		String query = "SELECT * FROM customer WHERE idCustomer="+id;
@@ -334,6 +394,9 @@ public class SQLiteDBC implements DBConnection {
 		return customer;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.links.ressys.database.DBConnection#deleteRoom(int)
+	 */
 	@Override
 	public boolean deleteRoom(int roomIndex){
 		boolean result = false;
@@ -355,6 +418,9 @@ public class SQLiteDBC implements DBConnection {
 		return result;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.links.ressys.database.DBConnection#deleteCustomer(java.lang.String)
+	 */
 	@Override
 	public boolean deleteCustomer(String mailAdd){
 		boolean result = false;
@@ -376,6 +442,9 @@ public class SQLiteDBC implements DBConnection {
 		return result;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.links.ressys.database.DBConnection#getMaxRoomId()
+	 */
 	@Override
 	public int getMaxRoomId(){
 		int maxId = 0;
@@ -397,6 +466,9 @@ public class SQLiteDBC implements DBConnection {
 		return maxId;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.links.ressys.database.DBConnection#getMaxReservationId()
+	 */
 	@Override
 	public int getMaxReservationId() {
 		int maxId = 0;
@@ -418,6 +490,12 @@ public class SQLiteDBC implements DBConnection {
 		return maxId;
 	}
 	
+	/**
+	 * Gets the customer id.
+	 *
+	 * @param customer the customer
+	 * @return the customer id
+	 */
 	private int getCustomerId(Customer customer){
 		int maxId = 0;
 		String query = "SELECT idCustomer FROM customer WHERE mailAddress = '"+customer.getMailAddress()+"'";

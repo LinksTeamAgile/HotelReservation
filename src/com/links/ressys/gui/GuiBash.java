@@ -4,20 +4,34 @@ import java.io.Closeable;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GuiBash.
+ */
 public class GuiBash implements Gui, Closeable, AutoCloseable {
 	
+	/** The keyboard. */
 	private Scanner keyboard = new Scanner(System.in);
 
+	/* (non-Javadoc)
+	 * @see com.links.ressys.gui.Gui#open()
+	 */
 	@Override
 	public void open() {
 		this.viewMenu();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.links.ressys.gui.Gui#close()
+	 */
 	@Override
 	public void close() {
 		keyboard.close();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.links.ressys.gui.Gui#getInput(java.lang.String)
+	 */
 	@Override
 	public String getInput(String message) {
 		try{
@@ -31,6 +45,9 @@ public class GuiBash implements Gui, Closeable, AutoCloseable {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.links.ressys.gui.Gui#viewMenu()
+	 */
 	@Override
 	public void viewMenu(){
 		System.out.println("Menu'");
