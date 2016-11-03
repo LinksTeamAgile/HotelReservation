@@ -37,17 +37,32 @@ public class CheckerRoom implements Checker {
 	}
 
 	private int checkMaxGuests() {
-		if (room.getMaxGuests() > 0)
+		if (room.getMaxGuests() > 0){
 			return RoomCode.SUCCESS_ROOM.getCode();
-		else
+		} else {
 			return RoomCode.WRONG_MAXGUESTS.getCode();
+		}
 	}
 
 	private int checkServices() {
-		if (room.getServices() != null)
+		if (room.getServices() != null){
 			return RoomCode.SUCCESS_ROOM.getCode();
-		else
-			return RoomCode.EMPTY_SERVICES.getCode();
+		} else if (isServicesFormatRight() == true){
+			return RoomCode.SUCCESS_ROOM.getCode();
+		} else {
+			return RoomCode.WRONG_SERVICES.getCode();
+		}
+	}
+
+	private boolean isServicesFormatRight(){
+		boolean check = false;
+		
+		for(String s : room.getServices()){
+			if(s.matches("[a-zA-Z]+")){
+				check = true;	
+			} 
+		}
+		return check;
 	}
 
 }
