@@ -18,7 +18,6 @@ public class CheckerCustomer implements Checker {
 	@Override
 	public ArrayList<Integer> check() {
 		ArrayList<Integer> check = new ArrayList<Integer>();
-		System.out.println(this.customer);
 		check.add(checkName());
 		check.add(checkSurname());
 		check.add(checkTaxCode());
