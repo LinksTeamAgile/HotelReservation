@@ -92,7 +92,7 @@ public class SQLiteDBC implements DBConnection {
 			
 			while(rs.next()) {
 				room.add(new RoomConcrete(rs.getInt("idRoom"), rs.getBoolean("isServiceable"), 
-						rs.getBoolean("isAvailable"), rs.getInt("maxGuest"), rs.getString("services").split(" ")));
+						rs.getBoolean("isAvailable"), rs.getInt("maxGuest"), rs.getString("services").split(" "), rs.getDouble("price")));
 			}		
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -102,7 +102,7 @@ public class SQLiteDBC implements DBConnection {
 	
 	@Override
 	public ArrayList<Reservation> getReservations(){
-		String query = "SELECT idReservation, idCustomer, startDate, endDate FROM reservation GROUP BY idCustomer, startDate, endDate";
+		String query = "SELECT idReservation, idCustomer, startDate, endDate, price FROM reservation GROUP BY idCustomer, startDate, endDate";
 		ArrayList<Reservation> reservations = new ArrayList<Reservation>();
 		
 		ArrayList<String> arrayRS = new ArrayList<String>();
@@ -118,6 +118,7 @@ public class SQLiteDBC implements DBConnection {
 				temp+=rs.getInt("idCustomer")+",";
 				temp+=rs.getString("startDate")+",";
 				temp+=rs.getString("endDate")+",";
+				temp+=rs.getDouble("price")+",";
 				
 				arrayRS.add(temp);
 			}
@@ -180,8 +181,9 @@ public class SQLiteDBC implements DBConnection {
 			servicesConcat+=" "+s;
 		
 		boolean isAvailable = r.isAvailable();
+		double price = r.getPriceRoom();
 		
-		String sql = "INSERT INTO room (maxGuest , isServiceable, services, isAvailable ) VALUES ( ?, ?, ?, ? )";
+		String sql = "INSERT INTO room (maxGuest , isServiceable, services, isAvailable, price ) VALUES ( ?, ?, ?, ?, ?)";
 		
 		initializationDriver();
 		
@@ -191,6 +193,7 @@ public class SQLiteDBC implements DBConnection {
 			ps.setBoolean(2, isServiceable);
 			ps.setString(3, servicesConcat);
 			ps.setBoolean(4, isAvailable);
+			ps.setDouble(5, price);
 			
 			ps.executeUpdate();
 			
@@ -213,9 +216,10 @@ public class SQLiteDBC implements DBConnection {
 		Room[] rooms = r.getRooms();
 		LocalDate startDate = r.getStartDate();
 		LocalDate endDate = r.getEndDate();
+		double cost = r.getCost();
 		
 
-		String sql = "INSERT INTO reservation ( idCustomer, idRoom , startDate, endDate ) VALUES ( ?, ?, ?, ? )";
+		String sql = "INSERT INTO reservation ( idCustomer, idRoom , startDate, endDate, price ) VALUES ( ?, ?, ?, ?, ? )";
 		
 		initializationDriver();
 		
@@ -226,6 +230,8 @@ public class SQLiteDBC implements DBConnection {
 			ps.setInt(2, room.getRoomId());
 			ps.setString(3, startDate.toString());
 			ps.setString(4, endDate.toString());
+			ps.setDouble(5, cost);
+			
 			
 			ps.executeUpdate();
 			
@@ -249,9 +255,10 @@ public class SQLiteDBC implements DBConnection {
 		String customerId = result.split(",")[1];
 		String startDate = result.split(",")[2];
 		String endDate = result.split(",")[3];
+		String price = result.split(",")[4];
 		
 		String query ="SELECT idRoom FROM reservation WHERE idCustomer = "+customerId+
-						" AND startDate = '"+startDate+"' AND endDate = '"+endDate+"' ";
+						" AND startDate = '"+startDate+"' AND endDate = '"+endDate+"' AND price = "+price;
 		initializationDriver();
 		
 		try(ResultSet rs = connectionResulSet(query)) {
@@ -278,7 +285,8 @@ public class SQLiteDBC implements DBConnection {
 											      room.toArray(roomArray), 
 											      Integer.parseInt(reservationId), 
 											      startDateLD,
-											      endDateLD);
+											      endDateLD,
+											      Double.parseDouble(price));
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -298,7 +306,7 @@ public class SQLiteDBC implements DBConnection {
 			
 			while(rs.next()) {
 				room = new RoomConcrete(rs.getInt("idRoom"), rs.getBoolean("isServiceable"), 
-						rs.getBoolean("isAvailable"), rs.getInt("maxGuest"), rs.getString("services").split(" "));
+						rs.getBoolean("isAvailable"), rs.getInt("maxGuest"), rs.getString("services").split(" "), rs.getDouble("price"));
 			}		
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -487,8 +495,9 @@ public class SQLiteDBC implements DBConnection {
 			servicesConcat+=" "+s;
 		
 		boolean isAvailable = r.isAvailable();
+		double price = r.getPriceRoom();
 		
-		String sql = "UPDATE room SET maxGuest=?, isServiceable=?, services=?, isAvailable=? WHERE  idRoom =" + r.getRoomId();
+		String sql = "UPDATE room SET maxGuest=?, isServiceable=?, services=?, isAvailable=?, price=? WHERE  idRoom =" + r.getRoomId();
 		
 		initializationDriver();
 		
@@ -498,6 +507,7 @@ public class SQLiteDBC implements DBConnection {
 			ps.setBoolean(2, isServiceable);
 			ps.setString(3, servicesConcat);
 			ps.setBoolean(4, isAvailable);
+			ps.setDouble(5, price);
 			
 			ps.executeUpdate();
 			
