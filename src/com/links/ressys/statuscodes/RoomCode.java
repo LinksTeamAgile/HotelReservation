@@ -4,7 +4,7 @@ public enum RoomCode {
 	
     SUCCESS_ROOM(100, "Valid room"),
 	
-	//EMPTY_MAXGUESTS(311, "Guests field empty"),
+	EMPTY_MAXGUESTS(311, "Guests field empty"),
 	//EMPTY_SERVICEABLE(321, "Serviceable field empty"),
 	//EMPTY_AVAILABLE(331, "Available field empty"),
 	EMPTY_SERVICES(341, "Services field empty"),
