@@ -2,7 +2,7 @@ package com.links.ressys.statuscodes;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Enum CustomerCode.
+ * The Enum CustomerCode contains all the possible status codes for customer's fields.
  */
 public enum CustomerCode {
 	
@@ -62,7 +62,7 @@ public enum CustomerCode {
 	private final String description;
 	
 	/**
-	 * Instantiates a new customer code.
+	 * This method instantiates a new customer code.
 	 *
 	 * @param code the code
 	 * @param description the description
@@ -73,7 +73,7 @@ public enum CustomerCode {
 	}
 
 	/**
-	 * Gets the code.
+	 * This method gets the code.
 	 *
 	 * @return the code
 	 */
@@ -82,7 +82,7 @@ public enum CustomerCode {
 	}
 
 	/**
-	 * Gets the description.
+	 * This method gets the description.
 	 *
 	 * @return the description
 	 */

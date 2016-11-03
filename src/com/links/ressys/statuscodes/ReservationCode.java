@@ -2,7 +2,7 @@ package com.links.ressys.statuscodes;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Enum ReservationCode.
+ * The Enum ReservationCode contains all the possible status codes for the fields of a reservation.
  */
 public enum ReservationCode {
 	
@@ -55,7 +55,7 @@ public enum ReservationCode {
 	private final String description;
 	
 	/**
-	 * Instantiates a new reservation code.
+	 * This method instantiates a new reservation code.
 	 *
 	 * @param code the code
 	 * @param description the description
@@ -66,7 +66,7 @@ public enum ReservationCode {
 	}
 
 	/**
-	 * Gets the code.
+	 * This method gets the code.
 	 *
 	 * @return the code
 	 */
@@ -75,7 +75,7 @@ public enum ReservationCode {
 	}
 
 	/**
-	 * Gets the description.
+	 * This method gets the description.
 	 *
 	 * @return the description
 	 */

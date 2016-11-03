@@ -2,7 +2,7 @@ package com.links.ressys.statuscodes;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Enum MailCode.
+ * The Enum MailCode contains all the possible status codes for customer's mail.
  */
 public enum MailCode {
 	
@@ -25,7 +25,7 @@ public enum MailCode {
 	private final String description;
 	
 	/**
-	 * Instantiates a new mail code.
+	 * This method instantiates a new mail code.
 	 *
 	 * @param code the code
 	 * @param description the description
@@ -36,7 +36,7 @@ public enum MailCode {
 	}
 
 	/**
-	 * Gets the code.
+	 * This method gets the code.
 	 *
 	 * @return the code
 	 */
@@ -45,7 +45,7 @@ public enum MailCode {
 	}
 
 	/**
-	 * Gets the description.
+	 * This method gets the description.
 	 *
 	 * @return the description
 	 */

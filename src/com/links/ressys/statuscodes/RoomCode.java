@@ -2,7 +2,7 @@ package com.links.ressys.statuscodes;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Enum RoomCode.
+ * The Enum RoomCode contains all the possible status codes for the fields of a room.
  */
 public enum RoomCode {
 	
@@ -34,7 +34,7 @@ public enum RoomCode {
 	private final String description;
 	
 	/**
-	 * Instantiates a new room code.
+	 * This method instantiates a new room code.
 	 *
 	 * @param code the code
 	 * @param description the description
@@ -45,7 +45,7 @@ public enum RoomCode {
 	}
 
 	/**
-	 * Gets the code.
+	 * This method gets the code.
 	 *
 	 * @return the code
 	 */
@@ -54,7 +54,7 @@ public enum RoomCode {
 	}
 
 	/**
-	 * Gets the description.
+	 * This method gets the description.
 	 *
 	 * @return the description
 	 */
