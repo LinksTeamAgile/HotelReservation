@@ -229,6 +229,7 @@ public class Sys {
 			Room ro=itRoom.next();
 			if(ro.getRoomId()==roomId){
 				itRoom.remove();
+				this.db.deleteRoom(roomId);
 				roomRemoved=true;
 			}else{
 				;
@@ -244,6 +245,7 @@ public class Sys {
 			Customer cust=itCustomer.next();
 			if(cust.getMailAddress().equals(mailAddress)){
 				itCustomer.remove();
+				this.db.deleteCustomer(mailAddress);
 				customerRemoved=true;
 			}else{
 				;
