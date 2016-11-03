@@ -20,7 +20,7 @@ public class CheckerReservation implements Checker{
 	@Override
 	public ArrayList<Integer> check() {
 		ArrayList<Integer> check = new ArrayList<Integer>();
-		check.add(checkCustomer());
+//		7check.add(checkCustomer());
 	    check.add(checkRooms());
 	    check.add(checkStartDate());
 	    check.add(checkEndDate());
@@ -62,7 +62,7 @@ public class CheckerReservation implements Checker{
 	private int checkEndDate(){
 		if(res.getEndDate()==null)
 			return ReservationCode.EMPTY_ENDDATE.getCode();
-		else if(res.getEndDate().isAfter(res.getStartDate()) || !res.getEndDate().isAfter(LocalDate.now().plusDays(1)))
+		else if(!res.getEndDate().isAfter(res.getStartDate()) || !res.getEndDate().isAfter(LocalDate.now().plusDays(1)))
 			return ReservationCode.INVALID_DATE.getCode();
 		else
 			return ReservationCode.SUCCESS_RESERVATION.getCode();

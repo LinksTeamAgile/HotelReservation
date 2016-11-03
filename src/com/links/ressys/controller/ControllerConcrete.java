@@ -91,8 +91,11 @@ public class ControllerConcrete extends Controller {
 	@Override
 	protected void makeCreateReservation(){
 		String idCostumer = super.gui.getInput("Please insert the customer's email: ");
+		int maxGuests = Integer.parseInt(super.gui.getInput("Please insert the number of guests: "));
+		this.sys.showRoom(s -> s.getMaxGuests() <= maxGuests);
 		int[] idRoom = getRoomIdFromKeyboard();
 		LocalDate[] dates = getDatesFromKeyboard();
+		
 		super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1]);
 		if (!super.sys.isThereAnError()) {
 			System.out.println("Reservation created successfully!");

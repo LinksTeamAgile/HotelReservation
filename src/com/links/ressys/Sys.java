@@ -23,7 +23,7 @@ import com.links.ressys.database.DBConnection;
 public class Sys {
 	private ArrayList<Room> roomList;
 	private ArrayList<Customer> customerList;
-	private ArrayList<Reservation> reservationList;
+	private ArrayList<Reservation> reservationList = new ArrayList<>();
 	private ArrayList<Integer> lastErrors;
 	private DBConnection db;
 	
