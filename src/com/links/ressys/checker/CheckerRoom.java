@@ -26,14 +26,14 @@ public class CheckerRoom implements Checker{
 	
 	private int checkMaxGuests(){
 		if(room.getMaxGuests()>0)
-			return 100;
+			return RoomCode.SUCCESS_ROOM.getCode();
 		else
 			return RoomCode.WRONG_MAXGUESTS.getCode();
 	}
 	
 	private int checkServices(){
 		if(room.getServices()!=null)
-			return 100;
+			return RoomCode.SUCCESS_ROOM.getCode();
 		else
 			return RoomCode.EMPTY_SERVICES.getCode();
 	}

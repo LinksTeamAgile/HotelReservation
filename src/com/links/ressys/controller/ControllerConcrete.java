@@ -1,5 +1,8 @@
 package com.links.ressys.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -15,7 +18,6 @@ public class ControllerConcrete extends Controller {
 		super(sys, gui);
 	}
 
-	@Override
 	protected void makeCreateRoom(){
 		int maxGuests = getRoomGuestsFromKeyboard();
 		String[] services = getRoomServicesFromKeyboard();
@@ -299,7 +301,7 @@ public class ControllerConcrete extends Controller {
 		}
 
 		String[] end = new String[3];
-		end = scanneredDate[0].split("-");
+		end = scanneredDate[1].split("-");
 		for(int i=0; i<3; i++){
 			endDate[i] = Integer.parseInt(end[i]);
 		}

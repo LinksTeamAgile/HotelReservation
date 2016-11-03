@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
+
 import com.links.ressys.checker.Checker;
 import com.links.ressys.checker.CheckerCustomer;
 import com.links.ressys.checker.CheckerReservation;
@@ -246,6 +247,8 @@ public class Sys {
 		    }
 		}return customerRemoved;
 	}
+		
+
 
 	public boolean deleteReservation(int reservationId){
 		boolean reservationRemoved = false;

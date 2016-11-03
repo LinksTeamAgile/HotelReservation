@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import com.links.ressys.Main;
@@ -268,8 +269,7 @@ public class SQLiteDBC implements DBConnection {
 			//da rifare assolutamente con dateformatter
 			String[] startDateArray = startDate.split("/");
 			String[] endDateArray = endDate.split("/");
-			
-			
+
 			LocalDate startDateLD = LocalDate.of(Integer.parseInt(startDateArray[2]), Integer.parseInt(startDateArray[0]), Integer.parseInt(startDateArray[1]));
 			LocalDate endDateLD = LocalDate.of(Integer.parseInt(endDateArray[2]), Integer.parseInt(endDateArray[0]), Integer.parseInt(endDateArray[1]));
 			
