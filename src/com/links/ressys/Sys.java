@@ -57,7 +57,7 @@ public class Sys {
 	}
 	
 	public void createRoom(int maxGuests, String[] services){
-		Room room = new RoomConcrete(this.db.getMaxRoomId()+1, true, true, maxGuests, services);
+		Room room = new RoomConcrete(this.db.getMaxRoomId()+1, true, true, maxGuests, services, 0);
 		Checker checker = new CheckerRoom(room);
 		this.lastErrors = checker.check();
 		if(!this.isThereAnError()) {
@@ -92,7 +92,7 @@ public class Sys {
 	    	}
 	    }
 	    
-	    Reservation reservation = new ReservationConcrete(customer, rooms, this.db.getMaxReservationId()+1, startDate, endDate);
+	    Reservation reservation = new ReservationConcrete(customer, rooms, this.db.getMaxReservationId()+1, startDate, endDate, 0);
 		Checker checker = new CheckerReservation(reservation);
 		this.lastErrors = checker.check();
 		if(!this.isThereAnError()) {
