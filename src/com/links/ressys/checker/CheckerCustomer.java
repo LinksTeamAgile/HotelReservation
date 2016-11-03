@@ -18,13 +18,30 @@ public class CheckerCustomer implements Checker {
 	@Override
 	public ArrayList<Integer> check() {
 		ArrayList<Integer> check = new ArrayList<Integer>();
-		check.add(checkName());
-		check.add(checkSurname());
-		check.add(checkTaxCode());
-		check.add(checkCellPhoneNumber());
-		check.add(checkMailAddress());
-		check.add(checkCardNumber());
-		return check;
+		if (isNull()) {
+			check.add(CustomerCode.EMPTY_NAME.getCode());
+			check.add(CustomerCode.EMPTY_SURNAME.getCode());
+			check.add(CustomerCode.EMPTY_TAXCODE.getCode());
+			check.add(CustomerCode.EMPTY_PHONENUM.getCode());
+			check.add(CustomerCode.EMPTY_MAIL.getCode());
+			check.add(CustomerCode.EMPTY_CARDNUM.getCode());
+			return check;
+		} else {
+			check.add(checkName());
+			check.add(checkSurname());
+			check.add(checkTaxCode());
+			check.add(checkCellPhoneNumber());
+			check.add(checkMailAddress());
+			check.add(checkCardNumber());
+			return check;
+		}
+	}
+
+	private boolean isNull() {
+		if (customer == null)
+			return true;
+		else
+			return false;
 	}
 
 	private int checkName() {
@@ -35,9 +52,9 @@ public class CheckerCustomer implements Checker {
 		String regex = "^[A-Za-z\\s]+$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(customer.getName());
-		if(!matcher.matches())
+		if (!matcher.matches())
 			return CustomerCode.WRONG_NAME.getCode();
-		else 
+		else
 			return CustomerCode.SUCCESS_CUSTOMER.getCode();
 	}
 
@@ -49,12 +66,12 @@ public class CheckerCustomer implements Checker {
 		String regex = "^[A-Za-z\\s]+$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(customer.getSurname());
-		if(!matcher.matches())
+		if (!matcher.matches())
 			return CustomerCode.WRONG_SURNAME.getCode();
-		else 
+		else
 			return CustomerCode.SUCCESS_CUSTOMER.getCode();
 	}
-	
+
 	private int checkTaxCode() {
 		if (customer.getTaxCode().equals(""))
 			return CustomerCode.EMPTY_TAXCODE.getCode();
@@ -74,23 +91,23 @@ public class CheckerCustomer implements Checker {
 			return CustomerCode.WRONG_PHONENUM.getCode();
 		}
 	}
- 
+
 	private int checkMailAddress() {
 		if (customer.getMailAddress().equals(""))
 			return CustomerCode.EMPTY_MAIL.getCode();
 		String regex = "^(.+)@(.+)$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(customer.getMailAddress());
-		if(!matcher.matches())
+		if (!matcher.matches())
 			return CustomerCode.WRONG_MAIL.getCode();
-		else 
+		else
 			return CustomerCode.SUCCESS_CUSTOMER.getCode();
 	}
 
 	private int checkCardNumber() {
 		if (customer.getCardNumber().equals(""))
 			return CustomerCode.EMPTY_CARDNUM.getCode();
-		else if(customer.getCardNumber().length()!=16)
+		else if (customer.getCardNumber().length() != 16)
 			return CustomerCode.WRONG_CARDNUM.getCode();
 		try {
 			Integer.parseInt(customer.getCardNumber());
