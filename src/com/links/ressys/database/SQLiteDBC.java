@@ -476,6 +476,40 @@ public class SQLiteDBC implements DBConnection {
 		return maxId;
 	}
 	
+	public boolean updateRoom(Room r){
+		boolean result = false;
+		
+		int maxGuest = r.getMaxGuests();
+		boolean isServiceable = r.isServiceable();
+		String[] services = r.getServices();
+		String servicesConcat="";
+		for(String s : services)
+			servicesConcat+=" "+s;
+		
+		boolean isAvailable = r.isAvailable();
+		
+		String sql = "UPDATE room SET maxGuest=?, isServiceable=?, services=?, isAvailable=? WHERE  idRoom =" + r.getRoomId();
+		
+		initializationDriver();
+		
+		try(PreparedStatement ps = connectionPreparedStatement(sql)) {
+			
+			ps.setInt(1, maxGuest);
+			ps.setBoolean(2, isServiceable);
+			ps.setString(3, servicesConcat);
+			ps.setBoolean(4, isAvailable);
+			
+			ps.executeUpdate();
+			
+			result = true;
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 //	public static void main(String[] args){
 //		try {
 ////			String[] sss={"asdasd","adasdsa"};
@@ -503,7 +537,7 @@ public class SQLiteDBC implements DBConnection {
 //			//System.out.println(getRoom(202).toString());
 //			
 //			Customer c = new CustomerConcrete("830", "Anaël", "Cunningham", "86-(346)230-2445", "bcunninghamn1@independent.co.uk", "1774163401189303");
-//			Room r1 = new RoomConcrete(94, true, true, 4, "potenti in eleifend quam".split(" "));
+//			Room r1 = new RoomConcrete(94, true, true, 3, "tv wifi".split(" "));
 //			Room r2 = new RoomConcrete(32, false, false, 3, "platea dictumst morbi vestibulum velit id pretium iaculis diam erat fermentum justo nec".split(" "));
 //			Room r3 = new RoomConcrete(19, false, true, 3, "massa id nisl venenatis lacinia".split(" "));
 //			LocalDate sD = LocalDate.of(2017, 2, 28);
@@ -515,7 +549,7 @@ public class SQLiteDBC implements DBConnection {
 //			
 //			Reservation r = new ReservationConcrete(c, rs, 500, sD, eD);
 //			
-//			deleteReservation(r);
+//			updateRoom(r1);
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();

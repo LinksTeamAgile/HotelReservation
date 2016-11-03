@@ -69,8 +69,8 @@ public class CustomerConcrete extends Customer{
 
 	@Override
 	public String toString() {
-		return "Customer:\n\tTax Code = " + taxCode + "\n\tName = " + name + "\n\tSurname = " + surname + "\n\tCell Phone Number = "
-				+ cellPhoneNumber + "\n\tMail Address = " + mailAddress + "\n\tCard Number = " + cardNumber + "\n";
+		return "Customer " + mailAddress + ":\n\tTax Code = " + taxCode + "\n\tName = " + name + "\n\tSurname = " + surname + "\n\tCell Phone Number = "
+				+ cellPhoneNumber  + "\n\tCard Number = " + cardNumber + "\n";
 	}
 
 }
