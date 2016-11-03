@@ -423,7 +423,7 @@ public class SQLiteDBC implements DBConnection {
 		return result;
 	}
 	
-	@Override
+	//@Override
 	public int getMaxRoomId(){
 		int maxId = 0;
 		String query = "SELECT MAX(idRoom) AS maxIdRoom FROM room";
@@ -444,7 +444,7 @@ public class SQLiteDBC implements DBConnection {
 		return maxId;
 	}
 	
-	@Override
+	//@Override
 	public int getMaxReservationId() {
 		int maxId = 0;
 		String query = "SELECT MAX(idReservation) AS maxIdReservation FROM reservation";
@@ -566,6 +566,7 @@ public class SQLiteDBC implements DBConnection {
 		boolean result = false;
 		
 		int idCustomer = getCustomerId(r.getCustomer());
+		double cost = r.getCost();
 		LocalDate startDate = r.getStartDate();
 		LocalDate endDate = r.getEndDate();
 		
@@ -574,11 +575,11 @@ public class SQLiteDBC implements DBConnection {
 		//SE E' PRESENTE IL reservetionId
 		if(reservationId!=null)
 			sql+="idReservation,";
-		sql+="idCustomer, idRoom , startDate, endDate ) VALUES (";
+		sql+="idCustomer, idRoom , startDate, endDate, price ) VALUES (";
 		
 		if(reservationId!=null)
 			sql+="?,";
-		sql+=" ?, ?, ?, ? )";
+		sql+=" ?, ?, ?, ?, ? )";
 		
 		initializationDriver();
 		
@@ -598,6 +599,8 @@ public class SQLiteDBC implements DBConnection {
 			ps.setString(i, startDate.toString());
 			i++;
 			ps.setString(i, endDate.toString());
+			i++;
+			ps.setDouble(i, cost);
 			
 			ps.executeUpdate();
 			
@@ -614,7 +617,7 @@ public class SQLiteDBC implements DBConnection {
 //			
 //			
 //			//ArrayList<Room> listroom = getRooms();
-//			RoomConcrete[] rooom = new RoomConcrete[1];
+//			Room[] rooom = new RoomConcrete[2];
 //			//rooom[0]=(RoomConcrete)listroom.get(0);
 //			
 ////			System.out.println( getCustomerId(new CustomerConcrete("", "", "", "", "jbanksrr@squidoo.com",	55565) ) );
@@ -625,9 +628,17 @@ public class SQLiteDBC implements DBConnection {
 //			Customer c = new CustomerConcrete("243", "Uò", "Lawrence", "1-(962)355-3362", "mlawrence6q@deviantart.com", "2326104195049430");
 //			LocalDate sD = LocalDate.of(2017, 4, 2);
 //			LocalDate eD = LocalDate.of(2017, 2, 21);
-//			Room r1 = new RoomConcrete(111, true, true, 3, "tv wifi".split(" "));
-//			ReservationConcrete rescon = new ReservationConcrete(c, rooom, 4, sD, eD);
+//			Room r1 = new RoomConcrete(111, true, true, 3, "tv wifi".split(" "),50.00);
+//			Room r2 = new RoomConcrete(102, true, false, 4, "tv wifi".split(" "),50.00);
 //			
+//			rooom[0]=r1;
+//			rooom[1]=r2;
+//			
+//			ReservationConcrete rescon = new ReservationConcrete(c, rooom, 4, sD, eD,50.00);
+//			
+//			sD = LocalDate.of(2018, 4, 2);
+//			eD = LocalDate.of(2018, 2, 21);
+//			ReservationConcrete resconNew = new ReservationConcrete(c, rooom, 4, sD, eD,50.00);
 ////			Room r2 = new RoomConcrete(32, false, false, 3, "platea dictumst morbi vestibulum velit id pretium iaculis diam erat fermentum justo nec".split(" "));
 ////			Room r3 = new RoomConcrete(19, false, true, 3, "massa id nisl venenatis lacinia".split(" "));
 //			
@@ -639,7 +650,8 @@ public class SQLiteDBC implements DBConnection {
 ////			Reservation r = new ReservationConcrete(c, rs, 500, sD, eD);
 ////			
 ////			createFirstReservationById(rescon, r1, rescon.getReservationId() );
-//			createFirstReservationById(rescon, r1, null );
+//			updateReservation(rescon, resconNew);
+//			//createFirstReservationById(rescon, r1, null );
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
