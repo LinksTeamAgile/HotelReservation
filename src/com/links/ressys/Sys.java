@@ -3,6 +3,7 @@ package com.links.ressys;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -46,8 +47,8 @@ public class Sys {
 		reservationList.add(reservationCrt2);
 	}
 	
-	public ArrayList<Integer> getLastErrors(){
-		return this.lastErrors;
+	public Iterator<Integer> getLastErrors(){
+		return this.lastErrors.iterator();
 	}
 	
 	public boolean isThereAnError() {
@@ -79,12 +80,21 @@ public class Sys {
 		}
 	}
 	
-	public void createReservation(int customerId, int[] roomIds, LocalDate startDate, LocalDate endDate){
-	    Customer customer = this.customerList.get(customerId);
+	public void createReservation(String mailAddress, int[] roomIds, LocalDate startDate, LocalDate endDate){
 	    Room[] rooms = new Room[roomIds.length];
+	    Customer customer = null;
 	    
+	    for(Customer c : this.customerList){
+    		if(c.getMailAddress().equals(mailAddress)){
+    			customer = c;
+    		}
+    	}
 	    for (int i=0; i < roomIds.length; i++){
-	      rooms[i] = this.roomList.get(roomIds[i]);
+	    	for(Room r : this.roomList){
+	    		if(r.getRoomId() == roomIds[i]){
+	    			rooms[i] = r;
+	    		}
+	    	}
 	    }
 	    
 	    Reservation reservation = new ReservationConcrete(customer, rooms, this.db.getMaxReservationId()+1, startDate, endDate);

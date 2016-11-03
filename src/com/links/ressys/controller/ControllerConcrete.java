@@ -13,70 +13,8 @@ public class ControllerConcrete extends Controller {
 		super(sys, gui);
 	}
 
-	public void start() {
-		int choice = 0;
-
-		this.gui.open();
-
-		while (true) {
-			choice = Integer.valueOf(this.gui.getInput("Make a choice:"));
-			switch (choice) {
-			case 1:
-				this.makeCreateRoom();
-				break;
-			case 2: // deleteRoom(,...)
-				System.out.println("method for DeleteRoom");
-				break;
-			case 3:
-				super.sys.showRoom(null);
-				break;
-			case 4:
-				this.makeCreateCustomer();
-				break;
-			case 5: // deleteCustomer(,...)
-				System.out.println("method for DeleteRoom");
-				break;
-			case 6:
-				super.sys.showCustomer(null);				
-				break;
-			case 7:
-				this.makeCreateReservation();
-				break;
-			case 8: // deleteReservation(,...)
-				System.out.println("method for DeleteReservation");
-				break;
-			case 9:
-				super.sys.showReservation(null);	
-				break;
-			case 0:
-				System.out.println("Exit!");
-				System.exit(0);
-				break;
-			default:
-				System.out.println("Invalid choice, please retry");
-				break;
-			}
-			super.gui.viewMenu();
-		}
-	}
-
-	private void makeCreateCustomer(){
-		String taxCode = this.gui.getInput("Insert tax code:");
-		String name = this.gui.getInput("Insert name:");
-		String surName = this.gui.getInput("Insert surname:");
-		String cellPhone = this.gui.getInput("Insert phone number:");
-		String mail = this.gui.getInput("Insert email:");
-		String cardNumber = this.gui.getInput("Insert card number:");
-		super.sys.createCustomer(taxCode, name, surName, cellPhone, mail, cardNumber);
-		if (!super.sys.isThereAnError()) {
-			System.out.println("Customer create successfully!");
-		} else {
-			System.out.println(super.sys.getLastErrors());
-			System.out.println("Customer not create!");
-		}
-	}
-
-	private void makeCreateRoom(){
+	@Override
+	protected void makeCreateRoom(){
 		int maxGuests = getRoomGuestsFromKeyboard();
 		String[] services = getRoomServicesFromKeyboard();
 		int codeOperation = 0;
@@ -97,9 +35,51 @@ public class ControllerConcrete extends Controller {
 			}
 		}
 	}
+	
+	@Override
+	protected void makeDeleteRoom() {
+		// TODO Auto-generated method stub
+		
+	}
 
-	private void makeCreateReservation(){
-		int idCostumer = getCostumerIdFromKeyboard();
+	@Override
+	protected void makeShowRooms() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void makeCreateCustomer(){
+		String taxCode = this.gui.getInput("Insert tax code:");
+		String name = this.gui.getInput("Insert name:");
+		String surName = this.gui.getInput("Insert surname:");
+		String cellPhone = this.gui.getInput("Insert phone number:");
+		String mail = this.gui.getInput("Insert email:");
+		String cardNumber = this.gui.getInput("Insert card number:");
+		super.sys.createCustomer(taxCode, name, surName, cellPhone, mail, cardNumber);
+		if (!super.sys.isThereAnError()) {
+			System.out.println("Customer create successfully!");
+		} else {
+			System.out.println(super.sys.getLastErrors());
+			System.out.println("Customer not create!");
+		}
+	}
+	
+	@Override
+	protected void makeDeleteCustomer() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void makeShowCustomers() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	protected void makeCreateReservation(){
+		String idCostumer = super.gui.getInput("Please insert the customer's id: ");
 		int[] idRoom = getRoomIdFromKeyboard();
 		LocalDate[] dates = getDatesFromKeyboard();
 		super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1]);
@@ -111,17 +91,34 @@ public class ControllerConcrete extends Controller {
 		}
 	}
 
-
-
-	public int checkRoomScanneredInformation() {
-		int codeOperation = 0;
-
-
-		return codeOperation;
+	@Override
+	protected void makeModifyReservation() {
+		// TODO Auto-generated method stub
+		
 	}
 
+	@Override
+	protected void makeShowReservations() {
+		// TODO Auto-generated method stub
+		
+	}
 
-	public int getRoomGuestsFromKeyboard() {
+	@Override
+	protected void makeCloseApp() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void wrongChoose() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
+
+	private int getRoomGuestsFromKeyboard() {
 		boolean continueScanneringUserInput = true;
 		int scanneredNumber = 0;
 		Scanner keyboard = new Scanner(System.in);
@@ -146,7 +143,7 @@ public class ControllerConcrete extends Controller {
 		return scanneredNumber;
 	}
 
-	public String[] getRoomServicesFromKeyboard() {
+	private String[] getRoomServicesFromKeyboard() {
 		int serviceCounter = 0, pairNumber = 0;
 		boolean continueScanneringUserInput = true, stopScanneringInput = true;
 		Scanner keyboard = new Scanner(System.in);
@@ -199,30 +196,7 @@ public class ControllerConcrete extends Controller {
 		return services;
 	}
 
-	public int getCostumerIdFromKeyboard(){
-		Scanner keyboard = new Scanner(System.in);
-		boolean continueScanneringUserInput = true;
-		int scanneredCustomerId = 0;
-
-		while(continueScanneringUserInput == true){
-			System.out.println("Please insert the customer's id: ");
-			try{
-				scanneredCustomerId = keyboard.nextInt();
-				if (scanneredCustomerId == 0){
-					System.out.println("Choice not valid!\nPlease enter a vail id");
-				} else {
-					continueScanneringUserInput = false;
-				}
-			} catch (InputMismatchException ex){
-				System.out.println("User input is not a valid value for this method.");
-				System.out.println("Exception caught: User cannot put that value as menu choice.");
-				continueScanneringUserInput = false;
-			}
-		}
-		return scanneredCustomerId;
-	}
-
-	public int[] getRoomIdFromKeyboard(){
+	private int[] getRoomIdFromKeyboard(){
 		Scanner keyboard = new Scanner(System.in);
 		boolean continueScanneringUserInput = true;
 		int idCounter = 0;
@@ -249,7 +223,7 @@ public class ControllerConcrete extends Controller {
 		return scanneredRoomIds;
 	}
 
-	public LocalDate[] getDatesFromKeyboard(){
+	private LocalDate[] getDatesFromKeyboard(){
 		Scanner keyboard = new Scanner(System.in);
 		boolean continueScanneringUserInput = true;
 		LocalDate[] scanneredDates = new LocalDate[2];
@@ -303,6 +277,8 @@ public class ControllerConcrete extends Controller {
 
 		return scanneredDates;
 	}
+
+	
 
 }
 
