@@ -1,8 +1,5 @@
 package com.links.ressys.controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -39,7 +36,7 @@ public class ControllerConcrete extends Controller {
 			}
 		}
 	}
-	
+
 	@Override
 	protected void makeDeleteRoom() {
 		String es=this.gui.getInput("Insert the ID room to delete: ");
@@ -72,7 +69,7 @@ public class ControllerConcrete extends Controller {
 			System.out.println("Customer not created!");
 		}
 	}
-	
+
 	@Override
 	protected void makeDeleteCustomer() {
 		String es1=this.gui.getInput("Insert the mail address of the customer to delete: ");
@@ -87,15 +84,12 @@ public class ControllerConcrete extends Controller {
 	protected void makeShowCustomers() {
 		super.sys.showCustomer(null);
 	}
-	
+
 	@Override
 	protected void makeCreateReservation(){
 		String idCostumer = super.gui.getInput("Please insert the customer's email: ");
-		int maxGuests = Integer.parseInt(super.gui.getInput("Please insert the number of guests: "));
-		this.sys.showRoom(s -> s.getMaxGuests() <= maxGuests);
 		int[] idRoom = getRoomIdFromKeyboard();
 		LocalDate[] dates = getDatesFromKeyboard();
-		
 		super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1]);
 		if (!super.sys.isThereAnError()) {
 			System.out.println("Reservation created successfully!");
@@ -125,13 +119,13 @@ public class ControllerConcrete extends Controller {
 	protected void makeCloseApp() {
 		System.out.println("Closing app");
 		System.exit(0);
-		
+
 	}
 
 	@Override
 	protected void wrongChoose() {
 		System.out.println("Selected item from menu' can't be used");
-		
+
 	}
 
 	private <T> void prinErrors(Iterator<T> it){
@@ -143,9 +137,9 @@ public class ControllerConcrete extends Controller {
 	}
 
 
-	
-	
-	
+
+
+
 	private int getRoomGuestsFromKeyboard() {
 		boolean continueScanneringUserInput = true;
 		int scanneredNumber = 0;
@@ -177,37 +171,23 @@ public class ControllerConcrete extends Controller {
 		Scanner keyboard = new Scanner(System.in);
 
 		String scanneredService = "", scanneredChoice = "";
-		String[] scanneredServices = new String[50];
+		ArrayList<String> scanneredServices = new ArrayList<>();
 
 		while (continueScanneringUserInput == true) {
-			System.out.println("Please enter the type of services that you want in your room: ");
+			System.out.println("Digit the word exit to stop typing services.Please enter\n"
+					+ "the type of services that you want in your room: ");
 			try {
 				scanneredService = keyboard.nextLine();
-				if (scanneredService.isEmpty() == true) {
-					System.out.println("Choice not valid!\nPlease entered a valid service");
-				}
-				if (scanneredService.matches("[0-9]+") && scanneredService.length() > 0) {
-					System.out.println("Choice not valid!\nPlease entered a valid service");
+				if (scanneredService.equals("exit")) {
+					System.out.println("Back to the main menu'");
+					continueScanneringUserInput = false;
+				} else if (scanneredService.isEmpty() == true
+						|| scanneredService.matches("[0-9]+") && scanneredService.length() > 0) {
+					System.out.println("Choice not valid!");
 				} else {
-					scanneredServices[serviceCounter] = scanneredService;
+					scanneredServices.add(scanneredService);
 					serviceCounter += 1;
 					stopScanneringInput = true;
-					if ((serviceCounter % 4) == 0) {
-						while (stopScanneringInput == true) {
-							System.out.println("Do you want to stop type? Please digit yes/no: ");
-							scanneredChoice = keyboard.nextLine();
-							if (scanneredChoice.equalsIgnoreCase("yes")) {
-								stopScanneringInput = false;
-								continueScanneringUserInput = false;
-							} else if (scanneredChoice.isEmpty() == true) {
-								System.out.println("Choice not valid!");
-							} else if (scanneredChoice.equalsIgnoreCase("no")) {
-								stopScanneringInput = false;
-							} else {
-								System.out.println("Choice not valid!");
-							}
-						}
-					}
 				}
 			} catch (InputMismatchException ex) {
 				System.out.println("User input is not a valid value for this method.");
@@ -219,10 +199,11 @@ public class ControllerConcrete extends Controller {
 		String[] services = new String[serviceCounter];
 
 		for (int i = 0; i < serviceCounter; i++) {
-			services[i] = scanneredServices[i];
+			services[i] = scanneredServices.get(i);
 		}
 		return services;
 	}
+
 
 	public int[] getRoomIdFromKeyboard(){
 		Scanner keyboard = new Scanner(System.in);
@@ -249,14 +230,14 @@ public class ControllerConcrete extends Controller {
 				continueScanneringUserInput = false;
 			}
 		}
-		
+
 		int[] roomIds = new int[scanneredRoomIds.size()];
-		
+
 		for(Integer s : scanneredRoomIds){
 			roomIds[i] = s.intValue();
 			i++;
 		}
-		
+
 		return roomIds;
 	}
 
@@ -315,7 +296,51 @@ public class ControllerConcrete extends Controller {
 		return scanneredDates;
 	}
 
-	
+	public boolean validIntegerInput(String input) {
+		boolean isValidInteger = false;
+
+		if (input.charAt(0) == '-') {
+			System.out.println(input.charAt(0));
+			if (input.length() > 10) {
+			} else {
+				isValidInteger = true;
+			}
+		} else if (input.length() <= 10) {
+			isValidInteger = true;
+		}
+
+		return isValidInteger;
+	}
+
+	public int scannerIntegerInput() {
+		boolean continueScanneringUserInput = true;
+		int scanneredNumber = 0;
+		String input = "";
+		Scanner keyboard = new Scanner(System.in);
+
+		while (continueScanneringUserInput == true) {
+			System.out.println("Please enter the number of guests: ");
+			try {
+				input = keyboard.nextLine();
+				if (input.isEmpty() == true) {
+				} else if (input.matches("[0-9]+") && input.length() > 0) {
+					if (validIntegerInput(input) == true) {
+						scanneredNumber = Integer.parseInt(input);
+						continueScanneringUserInput = false;
+					} else {
+						System.out.println("Choice not valid!\nPlease entered a valid number of guests.");
+					}
+				} else {
+					System.out.println("Choice not valid!\nPlease entered a valid number of guests.");
+				}
+			} catch (InputMismatchException ex) {
+				System.out.println("User input is not a valid value for this method.");
+				System.out.println("Exception caught: User cannot put that value as menu choice.");
+				break;
+			}
+		}
+
+		return scanneredNumber;
+	}
 
 }
-
