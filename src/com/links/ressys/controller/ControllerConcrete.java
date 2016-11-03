@@ -282,13 +282,10 @@ public class ControllerConcrete extends Controller {
 		if (input.charAt(0) == '-') {
 			System.out.println(input.charAt(0));
 			if (input.length() > 10) {
-				System.out.println("input non valido!");
 			} else {
-				System.out.println("input valido!");
 				isValidInteger = true;
 			}
 		} else if (input.length() <= 10) {
-			System.out.println("input valido!");
 			isValidInteger = true;
 		}
 
@@ -306,9 +303,7 @@ public class ControllerConcrete extends Controller {
 			try {
 				input = keyboard.nextLine();
 				if (input.isEmpty() == true) {
-					System.out.println("Non hai messo niente");
 				} else if (input.matches("[0-9]+") && input.length() > 0) {
-					System.out.println("hai messo: " + input);
 					if (validIntegerInput(input) == true) {
 						scanneredNumber = Integer.parseInt(input);
 						continueScanneringUserInput = false;
