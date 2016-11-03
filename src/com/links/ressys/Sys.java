@@ -1,10 +1,11 @@
 package com.links.ressys;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
+
 
 import com.links.ressys.checker.Checker;
 import com.links.ressys.checker.CheckerCustomer;
@@ -22,7 +23,7 @@ import com.links.ressys.database.DBConnection;
 public class Sys {
 	private ArrayList<Room> roomList;
 	private ArrayList<Customer> customerList;
-	private ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
+	private ArrayList<Reservation> reservationList;
 	private ArrayList<Integer> lastErrors;
 	private DBConnection db;
 	
@@ -32,22 +33,18 @@ public class Sys {
 		try {
 			this.customerList = this.db.getCustomers();
 			this.roomList = this.db.getRooms();
+//			this.reservationList = this.db.getReservations();
 		} catch (Exception e) {
 			this.customerList = new ArrayList<Customer>();
 			this.roomList = new ArrayList<Room>();
+//			this.reservationList = new ArrayList<Reservation>();
 			e.printStackTrace();
 		}
 		
-		Room[] roomArrayCrt1 = {roomList.get(0)};
-		Reservation reservationCrt1= new ReservationConcrete(customerList.get(0), roomArrayCrt1, 201, LocalDate.of(2014, Month.FEBRUARY, 11), LocalDate.of(2014, Month.FEBRUARY, 23));
-		reservationList.add(reservationCrt1);
-		Room[] roomArrayCrt2 = {roomList.get(1), roomList.get(2)};
-		Reservation reservationCrt2= new ReservationConcrete(customerList.get(1), roomArrayCrt2, 202, LocalDate.of(2015, Month.FEBRUARY, 15), LocalDate.of(2015, Month.FEBRUARY, 17));
-		reservationList.add(reservationCrt2);
 	}
 	
-	public ArrayList<Integer> getLastErrors(){
-		return this.lastErrors;
+	public Iterator<Integer> getLastErrors(){
+		return this.lastErrors.iterator();
 	}
 	
 	public boolean isThereAnError() {
@@ -79,12 +76,20 @@ public class Sys {
 		}
 	}
 	
-	public void createReservation(int customerId, int[] roomIds, LocalDate startDate, LocalDate endDate){
-	    Customer customer = this.customerList.get(customerId);
+	public void createReservation(String mailAddress, int[] roomIds, LocalDate startDate, LocalDate endDate){
 	    Room[] rooms = new Room[roomIds.length];
-	    
+	    Customer customer = null;
+	    for(Customer c : this.customerList){
+    		if(c.getMailAddress().equals(mailAddress)){
+    			customer = c;
+    		}
+    	}
 	    for (int i=0; i < roomIds.length; i++){
-	      rooms[i] = this.roomList.get(roomIds[i]);
+	    	for(Room r : this.roomList){
+	    		if(r.getRoomId() == roomIds[i]){
+	    			rooms[i] = r;
+	    		}
+	    	}
 	    }
 	    
 	    Reservation reservation = new ReservationConcrete(customer, rooms, this.db.getMaxReservationId()+1, startDate, endDate);
@@ -216,57 +221,50 @@ public class Sys {
 
 	public boolean deleteRoom(int roomId){
 		boolean roomRemoved = false;
-		for(Room r: this.roomList){
-			if(r.getRoomId()==roomId){
-				roomList.remove(r);
-				roomRemoved = true;
+		Iterator<Room> itRoom=roomList.iterator();
+		while(itRoom.hasNext()){
+			Room ro=itRoom.next();
+			if(ro.getRoomId()==roomId){
+				itRoom.remove();
+				roomRemoved=true;
+			}else{
+				;
 			}
 		}
-		if(roomRemoved){
-			this.db.deleteRoom(roomId);
-			System.out.println("Room "+roomId+" deleted");
-			return roomRemoved;
-		}
-		else{
-			System.out.println("Room not exists");
-			return roomRemoved;
-		}
+		return roomRemoved;
 	}
 
 	public boolean deleteCustomer(String mailAddress){
 		boolean customerRemoved = false;
-		for(Customer c: this.customerList){
-			if(c.getMailAddress()==mailAddress){
-				customerList.remove(c);
-				customerRemoved = true;
-			}
-		}
-		if(customerRemoved){
-			this.db.deleteCustomer(mailAddress);
-			System.out.println("Customer with "+mailAddress+" address deleted");
-			return customerRemoved;
-		}
-		else{
-			System.out.println("Customer not exists");
-			return customerRemoved;
-		}
-
+		Iterator<Customer> itCustomer=customerList.iterator();
+		while(itCustomer.hasNext()){
+			Customer cust=itCustomer.next();
+			if(cust.getMailAddress().equals(mailAddress)){
+				itCustomer.remove();
+				customerRemoved=true;
+			}else{
+				;
+		    }
+		}return customerRemoved;
 	}
+		
+
 
 	public boolean deleteReservation(int reservationId){
 		boolean reservationRemoved = false;
-		for(Reservation rs: this.reservationList){
-			if(rs.getReservationId()==reservationId){
-				reservationList.remove(rs);
-				reservationRemoved = true;
+		Iterator<Reservation> itReservation=reservationList.iterator();
+		while(itReservation.hasNext()){
+			Reservation res=itReservation.next();
+			if(res.getReservationId()==reservationId){
+				itReservation.remove();
+				reservationRemoved=true;
+			}else{
+				;
 			}
-		}
-		if(reservationRemoved){
-			System.out.println("Reservation "+reservationId+" deleted");
+		}if(reservationRemoved){
 			return reservationRemoved;
-		}
-		else{
-			System.out.println("Reservation not exists");
+		}else{
+			System.out.println("Reservation not found");
 			return reservationRemoved;
 		}
 	}
