@@ -40,18 +40,26 @@ public class ControllerConcrete extends Controller {
 
 	}
 	
-	private int[] transformInIntegers(String s){
-		String[] array = s.split(",");
+	private int[] transformInInteger(String s) {
+	    String[] array = s.split(",");
+	    int[] intArray;
 	    ArrayList list = new ArrayList();
 	    int i = 0;
-	    for(String str : array) {
+	    for (String str : array) {
 	      list.add(str.trim());
 	    }
 	    String[] strings = new String[list.size()];
-	    list.toArray(array);
-	    return array;
-
-	}
+	    intArray = new int[list.size()];
+	    i = 0;
+	    for(String x : strings) {
+	      try {
+	        intArray[i++] = Integer.parseInt(x);
+	      } catch(NumberFormatException e) {
+	        return null;
+	      }
+	    }
+	    return intArray;
+	  }
 	
 	private String controlIfDate(String s){
 		try {
@@ -63,18 +71,17 @@ public class ControllerConcrete extends Controller {
 	}
 	
 	protected void makeCreateRoom(){
-		int maxGuest = this.controlIfInteger(this.gui.getInput("Max guest for room: "));
-		if(maxGuest == -1){
-			System.out.println("Room not created: insert a numeric value");
+		int maxGuest = -1;
+		while(maxGuest == -1){
+			maxGuest = this.controlIfInteger(this.gui.getInput("Max guest for room (numeric value): "));
+		}
+		String[] services = this.transformInArray(this.gui.getInput("Insert services (separated by comma): "));
+		super.sys.createRoom(maxGuest, services);
+		if(!super.sys.isThereAnError()) {
+			System.out.println("Room created");
 		} else {
-			String[] services = this.transformInArray(this.gui.getInput("Insert services (separated by comma): "));
-			super.sys.createRoom(maxGuest, services);
-			if(!super.sys.isThereAnError()) {
-				System.out.println("Room created");
-			} else {
-				this.prinErrors(super.sys.getLastErrors());
-				System.out.println("Room not created");
-			}
+			this.prinErrors(super.sys.getLastErrors());
+			System.out.println("Room not created");
 		}
 	}
 	
@@ -134,8 +141,7 @@ public class ControllerConcrete extends Controller {
 		String idCostumer = super.gui.getInput("Please insert the customer's email: ");
 		int maxGuests = Integer.parseInt(super.gui.getInput("Please insert the number of guests: "));
 		this.sys.showRoom(s -> s.getMaxGuests() <= maxGuests);
-		String[] idRoomString = this.transformInArray(this.gui.getInput("Insert the ID room to delete: "));
-		int[] = 
+		int[] idRoom = this.transformInInteger(this.gui.getInput("Insert the ID room to delete: "));
 		LocalDate[] dates = getDatesFromKeyboard();
 		
 		super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1]);
@@ -146,7 +152,20 @@ public class ControllerConcrete extends Controller {
 			System.out.println("Reservation not created!");
 		}
 	}
-
+	
+	protected void makeDeleteReservation() {
+	    int reservationId = this.controlIfInteger(this.gui.getInput("Insert the ID reservation to update: "));
+	    if(reservationId == -1)
+	      System.out.println("Insert a correct ID.");
+	    else {
+	      if (super.sys.deleteReservation(reservationId)) {
+	        System.out.println("Reservation with ID " + reservationId + " deleted ");
+	      } else {
+	        System.out.println("The reservation with ID " + reservationId + " has not been found");
+	      }
+	    }
+	  }
+	
 	@Override
 	protected void makeModifyReservation() {
 		String es2=this.gui.getInput("Insert the ID reservation to delete: ");

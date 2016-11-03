@@ -10,7 +10,7 @@ import com.links.ressys.statuscodes.*;
 public class CheckerCustomer implements Checker {
 
 	private Customer customer;
-	private String regexName = "/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u";
+	private String regexName = "^\\pL+[\\pL\\pZ\\pP]{0,}$";
 	private String regexTax = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
 	private String regexNum = "^\\+[1-9]{1}[0-9]{1,14}$";
 	private String regexMail = "^(.+)@(.+)$";
@@ -53,7 +53,7 @@ public class CheckerCustomer implements Checker {
 
 		if (customer.getName().equals("")){
 			return CustomerCode.EMPTY_NAME.getCode();
-		} else if (customer.getName().length() < 255){
+		} else if (customer.getName().length() > 255){
 			return CustomerCode.WRONG_NAME.getCode();
 		} else if (!customer.getName().matches(regexName)){
 			return CustomerCode.WRONG_NAME.getCode();
@@ -65,7 +65,7 @@ public class CheckerCustomer implements Checker {
 	private int checkSurname() {
 		if (customer.getSurname().equals("")){
 			return CustomerCode.EMPTY_SURNAME.getCode();
-		} else if (customer.getSurname().length() < 255){
+		} else if (customer.getSurname().length() > 255){
 			return CustomerCode.WRONG_SURNAME.getCode();
 		} else if (!customer.getSurname().matches(regexName)){
 			return CustomerCode.WRONG_SURNAME.getCode();
