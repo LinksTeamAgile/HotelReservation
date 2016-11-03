@@ -8,6 +8,7 @@
 ```
 JRE v1.8 installed
 (Optional) Eclipse IDE
+(Optional) sqlite-jdbc-3.8.11.2
 
 ```
 
@@ -15,7 +16,8 @@ JRE v1.8 installed
 
 ```
 1. Import the repository into the Eclipse IDE Workspace as new Java project 
-2. Compile and execute the project
+2. Import the SQLite JDBC driver v3.8.11.2 into the project
+3. Compile and execute the project
 
 ```
 
