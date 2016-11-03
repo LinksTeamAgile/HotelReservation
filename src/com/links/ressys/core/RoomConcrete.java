@@ -9,13 +9,15 @@ public class RoomConcrete extends Room{
 	private boolean isAvailable;
 	private int maxGuests;
 	private String[] services;
+	private double priceRoom;
 	
-	public RoomConcrete(int roomId, boolean isServiceable, boolean isAvailable, int maxGuests, String[] services) {
+	public RoomConcrete(int roomId, boolean isServiceable, boolean isAvailable, int maxGuests, String[] services, double priceRoom) {
 		this.roomId = roomId;
 		this.isServiceable = isServiceable;
 		this.isAvailable = isAvailable;
 		this.maxGuests = maxGuests;
 		this.services = services;
+		this.priceRoom = priceRoom;
 	}
 
 	public int getRoomId() {
@@ -62,6 +64,14 @@ public class RoomConcrete extends Room{
 	public String toString() {
 		return "Room " + roomId + ":\n\tIs Serviceable = " + isServiceable + "\n\tIs Available = " + isAvailable
 				+ "\n\tMax Guests = " + maxGuests + "\n\tServices = " + Arrays.toString(services) + "\n";
+	}
+
+	public double getPriceRoom() {
+		return priceRoom;
+	}
+
+	public void setPriceRoom(double priceRoom) {
+		this.priceRoom = priceRoom;
 	}
 
 }

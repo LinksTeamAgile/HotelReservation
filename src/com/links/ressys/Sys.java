@@ -57,7 +57,7 @@ public class Sys {
 	}
 	
 	public void createRoom(int maxGuests, String[] services){
-		Room room = new RoomConcrete(this.db.getMaxRoomId()+1, true, true, maxGuests, services);
+		Room room = new RoomConcrete(this.db.getMaxRoomId()+1, true, true, maxGuests, services, 0);
 		Checker checker = new CheckerRoom(room);
 		this.lastErrors = checker.check();
 		if(!this.isThereAnError()) {
