@@ -23,7 +23,7 @@ public class SQLiteDBC implements DBConnection {
 	private final String DB_PATH = new Main().getProperty("db_path");
 	private final String S_DRIVER_NAME = "org.sqlite.JDBC";
 	
-	//private static final String DB_PATH = "/Users/userm01/Desktop/Workspace/HotelReservation/res/db/HotelReservation.sqlite";
+	//private static final String DB_PATH = "/Users/userm06/git/HotelReservation/res/db/HotelReservation.sqlite";
 	
 	private void initializationDriver(){
 		try {
@@ -519,47 +519,127 @@ public class SQLiteDBC implements DBConnection {
 		
 		return result;
 	}
+	public boolean updateCustomer(Customer c){
+		boolean result = false;
+		
+		int customerId = getCustomerId(c);
+		
+		String sql = "UPDATE customer SET name=?, surname=?, mailAddress=?, cellPhoneNumber=?, cardNumber=?, taxCode=? WHERE  idCustomer =" + customerId;
+		
+		initializationDriver();
+		
+		try(PreparedStatement ps = connectionPreparedStatement(sql)) {
+			
+			ps.setString(1, c.getName());
+			ps.setString(2, c.getSurname());
+			ps.setString(3, c.getMailAddress());
+			ps.setString(4, c.getCellPhoneNumber());
+			ps.setString(5, c.getCardNumber());
+			ps.setString(6, c.getTaxCode());
+			
+			ps.executeUpdate();
+			
+			result = true;
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	public boolean updateReservation(Reservation oldReservation, Reservation newReservation){
+		boolean result = false;
+		
+		deleteReservation(oldReservation);
+		
+		createFirstReservationById(newReservation, newReservation.getRooms()[0], newReservation.getReservationId());
+		for(int i=1; i<newReservation.getRooms().length; i++)
+			createFirstReservationById(newReservation, newReservation.getRooms()[i], null);
+		
+		result = true;
+		
+		return result;
+	}
+	
+	private boolean createFirstReservationById(Reservation r, Room room, Integer reservationId){
+		boolean result = false;
+		
+		int idCustomer = getCustomerId(r.getCustomer());
+		LocalDate startDate = r.getStartDate();
+		LocalDate endDate = r.getEndDate();
+		
+		String sql = "INSERT INTO reservation ( ";
+		
+		//SE E' PRESENTE IL reservetionId
+		if(reservationId!=null)
+			sql+="idReservation,";
+		sql+="idCustomer, idRoom , startDate, endDate ) VALUES (";
+		
+		if(reservationId!=null)
+			sql+="?,";
+		sql+=" ?, ?, ?, ? )";
+		
+		initializationDriver();
+		
+		try(PreparedStatement ps = connectionPreparedStatement(sql)) {
+			
+			int i=1;
+			
+			if(reservationId!=null){
+				ps.setInt(i, r.getReservationId());
+				i++;
+			}
+				
+			ps.setInt(i, idCustomer);
+			i++;
+			ps.setInt(i, room.getRoomId());
+			i++;
+			ps.setString(i, startDate.toString());
+			i++;
+			ps.setString(i, endDate.toString());
+			
+			ps.executeUpdate();
+			
+			result = true;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 //	public static void main(String[] args){
 //		try {
-////			String[] sss={"asdasd","adasdsa"};
-////			System.out.println( createCustomer(new CustomerConcrete("alberto","sanso","dfasf@fdsfs.com","551662626","sdasdas65sadasd",112232125)) );
-////			System.out.println( createRoom(new RoomConcrete(500, true, true,4, sss)) );
-////			System.out.println( deleteRoom(201) );
-////			System.out.println(deleteCustomer("sdasdas65sadasd"));
-////			System.out.println( getMaxRoomId() );
-//			
-////			DBConnection db = new SQLiteDBC();
-////			ArrayList<Customer> listcust = db.getCustomers();
-////			
-////			for (Customer customer : listcust) {
-////				System.out.println(customer);
-////			}
 //			
 //			
-////			ArrayList<Room> listroom = getRooms();
-////			RoomConcrete[] rooom = new RoomConcrete[1];
-////			rooom[0]=(RoomConcrete)listroom.get(0);
+//			//ArrayList<Room> listroom = getRooms();
+//			RoomConcrete[] rooom = new RoomConcrete[1];
+//			//rooom[0]=(RoomConcrete)listroom.get(0);
 //			
 ////			System.out.println( getCustomerId(new CustomerConcrete("", "", "", "", "jbanksrr@squidoo.com",	55565) ) );
-////			ReservationConcrete rescon = new ReservationConcrete(cust, rooom, 1000, new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime(), new GregorianCalendar(2014, Calendar.MARCH, 11).getTime());
+//			
 ////			System.out.println( createReservation(rescon) );
 //			//System.out.println(getRoom(202).toString());
 //			
-//			Customer c = new CustomerConcrete("830", "Anaël", "Cunningham", "86-(346)230-2445", "bcunninghamn1@independent.co.uk", "1774163401189303");
-//			Room r1 = new RoomConcrete(94, true, true, 3, "tv wifi".split(" "));
-//			Room r2 = new RoomConcrete(32, false, false, 3, "platea dictumst morbi vestibulum velit id pretium iaculis diam erat fermentum justo nec".split(" "));
-//			Room r3 = new RoomConcrete(19, false, true, 3, "massa id nisl venenatis lacinia".split(" "));
-//			LocalDate sD = LocalDate.of(2017, 2, 28);
-//			LocalDate eD = LocalDate.of(2017, 4, 1);
-//			Room[] rs = new RoomConcrete[3];
-//			rs[0] = r1;
-//			rs[1] = r2;
-//			rs[2] = r3;
+//			Customer c = new CustomerConcrete("243", "Uò", "Lawrence", "1-(962)355-3362", "mlawrence6q@deviantart.com", "2326104195049430");
+//			LocalDate sD = LocalDate.of(2017, 4, 2);
+//			LocalDate eD = LocalDate.of(2017, 2, 21);
+//			Room r1 = new RoomConcrete(111, true, true, 3, "tv wifi".split(" "));
+//			ReservationConcrete rescon = new ReservationConcrete(c, rooom, 4, sD, eD);
 //			
-//			Reservation r = new ReservationConcrete(c, rs, 500, sD, eD);
+////			Room r2 = new RoomConcrete(32, false, false, 3, "platea dictumst morbi vestibulum velit id pretium iaculis diam erat fermentum justo nec".split(" "));
+////			Room r3 = new RoomConcrete(19, false, true, 3, "massa id nisl venenatis lacinia".split(" "));
 //			
-//			updateRoom(r1);
+////			Room[] rs = new RoomConcrete[3];
+////			rs[0] = r1;
+////			rs[1] = r2;
+////			rs[2] = r3;
+////			
+////			Reservation r = new ReservationConcrete(c, rs, 500, sD, eD);
+////			
+////			createFirstReservationById(rescon, r1, rescon.getReservationId() );
+//			createFirstReservationById(rescon, r1, null );
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
