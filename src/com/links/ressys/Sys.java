@@ -76,7 +76,7 @@ public class Sys {
 		}
 	}
 	
-	public void createReservation(String mailAddress, int[] roomIds, LocalDate startDate, LocalDate endDate){
+	public Reservation createReservation(String mailAddress, int[] roomIds, LocalDate startDate, LocalDate endDate, boolean onDb){
 	    Room[] rooms = new Room[roomIds.length];
 	    Customer customer = null;
 	    for(Customer c : this.customerList){
@@ -96,9 +96,12 @@ public class Sys {
 		Checker checker = new CheckerReservation(reservation);
 		this.lastErrors = checker.check();
 		if(!this.isThereAnError()) {
-			reservationList.add(reservation);
-			this.db.createReservation(reservation);
+			if(onDb){
+				reservationList.add(reservation);
+				this.db.createReservation(reservation);
+			}
 		}
+		return reservation;
 	}
 	
 	public List<Room> showRoom(Predicate<Room> pred) {
@@ -257,6 +260,7 @@ public class Sys {
 			Reservation res=itReservation.next();
 			if(res.getReservationId()==reservationId){
 				itReservation.remove();
+				this.db.deleteReservation(res);
 				reservationRemoved=true;
 			}else{
 				;
@@ -267,6 +271,21 @@ public class Sys {
 			System.out.println("Reservation not found");
 			return reservationRemoved;
 		}
+	}
+	
+	public boolean updateReservation(Reservation newReservation, int idOld){
+		Iterator<Reservation> itReservation=reservationList.iterator();
+		Reservation resOld= null;
+		while(itReservation.hasNext()){
+			resOld=itReservation.next();
+			if(resOld.getReservationId()==idOld){
+				itReservation.remove();
+				newReservation.setReservationId(idOld);
+				reservationList.add(newReservation);
+				return this.db.updateReservation(resOld, newReservation);
+			}
+		}
+		return false;
 	}
 
 

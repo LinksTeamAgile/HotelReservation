@@ -29,5 +29,7 @@ public interface DBConnection {
 	int getMaxRoomId();
 	
 	int getMaxReservationId();
+	
+	boolean updateReservation(Reservation oldReservation, Reservation newReservation);
 
 }

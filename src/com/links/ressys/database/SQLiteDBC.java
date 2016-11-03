@@ -258,7 +258,7 @@ public class SQLiteDBC implements DBConnection {
 		String price = result.split(",")[4];
 		
 		String query ="SELECT idRoom FROM reservation WHERE idCustomer = "+customerId+
-						" AND startDate = '"+startDate+"' AND endDate = '"+endDate+"' AND price = "+price;
+						" AND startDate = '"+startDate+"' AND endDate = '"+endDate+"'";
 		initializationDriver();
 		
 		try(ResultSet rs = connectionResulSet(query)) {
@@ -413,6 +413,7 @@ public class SQLiteDBC implements DBConnection {
 			ps.setInt(2, idR);
 			ps.setString(3, startDate);
 			ps.setString(4, endDate);
+			System.out.println(ps);
 			ps.executeUpdate();
 			result = true;
 					
