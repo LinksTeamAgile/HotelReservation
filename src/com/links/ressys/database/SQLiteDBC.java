@@ -19,13 +19,13 @@ import com.links.ressys.core.RoomConcrete;
 
 public class SQLiteDBC implements DBConnection {
 
-	private final String JDBC_TYPE = "jdbc:sqlite:";
-	private final String DB_PATH = new Main().getProperty("db_path");
-	private final String S_DRIVER_NAME = "org.sqlite.JDBC";
+	private static final String JDBC_TYPE = "jdbc:sqlite:";
+	//private static final String DB_PATH = new Main().getProperty("db_path");
+	private static final String S_DRIVER_NAME = "org.sqlite.JDBC";
 	
-	//private static final String DB_PATH = "/Users/userm01/Desktop/Workspace/HotelReservation/res/db/HotelReservation.sqlite";
+	private static final String DB_PATH = "/Users/userm06/git/HotelReservation/res/db/HotelReservation.sqlite";
 	
-	private void initializationDriver(){
+	private static void initializationDriver(){
 		try {
 			Class.forName(S_DRIVER_NAME);
 		} catch (ClassNotFoundException e) {
@@ -33,7 +33,7 @@ public class SQLiteDBC implements DBConnection {
 		}
 	}
 	
-	private ResultSet connectionResulSet(String query){
+	private static ResultSet connectionResulSet(String query){
 		Connection con = null;
 		ResultSet rs = null;
 		try {
@@ -47,7 +47,7 @@ public class SQLiteDBC implements DBConnection {
 		return rs;
 	}
 	
-	private PreparedStatement connectionPreparedStatement(String query){
+	private static PreparedStatement connectionPreparedStatement(String query){
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
@@ -457,7 +457,7 @@ public class SQLiteDBC implements DBConnection {
 		return maxId;
 	}
 	
-	private int getCustomerId(Customer customer){
+	private static int getCustomerId(Customer customer){
 		int maxId = 0;
 		String query = "SELECT idCustomer FROM customer WHERE mailAddress = '"+customer.getMailAddress()+"'";
 		
@@ -509,34 +509,47 @@ public class SQLiteDBC implements DBConnection {
 		
 		return result;
 	}
-	
-//	public static void main(String[] args){
-//		try {
-////			String[] sss={"asdasd","adasdsa"};
-////			System.out.println( createCustomer(new CustomerConcrete("alberto","sanso","dfasf@fdsfs.com","551662626","sdasdas65sadasd",112232125)) );
-////			System.out.println( createRoom(new RoomConcrete(500, true, true,4, sss)) );
-////			System.out.println( deleteRoom(201) );
-////			System.out.println(deleteCustomer("sdasdas65sadasd"));
-////			System.out.println( getMaxRoomId() );
-//			
-////			DBConnection db = new SQLiteDBC();
-////			ArrayList<Customer> listcust = db.getCustomers();
-////			
-////			for (Customer customer : listcust) {
-////				System.out.println(customer);
-////			}
-//			
-//			
-////			ArrayList<Room> listroom = getRooms();
-////			RoomConcrete[] rooom = new RoomConcrete[1];
-////			rooom[0]=(RoomConcrete)listroom.get(0);
-//			
-////			System.out.println( getCustomerId(new CustomerConcrete("", "", "", "", "jbanksrr@squidoo.com",	55565) ) );
-////			ReservationConcrete rescon = new ReservationConcrete(cust, rooom, 1000, new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime(), new GregorianCalendar(2014, Calendar.MARCH, 11).getTime());
-////			System.out.println( createReservation(rescon) );
-//			//System.out.println(getRoom(202).toString());
-//			
-//			Customer c = new CustomerConcrete("830", "Anaël", "Cunningham", "86-(346)230-2445", "bcunninghamn1@independent.co.uk", "1774163401189303");
+	public static boolean updateCustomer(Customer c){
+		boolean result = false;
+		
+		int customerId = getCustomerId(c);
+		
+		String sql = "UPDATE customer SET name=?, surname=?, mailAddress=?, cellPhoneNumber=?, cardNumber=?, taxCode=? WHERE  idCustomer =" + customerId;
+		
+		initializationDriver();
+		
+		try(PreparedStatement ps = connectionPreparedStatement(sql)) {
+			
+			ps.setString(1, c.getName());
+			ps.setString(2, c.getSurname());
+			ps.setString(3, c.getMailAddress());
+			ps.setString(4, c.getCellPhoneNumber());
+			ps.setString(5, c.getCardNumber());
+			ps.setString(6, c.getTaxCode());
+			
+			ps.executeUpdate();
+			
+			result = true;
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	public static void main(String[] args){
+		try {
+			
+//			ArrayList<Room> listroom = getRooms();
+//			RoomConcrete[] rooom = new RoomConcrete[1];
+//			rooom[0]=(RoomConcrete)listroom.get(0);
+			
+//			System.out.println( getCustomerId(new CustomerConcrete("", "", "", "", "jbanksrr@squidoo.com",	55565) ) );
+//			ReservationConcrete rescon = new ReservationConcrete(cust, rooom, 1000, new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime(), new GregorianCalendar(2014, Calendar.MARCH, 11).getTime());
+//			System.out.println( createReservation(rescon) );
+			//System.out.println(getRoom(202).toString());
+			
+			Customer c = new CustomerConcrete("830", "alib", "fddfdffd", "86-(346)230-2445", "bcunninghamn1@independent.co.uk", "1774163401189303");
 //			Room r1 = new RoomConcrete(94, true, true, 3, "tv wifi".split(" "));
 //			Room r2 = new RoomConcrete(32, false, false, 3, "platea dictumst morbi vestibulum velit id pretium iaculis diam erat fermentum justo nec".split(" "));
 //			Room r3 = new RoomConcrete(19, false, true, 3, "massa id nisl venenatis lacinia".split(" "));
@@ -549,11 +562,11 @@ public class SQLiteDBC implements DBConnection {
 //			
 //			Reservation r = new ReservationConcrete(c, rs, 500, sD, eD);
 //			
-//			updateRoom(r1);
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+			updateCustomer(c);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 }
