@@ -23,7 +23,7 @@ import com.links.ressys.database.DBConnection;
 public class Sys {
 	private ArrayList<Room> roomList;
 	private ArrayList<Customer> customerList;
-	private ArrayList<Reservation> reservationList = new ArrayList<>();
+	private ArrayList<Reservation> reservationList;
 	private ArrayList<Integer> lastErrors;
 	private DBConnection db;
 	
@@ -33,11 +33,11 @@ public class Sys {
 		try {
 			this.customerList = this.db.getCustomers();
 			this.roomList = this.db.getRooms();
-//			this.reservationList = this.db.getReservations();
+			this.reservationList = this.db.getReservations();
 		} catch (Exception e) {
 			this.customerList = new ArrayList<Customer>();
 			this.roomList = new ArrayList<Room>();
-//			this.reservationList = new ArrayList<Reservation>();
+			this.reservationList = new ArrayList<Reservation>();
 			e.printStackTrace();
 		}
 		

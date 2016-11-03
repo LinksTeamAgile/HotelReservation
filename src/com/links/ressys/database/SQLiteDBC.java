@@ -274,11 +274,11 @@ public class SQLiteDBC implements DBConnection {
 			Room[] roomArray = new Room[room.size()];
 
 			//da rifare assolutamente con dateformatter
-			String[] startDateArray = startDate.split("/");
-			String[] endDateArray = endDate.split("/");
+			String[] startDateArray = startDate.split("-");
+			String[] endDateArray = endDate.split("-");
 
-			LocalDate startDateLD = LocalDate.of(Integer.parseInt(startDateArray[2]), Integer.parseInt(startDateArray[0]), Integer.parseInt(startDateArray[1]));
-			LocalDate endDateLD = LocalDate.of(Integer.parseInt(endDateArray[2]), Integer.parseInt(endDateArray[0]), Integer.parseInt(endDateArray[1]));
+			LocalDate startDateLD = LocalDate.of(Integer.parseInt(startDateArray[0]), Integer.parseInt(startDateArray[1]), Integer.parseInt(startDateArray[2]));
+			LocalDate endDateLD = LocalDate.of(Integer.parseInt(endDateArray[0]), Integer.parseInt(endDateArray[1]), Integer.parseInt(endDateArray[2]));
 			
 			
 			reservation = new ReservationConcrete(customer, 
@@ -625,7 +625,7 @@ public class SQLiteDBC implements DBConnection {
 ////			System.out.println( createReservation(rescon) );
 //			//System.out.println(getRoom(202).toString());
 //			
-//			Customer c = new CustomerConcrete("243", "Uò", "Lawrence", "1-(962)355-3362", "mlawrence6q@deviantart.com", "2326104195049430");
+//			Customer c = new CustomerConcrete("243", "Uï¿½", "Lawrence", "1-(962)355-3362", "mlawrence6q@deviantart.com", "2326104195049430");
 //			LocalDate sD = LocalDate.of(2017, 4, 2);
 //			LocalDate eD = LocalDate.of(2017, 2, 21);
 //			Room r1 = new RoomConcrete(111, true, true, 3, "tv wifi".split(" "),50.00);
