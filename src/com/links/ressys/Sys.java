@@ -92,7 +92,7 @@ public class Sys {
 	    	}
 	    }
 	    
-	    Reservation reservation = new ReservationConcrete(customer, rooms, this.db.getMaxReservationId()+1, startDate, endDate);
+	    Reservation reservation = new ReservationConcrete(customer, rooms, this.db.getMaxReservationId()+1, startDate, endDate, 0);
 		Checker checker = new CheckerReservation(reservation);
 		this.lastErrors = checker.check();
 		if(!this.isThereAnError()) {

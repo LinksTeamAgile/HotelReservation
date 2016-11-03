@@ -23,4 +23,8 @@ public abstract class Reservation{
 	public abstract LocalDate getEndDate();
 
 	public abstract void setEndDate(LocalDate endDate);
+	
+	public abstract double getCost();
+
+	public abstract void setCost(double cost);
 }
