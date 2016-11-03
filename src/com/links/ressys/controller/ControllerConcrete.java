@@ -39,7 +39,7 @@ public class ControllerConcrete extends Controller {
 			}
 		}
 	}
-	
+
 	@Override
 	protected void makeDeleteRoom() {
 		String es=this.gui.getInput("Insert the ID room to delete: ");
@@ -72,7 +72,7 @@ public class ControllerConcrete extends Controller {
 			System.out.println("Customer not created!");
 		}
 	}
-	
+
 	@Override
 	protected void makeDeleteCustomer() {
 		String es1=this.gui.getInput("Insert the mail address of the customer to delete: ");
@@ -87,7 +87,7 @@ public class ControllerConcrete extends Controller {
 	protected void makeShowCustomers() {
 		super.sys.showCustomer(null);
 	}
-	
+
 	@Override
 	protected void makeCreateReservation(){
 		String idCostumer = super.gui.getInput("Please insert the customer's email: ");
@@ -122,13 +122,13 @@ public class ControllerConcrete extends Controller {
 	protected void makeCloseApp() {
 		System.out.println("Closing app");
 		System.exit(0);
-		
+
 	}
 
 	@Override
 	protected void wrongChoose() {
 		System.out.println("Selected item from menu' can't be used");
-		
+
 	}
 
 	private <T> void prinErrors(Iterator<T> it){
@@ -140,9 +140,9 @@ public class ControllerConcrete extends Controller {
 	}
 
 
-	
-	
-	
+
+
+
 	private int getRoomGuestsFromKeyboard() {
 		boolean continueScanneringUserInput = true;
 		int scanneredNumber = 0;
@@ -246,14 +246,14 @@ public class ControllerConcrete extends Controller {
 				continueScanneringUserInput = false;
 			}
 		}
-		
+
 		int[] roomIds = new int[scanneredRoomIds.size()];
-		
+
 		for(Integer s : scanneredRoomIds){
 			roomIds[i] = s.intValue();
 			i++;
 		}
-		
+
 		return roomIds;
 	}
 
@@ -286,9 +286,10 @@ public class ControllerConcrete extends Controller {
 						scannerCounter += 1;
 						continueScanneringUserInput = false;
 					}
-				} 
+				}
 			} catch (InputMismatchException ex){
 				System.out.println("User input is not a valid value for this method.");
+				System.out.println("Exception caught: User cannot put that value as menu choice.");
 				System.out.println("Exception caught: User cannot put that value as menu choice.");
 				continueScanneringUserInput = false;
 			}
@@ -312,7 +313,7 @@ public class ControllerConcrete extends Controller {
 		return scanneredDates;
 	}
 
-	
+
 
 }
 
