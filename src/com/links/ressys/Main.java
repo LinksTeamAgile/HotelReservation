@@ -13,10 +13,9 @@ import com.links.ressys.gui.*;
 
 public class Main {
 	
-	private static Main mn = null;
-	private Properties prop;
+	private static Properties prop;
 	
-	private Main(){
+	static{
 		prop = new Properties();
 		try(InputStream input = new FileInputStream("res/configs/config.properties")) {
 			prop.load(input);
@@ -25,13 +24,6 @@ public class Main {
 			System.err.println("MAKE A CONFIG FILE AS SPECIFIED ON THE README.md");
 			System.exit(1);
 		}
-	}
-	
-	public static Main getMain(){
-		if(mn == null){
-			mn = new Main();
-		}
-		return mn;
 	}
 		
 	

@@ -40,9 +40,9 @@ public class GuiBash implements Gui, Closeable, AutoCloseable {
 		System.out.println("4 - Create customer.");
 		System.out.println("5 - Delete customer.");
 		System.out.println("6 - Show customers.");
-//		System.out.println("7 - Create reservation.");
-		System.out.println("8 - Delete reservation.");
-		System.out.println("9 - Show reservations.");
+		System.out.println("7 - Create reservation.");
+//		System.out.println("8 - Modify reservation.");
+//		System.out.println("9 - Show reservations.");
 		System.out.println("0 - Exit");
 	}
 

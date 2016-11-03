@@ -1,7 +1,6 @@
 package com.links.ressys;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +23,7 @@ import com.links.ressys.database.DBConnection;
 public class Sys {
 	private ArrayList<Room> roomList;
 	private ArrayList<Customer> customerList;
-	private ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
+	private ArrayList<Reservation> reservationList;
 	private ArrayList<Integer> lastErrors;
 	private DBConnection db;
 	
@@ -34,22 +33,18 @@ public class Sys {
 		try {
 			this.customerList = this.db.getCustomers();
 			this.roomList = this.db.getRooms();
+//			this.reservationList = this.db.getReservations();
 		} catch (Exception e) {
 			this.customerList = new ArrayList<Customer>();
 			this.roomList = new ArrayList<Room>();
+//			this.reservationList = new ArrayList<Reservation>();
 			e.printStackTrace();
 		}
 		
-		Room[] roomArrayCrt1 = {roomList.get(0)};
-		Reservation reservationCrt1= new ReservationConcrete(customerList.get(0), roomArrayCrt1, 201, LocalDate.of(2014, Month.FEBRUARY, 11), LocalDate.of(2014, Month.FEBRUARY, 23));
-		reservationList.add(reservationCrt1);
-		Room[] roomArrayCrt2 = {roomList.get(1), roomList.get(2)};
-		Reservation reservationCrt2= new ReservationConcrete(customerList.get(1), roomArrayCrt2, 202, LocalDate.of(2015, Month.FEBRUARY, 15), LocalDate.of(2015, Month.FEBRUARY, 17));
-		reservationList.add(reservationCrt2);
 	}
 	
-	public ArrayList<Integer> getLastErrors(){
-		return this.lastErrors;
+	public Iterator<Integer> getLastErrors(){
+		return this.lastErrors.iterator();
 	}
 	
 	public boolean isThereAnError() {
@@ -81,10 +76,14 @@ public class Sys {
 		}
 	}
 	
-	public void createReservation(int customerId, int[] roomIds, LocalDate startDate, LocalDate endDate){
-	    Customer customer = this.customerList.get(customerId);
+	public void createReservation(String mailAddress, int[] roomIds, LocalDate startDate, LocalDate endDate){
 	    Room[] rooms = new Room[roomIds.length];
-	    
+	    Customer customer = null;
+	    for(Customer c : this.customerList){
+    		if(c.getMailAddress().equals(mailAddress)){
+    			customer = c;
+    		}
+    	}
 	    for (int i=0; i < roomIds.length; i++){
 	    	for(Room r : this.roomList){
 	    		if(r.getRoomId() == roomIds[i]){

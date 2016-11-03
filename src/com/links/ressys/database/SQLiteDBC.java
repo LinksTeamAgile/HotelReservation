@@ -20,7 +20,7 @@ import com.links.ressys.core.RoomConcrete;
 public class SQLiteDBC implements DBConnection {
 
 	private final String JDBC_TYPE = "jdbc:sqlite:";
-	private final String DB_PATH = Main.getMain().getProperty("db_path");
+	private final String DB_PATH = new Main().getProperty("db_path");
 	private final String S_DRIVER_NAME = "org.sqlite.JDBC";
 	
 	//private static final String DB_PATH = "/Users/userm06/git/HotelReservation/res/db/HotelReservation.sqlite";
@@ -100,6 +100,39 @@ public class SQLiteDBC implements DBConnection {
 		return room;		
 	}
 	
+	@Override
+	public ArrayList<Reservation> getReservations(){
+		String query = "SELECT idReservation, idCustomer, startDate, endDate FROM reservation GROUP BY idCustomer, startDate, endDate";
+		ArrayList<Reservation> reservations = new ArrayList<Reservation>();
+		
+		ArrayList<String> arrayRS = new ArrayList<String>();
+		
+		initializationDriver();
+		
+		try(ResultSet rs = connectionResulSet(query)) {
+			
+			while(rs.next()) {
+				String temp="";
+				
+				temp+=rs.getInt("idReservation")+",";
+				temp+=rs.getInt("idCustomer")+",";
+				temp+=rs.getString("startDate")+",";
+				temp+=rs.getString("endDate")+",";
+				
+				arrayRS.add(temp);
+			}
+			
+			for(String s : arrayRS){
+				//System.out.println(s);
+				reservations.add(mergeReservation(s));
+			}
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return reservations;
+	}
+
 	@Override
 	public boolean createCustomer(Customer c){
 		boolean result = false;
@@ -205,39 +238,6 @@ public class SQLiteDBC implements DBConnection {
 		return result;
 	}
 	
-	public ArrayList<Reservation> getReservations(){
-		boolean result = false;
-		String query = "SELECT idReservation, idCustomer, startDate, endDate FROM reservation GROUP BY idCustomer, startDate, endDate";
-		ArrayList<Reservation> reservations = new ArrayList<Reservation>();
-		
-		ArrayList<String> arrayRS = new ArrayList<String>();
-		
-		initializationDriver();
-		
-		try(ResultSet rs = connectionResulSet(query)) {
-			
-			while(rs.next()) {
-				String temp="";
-				
-				temp+=rs.getInt("idReservation")+",";
-				temp+=rs.getInt("idCustomer")+",";
-				temp+=rs.getString("startDate")+",";
-				temp+=rs.getString("endDate")+",";
-				
-				arrayRS.add(temp);
-			}
-			
-			for(String s : arrayRS){
-				//System.out.println(s);
-				reservations.add(mergeReservation(s));
-			}
-				
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return reservations;
-	}
-	
 	private Reservation mergeReservation(String result){
 		Reservation reservation = null;
 		
@@ -269,7 +269,7 @@ public class SQLiteDBC implements DBConnection {
 			//da rifare assolutamente con dateformatter
 			String[] startDateArray = startDate.split("/");
 			String[] endDateArray = endDate.split("/");
-			
+
 			LocalDate startDateLD = LocalDate.of(Integer.parseInt(startDateArray[2]), Integer.parseInt(startDateArray[0]), Integer.parseInt(startDateArray[1]));
 			LocalDate endDateLD = LocalDate.of(Integer.parseInt(endDateArray[2]), Integer.parseInt(endDateArray[0]), Integer.parseInt(endDateArray[1]));
 			
