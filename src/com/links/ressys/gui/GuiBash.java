@@ -22,7 +22,7 @@ public class GuiBash implements Gui, Closeable, AutoCloseable {
 	public String getInput(String message) {
 		try{
 			System.out.println(message);
-			return keyboard.next();
+			return keyboard.next().trim();
 		} catch (NoSuchElementException ex) {
 			System.out.println("User input is not a valid value for this method.");
 			System.out.println("Exception caught: User cannot put that value as menu choice.");
@@ -41,8 +41,9 @@ public class GuiBash implements Gui, Closeable, AutoCloseable {
 		System.out.println("5 - Delete customer.");
 		System.out.println("6 - Show customers.");
 		System.out.println("7 - Create reservation.");
-//		System.out.println("8 - Modify reservation.");
-//		System.out.println("9 - Show reservations.");
+		System.out.println("8 - Update reservation.");
+		System.out.println("9 - Delete reservations.");
+		System.out.println("10 - Show reservations.");
 		System.out.println("0 - Exit");
 	}
 

@@ -1,6 +1,7 @@
 package com.links.ressys.controller;
 
 import com.links.ressys.Sys;
+import com.links.ressys.core.Reservation;
 import com.links.ressys.gui.Gui;
 
 public abstract class Controller {
@@ -40,12 +41,15 @@ public abstract class Controller {
 				this.makeShowCustomers();				
 				break;
 			case 7:
-				this.makeCreateReservation();
+				this.makeCreateReservation(true);
 				break;
 			case 8:
-				this.makeModifyReservation();
+				this.makeUpdateReservation();
 				break;
 			case 9:
+				this.makeDeleteReservation();	
+				break;
+			case 10:
 				this.makeShowReservations();	
 				break;
 			case 0:
@@ -65,8 +69,9 @@ public abstract class Controller {
 	protected abstract void makeCreateCustomer();
 	protected abstract void makeDeleteCustomer();
 	protected abstract void makeShowCustomers();
-	protected abstract void makeCreateReservation();
-	protected abstract void makeModifyReservation();
+	protected abstract Reservation makeCreateReservation(boolean onDb);
+	protected abstract void makeUpdateReservation();
+	protected abstract void makeDeleteReservation();
 	protected abstract void makeShowReservations();
 	protected abstract void makeCloseApp();
 	protected abstract void wrongChoose();

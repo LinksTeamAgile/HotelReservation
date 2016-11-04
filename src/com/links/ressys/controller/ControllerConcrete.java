@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 import com.links.ressys.Sys;
+import com.links.ressys.core.Reservation;
 import com.links.ressys.gui.Gui;
 
 public class ControllerConcrete extends Controller {
@@ -16,60 +17,60 @@ public class ControllerConcrete extends Controller {
 		super(sys, gui);
 	}
 
-	
+
 	private int controlIfInteger(String s){
 		try {
-		      int checkedInt = Integer.parseInt(s);
-		      return checkedInt;
-		    } catch(NumberFormatException e) {
-		      return -1;
-		    }
+			int checkedInt = Integer.parseInt(s);
+			return checkedInt;
+		} catch(NumberFormatException e) {
+			return -1;
+		}
 
 	}
-	
+
 	private String[] transformInArray(String s){
 		String[] array = s.split(",");
-	    ArrayList list = new ArrayList();
-	    int i = 0;
-	    for(String str : array) {
-	      list.add(str.trim());
-	    }
-	    String[] strings = new String[list.size()];
-	    list.toArray(array);
-	    return array;
+		ArrayList list = new ArrayList();
+		int i = 0;
+		for(String str : array) {
+			list.add(str.trim());
+		}
+		String[] strings = new String[list.size()];
+		list.toArray(array);
+		return array;
 
 	}
-	
+
 	private int[] transformInInteger(String s) {
-	    String[] array = s.split(",");
-	    int[] intArray;
-	    ArrayList list = new ArrayList();
-	    int i = 0;
-	    for (String str : array) {
-	      list.add(str.trim());
-	    }
-	    String[] strings = new String[list.size()];
-	    intArray = new int[list.size()];
-	    i = 0;
-	    for(String x : strings) {
-	      try {
-	        intArray[i++] = Integer.parseInt(x);
-	      } catch(NumberFormatException e) {
-	        return null;
-	      }
-	    }
-	    return intArray;
-	  }
-	
+		String[] array = s.split(",");
+		int[] intArray;
+		ArrayList<String> list = new ArrayList();
+		int i = 0;
+		for (String str : array) {
+			list.add(str.trim());
+		}
+		String[] strings = new String[list.size()];
+		intArray = new int[list.size()];
+		i = 0;
+		for(String x : list) {
+			try {
+				intArray[i++] = Integer.parseInt(x);
+			} catch(NumberFormatException e) {
+				return null;
+			}
+		}
+		return intArray;
+	}
+
 	private String controlIfDate(String s){
 		try {
-		      String parsedDate = LocalDate.parse(s).toString();
-		      return parsedDate;
-		    } catch (DateTimeParseException e) {
-		      return null;
-		    }
+			String parsedDate = LocalDate.parse(s).toString();
+			return parsedDate;
+		} catch (DateTimeParseException e) {
+			return null;
+		}
 	}
-	
+
 	protected void makeCreateRoom(){
 		int maxGuest = -1;
 		while(maxGuest == -1){
@@ -84,7 +85,7 @@ public class ControllerConcrete extends Controller {
 			System.out.println("Room not created");
 		}
 	}
-	
+
 	@Override
 	protected void makeDeleteRoom() {
 		int idRoom = this.controlIfInteger(this.gui.getInput("Insert the ID room to delete: "));
@@ -120,7 +121,7 @@ public class ControllerConcrete extends Controller {
 			System.out.println("Customer not created!");
 		}
 	}
-	
+
 	@Override
 	protected void makeDeleteCustomer() {
 		String es1=this.gui.getInput("Insert the mail address of the customer to delete: ");
@@ -135,47 +136,39 @@ public class ControllerConcrete extends Controller {
 	protected void makeShowCustomers() {
 		super.sys.showCustomer(null);
 	}
-	
+
 	@Override
-	protected void makeCreateReservation(){
+	protected Reservation makeCreateReservation(boolean onDb){
 		String idCostumer = super.gui.getInput("Please insert the customer's email: ");
 		int maxGuests = Integer.parseInt(super.gui.getInput("Please insert the number of guests: "));
 		this.sys.showRoom(s -> s.getMaxGuests() <= maxGuests);
-		int[] idRoom = this.transformInInteger(this.gui.getInput("Insert the ID room to delete: "));
+		int[] idRoom = this.transformInInteger(this.gui.getInput("Insert the ID room: "));
+		System.out.println(idRoom);
 		LocalDate[] dates = getDatesFromKeyboard();
-		
-		super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1]);
+
+		Reservation res = super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1], onDb);
 		if (!super.sys.isThereAnError()) {
 			System.out.println("Reservation created successfully!");
 		} else {
 			this.prinErrors(super.sys.getLastErrors());
 			System.out.println("Reservation not created!");
 		}
+		return res;
 	}
-	
+
 	protected void makeDeleteReservation() {
-	    int reservationId = this.controlIfInteger(this.gui.getInput("Insert the ID reservation to update: "));
-	    if(reservationId == -1)
-	      System.out.println("Insert a correct ID.");
-	    else {
-	      if (super.sys.deleteReservation(reservationId)) {
-	        System.out.println("Reservation with ID " + reservationId + " deleted ");
-	      } else {
-	        System.out.println("The reservation with ID " + reservationId + " has not been found");
-	      }
-	    }
-	  }
-	
-	@Override
-	protected void makeModifyReservation() {
-		String es2=this.gui.getInput("Insert the ID reservation to delete: ");
-		int idReservation=Integer.parseInt(es2);
-		if(super.sys.deleteReservation(idReservation)){
-			System.out.println("Reservation with ID "+idReservation+" deleted ");
-		}else{
-			System.out.println("The reservation ID "+idReservation+" has not found");
+		int reservationId = this.controlIfInteger(this.gui.getInput("Insert the ID reservation to update: "));
+		if(reservationId == -1)
+			System.out.println("Insert a correct ID.");
+		else {
+			if (super.sys.deleteReservation(reservationId)) {
+				System.out.println("Reservation with ID " + reservationId + " deleted ");
+			} else {
+				System.out.println("The reservation with ID " + reservationId + " has not been found");
+			}
 		}
 	}
+
 
 	@Override
 	protected void makeShowReservations() {
@@ -186,13 +179,13 @@ public class ControllerConcrete extends Controller {
 	protected void makeCloseApp() {
 		System.out.println("Closing app");
 		System.exit(0);
-		
+
 	}
 
 	@Override
 	protected void wrongChoose() {
 		System.out.println("Selected item from menu' can't be used");
-		
+
 	}
 
 	private <T> void prinErrors(Iterator<T> it){
@@ -203,7 +196,7 @@ public class ControllerConcrete extends Controller {
 		System.out.println("===========");
 	}
 
-	
+
 	private LocalDate[] getDatesFromKeyboard(){
 		Scanner keyboard = new Scanner(System.in);
 		boolean continueScanneringUserInput = true;
@@ -258,6 +251,22 @@ public class ControllerConcrete extends Controller {
 
 		return scanneredDates;
 	}
-	
+
+
+	@Override
+	protected void makeUpdateReservation() {
+		int idRes = this.controlIfInteger(this.gui.getInput("Which Reservation do you want to update? (id)"));
+		if(idRes == -1){
+			System.out.println("Insert a numeric value for id!");
+		}
+		Reservation resNew = this.makeCreateReservation(false);
+		if (super.sys.updateReservation(resNew, idRes)) {
+			System.out.println("Reservation with ID " + idRes + " updated ");
+		} else {
+			System.out.println("The reservation with ID " + idRes + " not updated");
+		}
+
+	}
+
 }
 
