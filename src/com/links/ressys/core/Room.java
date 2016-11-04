@@ -21,4 +21,8 @@ public abstract class Room{
 	public abstract String[] getServices();
 
 	public abstract void setServices(String[] services);
+	
+	public abstract double getPriceRoom();
+
+	public abstract void setPriceRoom(double priceRoom);
 }

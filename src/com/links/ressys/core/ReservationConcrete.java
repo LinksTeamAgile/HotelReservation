@@ -9,14 +9,16 @@ public class ReservationConcrete extends Reservation {
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private int reservationId = 0;
+	private double cost = 0;
 
-	public ReservationConcrete(Customer customer, Room[] rooms, int reservationId, LocalDate localDateTime, LocalDate localDateTime2) {
+	public ReservationConcrete(Customer customer, Room[] rooms, int reservationId, LocalDate localDateTime, LocalDate localDateTime2, double cost) {
 		super();
 		this.customer = customer;
 		this.rooms = rooms;
 		this.reservationId = reservationId;
 		this.startDate = localDateTime;
 		this.endDate = localDateTime2;
+		this.setCost(cost);
 	}
 
 	public Customer getCustomer() {
@@ -63,9 +65,19 @@ public class ReservationConcrete extends Reservation {
 	public String toString() {
 		String r = "";
 		for(int i = 0; i <rooms.length; i++)
-			r +="\n\t" + rooms[i].toString();
-		return "Reservation:\n\tCustomer = "+customer.getName()+" "+customer.getSurname()+"\n\tID Room = " + rooms[0].getRoomId() + "\n\tReservation Id = " + reservationId + "\n\tStart Date = "
+			if(rooms[i] != null){
+				r +="\n\t" + rooms[i].toString();
+			}
+		return "Reservation:\n\tCustomer = "+customer.getName()+" "+customer.getSurname()+" \n\tReservation Id = " + reservationId + "\n\tStart Date = "
 				+ startDate + "\n\tEnd Date = " + endDate + "\n\n\tRoom reserved:\n" + r;
+	}
+
+	public double getCost() {
+		return cost;
+	}
+
+	public void setCost(double cost) {
+		this.cost = cost;
 	}
 
 }

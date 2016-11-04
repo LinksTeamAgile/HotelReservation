@@ -33,11 +33,11 @@ public class Sys {
 		try {
 			this.customerList = this.db.getCustomers();
 			this.roomList = this.db.getRooms();
-//			this.reservationList = this.db.getReservations();
+			this.reservationList = this.db.getReservations();
 		} catch (Exception e) {
 			this.customerList = new ArrayList<Customer>();
 			this.roomList = new ArrayList<Room>();
-//			this.reservationList = new ArrayList<Reservation>();
+			this.reservationList = new ArrayList<Reservation>();
 			e.printStackTrace();
 		}
 		
@@ -57,7 +57,7 @@ public class Sys {
 	}
 	
 	public void createRoom(int maxGuests, String[] services){
-		Room room = new RoomConcrete(this.db.getMaxRoomId()+1, true, true, maxGuests, services);
+		Room room = new RoomConcrete(this.db.getMaxRoomId()+1, true, true, maxGuests, services, 0);
 		Checker checker = new CheckerRoom(room);
 		this.lastErrors = checker.check();
 		if(!this.isThereAnError()) {
@@ -76,7 +76,7 @@ public class Sys {
 		}
 	}
 	
-	public void createReservation(String mailAddress, int[] roomIds, LocalDate startDate, LocalDate endDate){
+	public Reservation createReservation(String mailAddress, int[] roomIds, LocalDate startDate, LocalDate endDate, boolean onDb){
 	    Room[] rooms = new Room[roomIds.length];
 	    Customer customer = null;
 	    for(Customer c : this.customerList){
@@ -92,13 +92,16 @@ public class Sys {
 	    	}
 	    }
 	    
-	    Reservation reservation = new ReservationConcrete(customer, rooms, this.db.getMaxReservationId()+1, startDate, endDate);
+	    Reservation reservation = new ReservationConcrete(customer, rooms, this.db.getMaxReservationId()+1, startDate, endDate, 0);
 		Checker checker = new CheckerReservation(reservation);
 		this.lastErrors = checker.check();
 		if(!this.isThereAnError()) {
-			reservationList.add(reservation);
-			this.db.createReservation(reservation);
+			if(onDb){
+				reservationList.add(reservation);
+				this.db.createReservation(reservation);
+			}
 		}
+		return reservation;
 	}
 	
 	public List<Room> showRoom(Predicate<Room> pred) {
@@ -225,6 +228,7 @@ public class Sys {
 		while(itRoom.hasNext()){
 			Room ro=itRoom.next();
 			if(ro.getRoomId()==roomId){
+				this.db.deleteRoom(roomId);
 				itRoom.remove();
 				roomRemoved=true;
 			}else{
@@ -240,6 +244,7 @@ public class Sys {
 		while(itCustomer.hasNext()){
 			Customer cust=itCustomer.next();
 			if(cust.getMailAddress().equals(mailAddress)){
+				this.db.deleteCustomer(mailAddress);
 				itCustomer.remove();
 				customerRemoved=true;
 			}else{
@@ -256,7 +261,9 @@ public class Sys {
 		while(itReservation.hasNext()){
 			Reservation res=itReservation.next();
 			if(res.getReservationId()==reservationId){
+				this.db.deleteReservation(res);
 				itReservation.remove();
+				//this.db.deleteReservation(res);
 				reservationRemoved=true;
 			}else{
 				;
@@ -267,6 +274,21 @@ public class Sys {
 			System.out.println("Reservation not found");
 			return reservationRemoved;
 		}
+	}
+	
+	public boolean updateReservation(Reservation newReservation, int idOld){
+		Iterator<Reservation> itReservation=reservationList.iterator();
+		Reservation resOld= null;
+		while(itReservation.hasNext()){
+			resOld=itReservation.next();
+			if(resOld.getReservationId()==idOld){
+				itReservation.remove();
+				newReservation.setReservationId(idOld);
+				reservationList.add(newReservation);
+				return this.db.updateReservation(resOld, newReservation);
+			}
+		}
+		return false;
 	}
 
 

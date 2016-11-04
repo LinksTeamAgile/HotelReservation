@@ -51,21 +51,23 @@ public class CheckerReservation implements Checker{
 	}
 	
 	private int checkStartDate(){
-		if(res.getStartDate()==null)
+		if(res.getStartDate() == null){
 			return ReservationCode.EMPTY_STARTDATE.getCode();
-		else if(res.getStartDate().isBefore(LocalDate.now()))
-			return ReservationCode.INVALID_DATE.getCode();
-		else
+		} else if(res.getStartDate().isBefore(LocalDate.now())){
+			return ReservationCode.WRONG_STARTDATE.getCode();
+		} else {
 			return ReservationCode.SUCCESS_RESERVATION.getCode();
+		}
 	}
 	
 	private int checkEndDate(){
-		if(res.getEndDate()==null)
+		if(res.getEndDate() == null){
 			return ReservationCode.EMPTY_ENDDATE.getCode();
-		else if(res.getEndDate().isAfter(res.getStartDate()) || !res.getEndDate().isAfter(LocalDate.now().plusDays(1)))
-			return ReservationCode.INVALID_DATE.getCode();
-		else
+		} else if(!res.getEndDate().isAfter(res.getStartDate()) || !res.getEndDate().isAfter(LocalDate.now().plusDays(1))){
+			return ReservationCode.WRONG_ENDDATE.getCode();
+		} else {
 			return ReservationCode.SUCCESS_RESERVATION.getCode();
+		}
 	}
 	
 }

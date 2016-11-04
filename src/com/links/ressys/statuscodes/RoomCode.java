@@ -4,7 +4,7 @@ public enum RoomCode {
 	
     SUCCESS_ROOM(100, "Valid room"),
 	
-	//EMPTY_MAXGUESTS(311, "Guests field empty"),
+	EMPTY_MAXGUESTS(311, "Guests field empty"),
 	//EMPTY_SERVICEABLE(321, "Serviceable field empty"),
 	//EMPTY_AVAILABLE(331, "Available field empty"),
 	EMPTY_SERVICES(341, "Services field empty"),
@@ -12,7 +12,7 @@ public enum RoomCode {
 	WRONG_MAXGUESTS(312, "Invalid number of guests"),
 	//WRONG_SERVICEABLE(322, "Serviceable field not valid"),
 	//WRONG_AVAILABLE(332, "Available field not valid"),
-    //WRONG_SERVICES(342, "Services not valid"),
+    WRONG_SERVICES(342, "Services not valid"),
 	
 	//DUPLICATE_MAXGUESTS(313, "Duplicate max guests field"),
 	//DUPLICATE_SERVICEABLE(323, "Duplicate serviceable field"),

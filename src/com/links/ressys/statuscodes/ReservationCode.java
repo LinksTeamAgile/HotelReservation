@@ -20,7 +20,7 @@ public enum ReservationCode {
 	DUPLICATE_RSERVATIONID(433, "Duplicate reservation id"),
 	//DUPLICATE_STARTDATE(443, "Duplicate start date field"),
 	//DUPLICATE_ENDDATE(453, "Duplicate end date field");
-	INVALID_DATE(403, "Invalid start date format");
+	;
 	
 	
 	private final int code;

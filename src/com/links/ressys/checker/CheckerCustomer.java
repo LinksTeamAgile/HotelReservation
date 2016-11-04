@@ -10,6 +10,11 @@ import com.links.ressys.statuscodes.*;
 public class CheckerCustomer implements Checker {
 
 	private Customer customer;
+	private String regexName = "^\\pL+[\\pL\\pZ\\pP]{0,}$";
+	private String regexTax = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
+	private String regexNum = "^\\+[1-9]{1}[0-9]{1,14}$";
+	private String regexMail = "^(.+)@(.+)$";
+	private String regexCard = "^[1-9][0-9]{15}$";
 
 	public CheckerCustomer(Customer c) {
 		this.customer = c;
@@ -18,85 +23,95 @@ public class CheckerCustomer implements Checker {
 	@Override
 	public ArrayList<Integer> check() {
 		ArrayList<Integer> check = new ArrayList<Integer>();
-		check.add(checkName());
-		check.add(checkSurname());
-		check.add(checkTaxCode());
-		check.add(checkCellPhoneNumber());
-		check.add(checkMailAddress());
-		check.add(checkCardNumber());
-		return check;
+		if (isNull()) {
+			check.add(CustomerCode.EMPTY_NAME.getCode());
+			check.add(CustomerCode.EMPTY_SURNAME.getCode());
+			check.add(CustomerCode.EMPTY_TAXCODE.getCode());
+			check.add(CustomerCode.EMPTY_PHONENUM.getCode());
+			check.add(CustomerCode.EMPTY_MAIL.getCode());
+			check.add(CustomerCode.EMPTY_CARDNUM.getCode());
+			return check;
+		} else {
+//			check.add(checkName());
+//			check.add(checkSurname());
+//			check.add(checkTaxCode());
+//			check.add(checkCellPhoneNumber());
+//			check.add(checkMailAddress());
+//			check.add(checkCardNumber());
+			return check;
+		}
+	}
+
+	private boolean isNull() {
+		if (customer == null)
+			return true;
+		else
+			return false;
 	}
 
 	private int checkName() {
-		if (customer.getName().equals(""))
+
+		if (customer.getName().equals("")){
 			return CustomerCode.EMPTY_NAME.getCode();
-		else if (customer.getName().length() < 255)
+		} else if (customer.getName().length() > 255){
 			return CustomerCode.WRONG_NAME.getCode();
-		String regex = "^[A-Za-z\\s]+$";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(customer.getName());
-		if(!matcher.matches())
+		} else if (!customer.getName().matches(regexName)){
 			return CustomerCode.WRONG_NAME.getCode();
-		else 
+		} else{
 			return CustomerCode.SUCCESS_CUSTOMER.getCode();
+		}
 	}
 
 	private int checkSurname() {
-		if (customer.getSurname().equals(""))
+		if (customer.getSurname().equals("")){
 			return CustomerCode.EMPTY_SURNAME.getCode();
-		else if (customer.getSurname().length() < 255)
+		} else if (customer.getSurname().length() > 255){
 			return CustomerCode.WRONG_SURNAME.getCode();
-		String regex = "^[A-Za-z\\s]+$";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(customer.getSurname());
-		if(!matcher.matches())
+		} else if (!customer.getSurname().matches(regexName)){
 			return CustomerCode.WRONG_SURNAME.getCode();
-		else 
+		} else{
 			return CustomerCode.SUCCESS_CUSTOMER.getCode();
+		}
 	}
-	
+
 	private int checkTaxCode() {
-		if (customer.getTaxCode().equals(""))
+		if (customer.getTaxCode().equals("")){
 			return CustomerCode.EMPTY_TAXCODE.getCode();
-		else if (customer.getTaxCode().length() != 16)
+		} else if (!customer.getTaxCode().matches(regexTax)){
 			return CustomerCode.WRONG_TAXCODE.getCode();
-		else
+		} else {
 			return CustomerCode.SUCCESS_CUSTOMER.getCode();
+		}
 	}
 
 	private int checkCellPhoneNumber() {
-		if (customer.getCellPhoneNumber().equals(""))
+		if (customer.getCellPhoneNumber().equals("")){
 			return CustomerCode.EMPTY_PHONENUM.getCode();
-		try {
-			Integer.parseInt(customer.getCellPhoneNumber());
-			return CustomerCode.SUCCESS_CUSTOMER.getCode();
-		} catch (NumberFormatException e) {
+		} else if (!customer.getCellPhoneNumber().matches(regexNum)){
 			return CustomerCode.WRONG_PHONENUM.getCode();
+		} else {
+			return CustomerCode.SUCCESS_CUSTOMER.getCode();
 		}
 	}
- 
+
 	private int checkMailAddress() {
-		if (customer.getMailAddress().equals(""))
+		if (customer.getMailAddress().equals("")){
 			return CustomerCode.EMPTY_MAIL.getCode();
-		String regex = "^(.+)@(.+)$";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(customer.getMailAddress());
-		if(!matcher.matches())
+		} else if (!customer.getMailAddress().matches(regexMail)){
 			return CustomerCode.WRONG_MAIL.getCode();
-		else 
+		} else {
 			return CustomerCode.SUCCESS_CUSTOMER.getCode();
+		}
 	}
 
 	private int checkCardNumber() {
-		if (customer.getCardNumber().equals(""))
+		if (customer.getCardNumber().equals("")){
 			return CustomerCode.EMPTY_CARDNUM.getCode();
-		else if(customer.getCardNumber().length()!=16)
+		}
+		else if (customer.getCardNumber().length() != 16 || !customer.getCardNumber().matches(regexCard)){
 			return CustomerCode.WRONG_CARDNUM.getCode();
-		try {
-			Integer.parseInt(customer.getCardNumber());
+		} else {
 			return CustomerCode.SUCCESS_CUSTOMER.getCode();
-		} catch (NumberFormatException e) {
-			return CustomerCode.WRONG_CARDNUM.getCode();
 		}
 	}
 }

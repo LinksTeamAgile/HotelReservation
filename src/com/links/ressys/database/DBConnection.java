@@ -23,9 +23,13 @@ public interface DBConnection {
 	boolean deleteRoom(int roomIndex);
 
 	boolean deleteCustomer(String mailAdd);
+	
+	boolean deleteReservation(Reservation r);
 
 	int getMaxRoomId();
 	
 	int getMaxReservationId();
+	
+	boolean updateReservation(Reservation oldReservation, Reservation newReservation);
 
 }

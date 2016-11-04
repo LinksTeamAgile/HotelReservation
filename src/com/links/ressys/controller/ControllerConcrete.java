@@ -1,15 +1,14 @@
 package com.links.ressys.controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Scanner;
 
 import com.links.ressys.Sys;
+import com.links.ressys.core.Reservation;
 import com.links.ressys.gui.Gui;
 
 public class ControllerConcrete extends Controller {
@@ -18,36 +17,86 @@ public class ControllerConcrete extends Controller {
 		super(sys, gui);
 	}
 
-	protected void makeCreateRoom(){
-		int maxGuests = getRoomGuestsFromKeyboard();
-		String[] services = getRoomServicesFromKeyboard();
-		int codeOperation = 0;
-		for (String service : services) {
-			if (!service.equals(null) && maxGuests != 0 && maxGuests != -1) {
-				codeOperation = 100;
-			} else {
-				codeOperation = 200;
+
+	private int controlIfInteger(String s){
+		try {
+			int checkedInt = Integer.parseInt(s);
+			return checkedInt;
+		} catch(NumberFormatException e) {
+			return -1;
+		}
+
+	}
+
+	private String[] transformInArray(String s){
+		String[] array = s.split(",");
+		ArrayList list = new ArrayList();
+		int i = 0;
+		for(String str : array) {
+			list.add(str.trim());
+		}
+		String[] strings = new String[list.size()];
+		list.toArray(array);
+		return array;
+
+	}
+
+	private int[] transformInInteger(String s) {
+		String[] array = s.split(",");
+		int[] intArray;
+		ArrayList<String> list = new ArrayList();
+		int i = 0;
+		for (String str : array) {
+			list.add(str.trim());
+		}
+		String[] strings = new String[list.size()];
+		intArray = new int[list.size()];
+		i = 0;
+		for(String x : list) {
+			try {
+				intArray[i++] = Integer.parseInt(x);
+			} catch(NumberFormatException e) {
+				return null;
 			}
 		}
-		if(codeOperation == 100){
-			super.sys.createRoom(maxGuests, services);
-			if (!super.sys.isThereAnError()) {
-				System.out.println("Room created successfully!");
-			} else {
-				this.prinErrors(super.sys.getLastErrors());
-				System.out.println("Room not created!");
-			}
+		return intArray;
+	}
+
+	private String controlIfDate(String s){
+		try {
+			String parsedDate = LocalDate.parse(s).toString();
+			return parsedDate;
+		} catch (DateTimeParseException e) {
+			return null;
 		}
 	}
-	
+
+	protected void makeCreateRoom(){
+		int maxGuest = -1;
+		while(maxGuest == -1){
+			maxGuest = this.controlIfInteger(this.gui.getInput("Max guest for room (numeric value): "));
+		}
+		String[] services = this.transformInArray(this.gui.getInput("Insert services (separated by comma): "));
+		super.sys.createRoom(maxGuest, services);
+		if(!super.sys.isThereAnError()) {
+			System.out.println("Room created");
+		} else {
+			this.prinErrors(super.sys.getLastErrors());
+			System.out.println("Room not created");
+		}
+	}
+
 	@Override
 	protected void makeDeleteRoom() {
-		String es=this.gui.getInput("Insert the ID room to delete: ");
-		int idRoom=Integer.parseInt(es);
-		if(super.sys.deleteRoom(idRoom)){
-			System.out.println("Room with ID "+idRoom+" deleted ");
-		}else{
-			System.out.println("The room with ID "+idRoom+" has not found");
+		int idRoom = this.controlIfInteger(this.gui.getInput("Insert the ID room to delete: "));
+		if(idRoom == -1){
+			System.out.println("Not valid idRoom: insert a numeric value");
+		} else {
+			if(super.sys.deleteRoom(idRoom)){
+				System.out.println("Room with ID "+idRoom+" deleted ");
+			}else{
+				System.out.println("The room with ID "+idRoom+" has not found");
+			}
 		}
 	}
 
@@ -72,7 +121,7 @@ public class ControllerConcrete extends Controller {
 			System.out.println("Customer not created!");
 		}
 	}
-	
+
 	@Override
 	protected void makeDeleteCustomer() {
 		String es1=this.gui.getInput("Insert the mail address of the customer to delete: ");
@@ -87,31 +136,45 @@ public class ControllerConcrete extends Controller {
 	protected void makeShowCustomers() {
 		super.sys.showCustomer(null);
 	}
-	
+
 	@Override
-	protected void makeCreateReservation(){
+	protected Reservation makeCreateReservation(boolean onDb){
+		int countTries = 0;
 		String idCostumer = super.gui.getInput("Please insert the customer's email: ");
-		int[] idRoom = getRoomIdFromKeyboard();
+		int maxGuests = Integer.parseInt(super.gui.getInput("Please insert the number of guests: "));
+		this.sys.showRoom(s -> s.getMaxGuests() <= maxGuests);
+		int[] idRoom = this.transformInInteger(this.gui.getInput("Insert the ID room: "));
+		while (idRoom == null) {
+			idRoom = this.transformInInteger(this.gui.getInput("Insert the ID room: "));
+			if(countTries++ == 5)
+				return null;
+		}
+		System.out.println(idRoom);
 		LocalDate[] dates = getDatesFromKeyboard();
-		super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1]);
+
+		Reservation res = super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1], onDb);
 		if (!super.sys.isThereAnError()) {
 			System.out.println("Reservation created successfully!");
 		} else {
 			this.prinErrors(super.sys.getLastErrors());
 			System.out.println("Reservation not created!");
 		}
+		return res;
 	}
 
-	@Override
-	protected void makeModifyReservation() {
-		String es2=this.gui.getInput("Insert the ID reservation to delete: ");
-		int idReservation=Integer.parseInt(es2);
-		if(super.sys.deleteReservation(idReservation)){
-			System.out.println("Reservation with ID "+idReservation+" deleted ");
-		}else{
-			System.out.println("The reservation ID "+idReservation+" has not found");
+	protected void makeDeleteReservation() {
+		int reservationId = this.controlIfInteger(this.gui.getInput("Insert the ID reservation to update: "));
+		if(reservationId == -1)
+			System.out.println("Insert a correct ID.");
+		else {
+			if (super.sys.deleteReservation(reservationId)) {
+				System.out.println("Reservation with ID " + reservationId + " deleted ");
+			} else {
+				System.out.println("The reservation with ID " + reservationId + " has not been found");
+			}
 		}
 	}
+
 
 	@Override
 	protected void makeShowReservations() {
@@ -122,13 +185,13 @@ public class ControllerConcrete extends Controller {
 	protected void makeCloseApp() {
 		System.out.println("Closing app");
 		System.exit(0);
-		
+
 	}
 
 	@Override
 	protected void wrongChoose() {
 		System.out.println("Selected item from menu' can't be used");
-		
+
 	}
 
 	private <T> void prinErrors(Iterator<T> it){
@@ -139,123 +202,6 @@ public class ControllerConcrete extends Controller {
 		System.out.println("===========");
 	}
 
-
-	
-	
-	
-	private int getRoomGuestsFromKeyboard() {
-		boolean continueScanneringUserInput = true;
-		int scanneredNumber = 0;
-		Scanner keyboard = new Scanner(System.in);
-
-		while (continueScanneringUserInput == true) {
-			System.out.println("Please enter the number of guests: ");
-			try {
-				scanneredNumber = keyboard.nextInt();
-				if (scanneredNumber <= 0 || scanneredNumber > 5) {
-					System.out.println("Choice not valid!\nPlease entered a number of guests between 1 and 5.");
-				} else {
-					continueScanneringUserInput = false;
-				}
-			} catch (InputMismatchException ex) {
-				System.out.println("User input is not a valid value for this method.");
-				System.out.println("Exception caught: User cannot put that value as menu choice.");
-				continueScanneringUserInput = false;
-				scanneredNumber = -1;
-			}
-		}
-
-		return scanneredNumber;
-	}
-
-	private String[] getRoomServicesFromKeyboard() {
-		int serviceCounter = 0, pairNumber = 0;
-		boolean continueScanneringUserInput = true, stopScanneringInput = true;
-		Scanner keyboard = new Scanner(System.in);
-
-		String scanneredService = "", scanneredChoice = "";
-		String[] scanneredServices = new String[50];
-
-		while (continueScanneringUserInput == true) {
-			System.out.println("Please enter the type of services that you want in your room: ");
-			try {
-				scanneredService = keyboard.nextLine();
-				if (scanneredService.isEmpty() == true) {
-					System.out.println("Choice not valid!\nPlease entered a valid service");
-				}
-				if (scanneredService.matches("[0-9]+") && scanneredService.length() > 0) {
-					System.out.println("Choice not valid!\nPlease entered a valid service");
-				} else {
-					scanneredServices[serviceCounter] = scanneredService;
-					serviceCounter += 1;
-					stopScanneringInput = true;
-					if ((serviceCounter % 4) == 0) {
-						while (stopScanneringInput == true) {
-							System.out.println("Do you want to stop type? Please digit yes/no: ");
-							scanneredChoice = keyboard.nextLine();
-							if (scanneredChoice.equalsIgnoreCase("yes")) {
-								stopScanneringInput = false;
-								continueScanneringUserInput = false;
-							} else if (scanneredChoice.isEmpty() == true) {
-								System.out.println("Choice not valid!");
-							} else if (scanneredChoice.equalsIgnoreCase("no")) {
-								stopScanneringInput = false;
-							} else {
-								System.out.println("Choice not valid!");
-							}
-						}
-					}
-				}
-			} catch (InputMismatchException ex) {
-				System.out.println("User input is not a valid value for this method.");
-				System.out.println("Exception caught: User cannot put that value as menu choice.");
-				continueScanneringUserInput = false;
-			}
-		}
-
-		String[] services = new String[serviceCounter];
-
-		for (int i = 0; i < serviceCounter; i++) {
-			services[i] = scanneredServices[i];
-		}
-		return services;
-	}
-
-	public int[] getRoomIdFromKeyboard(){
-		Scanner keyboard = new Scanner(System.in);
-		boolean continueScanneringUserInput = true;
-		int idCounter = 0;
-		int scanneredRoomId = 0;
-		ArrayList<Integer> scanneredRoomIds = new ArrayList<Integer>();
-		int i = 0;
-
-		while(continueScanneringUserInput == true){
-			System.out.println("Please insert the rooms' id: ");
-			try{
-				scanneredRoomId = keyboard.nextInt();
-				if (scanneredRoomId == 0){
-					System.out.println("Choice not valid!\nPlease enter a vail id");
-				} else {
-					scanneredRoomIds.add(idCounter, scanneredRoomId);
-					idCounter += 1;
-					continueScanneringUserInput = false;
-				}
-			} catch (InputMismatchException ex){
-				System.out.println("User input is not a valid value for this method.");
-				System.out.println("Exception caught: User cannot put that value as menu choice.");
-				continueScanneringUserInput = false;
-			}
-		}
-		
-		int[] roomIds = new int[scanneredRoomIds.size()];
-		
-		for(Integer s : scanneredRoomIds){
-			roomIds[i] = s.intValue();
-			i++;
-		}
-		
-		return roomIds;
-	}
 
 	private LocalDate[] getDatesFromKeyboard(){
 		Scanner keyboard = new Scanner(System.in);
@@ -312,7 +258,21 @@ public class ControllerConcrete extends Controller {
 		return scanneredDates;
 	}
 
-	
+
+	@Override
+	protected void makeUpdateReservation() {
+		int idRes = this.controlIfInteger(this.gui.getInput("Which Reservation do you want to update? (id)"));
+		if(idRes == -1){
+			System.out.println("Insert a numeric value for id!");
+		}
+		Reservation resNew = this.makeCreateReservation(false);
+		if (super.sys.updateReservation(resNew, idRes)) {
+			System.out.println("Reservation with ID " + idRes + " updated ");
+		} else {
+			System.out.println("The reservation with ID " + idRes + " not updated");
+		}
+
+	}
 
 }
 
