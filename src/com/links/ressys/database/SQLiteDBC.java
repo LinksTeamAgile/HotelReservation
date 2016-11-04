@@ -29,7 +29,7 @@ public class SQLiteDBC implements DBConnection {
 		try {
 			Class.forName(S_DRIVER_NAME);
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			throw new ExceptionInInitializerError("Cannot load JDBC driver.");
 		}
 	}	
 	
