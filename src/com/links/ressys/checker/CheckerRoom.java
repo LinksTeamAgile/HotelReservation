@@ -14,12 +14,12 @@ public class CheckerRoom implements Checker {
 	}
 
 	@Override
-	public ArrayList<Integer> check() {
+	public ArrayList<Enum> check() {
 
-		ArrayList<Integer> check = new ArrayList<Integer>();
+		ArrayList<Enum> check = new ArrayList<Enum>();
 		if (isNull()) {
-			check.add(RoomCode.EMPTY_MAXGUESTS.getCode());
-			check.add(RoomCode.EMPTY_SERVICES.getCode());
+			check.add(RoomCode.EMPTY_MAXGUESTS);
+			check.add(RoomCode.EMPTY_SERVICES);
 			return check;
 		} else {
 			check.add(checkMaxGuests());
@@ -36,21 +36,21 @@ public class CheckerRoom implements Checker {
 			return false;
 	}
 
-	private int checkMaxGuests() {
+	private Enum checkMaxGuests() {
 		if (room.getMaxGuests() > 0){
-			return RoomCode.SUCCESS_ROOM.getCode();
+			return RoomCode.SUCCESS_ROOM;
 		} else {
-			return RoomCode.WRONG_MAXGUESTS.getCode();
+			return RoomCode.WRONG_MAXGUESTS;
 		}
 	}
 
-	private int checkServices() {
+	private Enum checkServices() {
 		if (room.getServices() != null){
-			return RoomCode.SUCCESS_ROOM.getCode();
+			return RoomCode.SUCCESS_ROOM;
 		} else if (isServicesFormatRight() == true){
-			return RoomCode.SUCCESS_ROOM.getCode();
+			return RoomCode.SUCCESS_ROOM;
 		} else {
-			return RoomCode.WRONG_SERVICES.getCode();
+			return RoomCode.WRONG_SERVICES;
 		}
 	}
 
