@@ -21,7 +21,7 @@ public class RoomTest extends TestCase{
 	@Before
 	public void setUp() throws Exception {
 		services[0] = "fridge";
-		roomConcrete = new RoomConcrete(1,true,true,2,services);
+		roomConcrete = new RoomConcrete(1,true,true,2,services, 1.00);
 	}
 
 	@Test

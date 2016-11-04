@@ -1,12 +1,14 @@
 package com.links.ressys.database;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 
 import com.links.ressys.Main;
@@ -20,18 +22,16 @@ import com.links.ressys.core.RoomConcrete;
 public class SQLiteDBC implements DBConnection {
 
 	private final String JDBC_TYPE = "jdbc:sqlite:";
-	//private final String DB_PATH = new Main().getProperty("db_path");
-	private final String S_DRIVER_NAME = "org.sqlite.JDBC";
+	private final String DB_PATH = new Main().getProperty("db_path");
+	private final static String S_DRIVER_NAME = "org.sqlite.JDBC";
 	
-	private final String DB_PATH = "/Users/userm06/git/HotelReservation/res/db/HotelReservation.sqlite";
-	
-	private void initializationDriver(){
+	static {
 		try {
 			Class.forName(S_DRIVER_NAME);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-	}
+	}	
 	
 	private ResultSet connectionResulSet(String query){
 		Connection con = null;
@@ -65,8 +65,6 @@ public class SQLiteDBC implements DBConnection {
 		String query = "SELECT * FROM customer";
 		ArrayList<Customer> customer = new ArrayList<Customer>();
 		
-		initializationDriver();
-		
 		try(ResultSet rs = connectionResulSet(query)) {
 			
 			while(rs.next()) {
@@ -86,8 +84,6 @@ public class SQLiteDBC implements DBConnection {
 		String query = "SELECT * FROM room";
 		ArrayList<Room> room = new ArrayList<Room>();
 		
-		initializationDriver();
-		
 		try(ResultSet rs = connectionResulSet(query)) {
 			
 			while(rs.next()) {
@@ -106,8 +102,6 @@ public class SQLiteDBC implements DBConnection {
 		ArrayList<Reservation> reservations = new ArrayList<Reservation>();
 		
 		ArrayList<String> arrayRS = new ArrayList<String>();
-		
-		initializationDriver();
 		
 		try(ResultSet rs = connectionResulSet(query)) {
 			
@@ -147,8 +141,6 @@ public class SQLiteDBC implements DBConnection {
 		
 		String sql = "INSERT INTO customer (name, surname, mailAddress, cellPhoneNumber, cardNumber, taxCode) VALUES ( ?, ?, ?, ?, ?, ? )";
 
-		initializationDriver();
-		
 		try(PreparedStatement ps = connectionPreparedStatement(sql)) {
 			
 			ps.setString(1, name);
@@ -185,8 +177,6 @@ public class SQLiteDBC implements DBConnection {
 		
 		String sql = "INSERT INTO room (maxGuest , isServiceable, services, isAvailable, price ) VALUES ( ?, ?, ?, ?, ?)";
 		
-		initializationDriver();
-		
 		try(PreparedStatement ps = connectionPreparedStatement(sql)) {
 			
 			ps.setInt(1, maxGuest);
@@ -220,8 +210,6 @@ public class SQLiteDBC implements DBConnection {
 		
 
 		String sql = "INSERT INTO reservation ( idCustomer, idRoom , startDate, endDate, price ) VALUES ( ?, ?, ?, ?, ? )";
-		
-		initializationDriver();
 		
 		for(Room room : rooms)
 		try(PreparedStatement ps = connectionPreparedStatement(sql)) {
@@ -259,7 +247,6 @@ public class SQLiteDBC implements DBConnection {
 		
 		String query ="SELECT idRoom FROM reservation WHERE idCustomer = "+customerId+
 						" AND startDate = '"+startDate+"' AND endDate = '"+endDate+"'";
-		initializationDriver();
 		
 		try(ResultSet rs = connectionResulSet(query)) {
 			
@@ -300,8 +287,6 @@ public class SQLiteDBC implements DBConnection {
 		
 		String query = "SELECT * FROM room WHERE idRoom="+id;
 		
-		initializationDriver();
-		
 		try(ResultSet rs = connectionResulSet(query)) {
 			
 			while(rs.next()) {
@@ -320,9 +305,6 @@ public class SQLiteDBC implements DBConnection {
 		String query = "SELECT * FROM customer WHERE idCustomer="+id;
 		
 		String name = "", surname = "", mailAddress = "", cellPhone = "", cardNumber = "", taxCode = "";
-		
-		
-		initializationDriver();
 		
 		try(ResultSet rs = connectionResulSet(query)) {
 			
@@ -348,8 +330,6 @@ public class SQLiteDBC implements DBConnection {
 		
 		String sql = "DELETE FROM room WHERE idRoom = ?";
 
-		initializationDriver();
-		
 		try(PreparedStatement ps = connectionPreparedStatement(sql)) {
 			
 			ps.setInt(1, roomIndex);
@@ -368,8 +348,6 @@ public class SQLiteDBC implements DBConnection {
 		boolean result = false;
 		
 		String sql = "DELETE FROM customer WHERE mailAddress = ?";
-		
-		initializationDriver();
 		
 		try(PreparedStatement ps = connectionPreparedStatement(sql)) {
 			
@@ -405,8 +383,6 @@ public class SQLiteDBC implements DBConnection {
 		
 		String sql = "DELETE FROM reservation WHERE idCustomer = ? AND idRoom = ? AND startDate = ? AND endDate = ?";
 		
-		initializationDriver();
-		
 		try(PreparedStatement ps = connectionPreparedStatement(sql)) {
 			
 			ps.setInt(1, idC);
@@ -429,7 +405,6 @@ public class SQLiteDBC implements DBConnection {
 		int maxId = 0;
 		String query = "SELECT MAX(idRoom) AS maxIdRoom FROM room";
 		
-		initializationDriver();
 		
 		try(ResultSet rs = connectionResulSet(query)) {
 			
@@ -450,8 +425,6 @@ public class SQLiteDBC implements DBConnection {
 		int maxId = 0;
 		String query = "SELECT MAX(idReservation) AS maxIdReservation FROM reservation";
 		
-		initializationDriver();
-		
 		try(ResultSet rs = connectionResulSet(query)) {
 			
 			while(rs.next()) {
@@ -469,8 +442,6 @@ public class SQLiteDBC implements DBConnection {
 	private int getCustomerId(Customer customer){
 		int maxId = 0;
 		String query = "SELECT idCustomer FROM customer WHERE mailAddress = '"+customer.getMailAddress()+"'";
-		
-		initializationDriver();
 		
 		try(ResultSet rs = connectionResulSet(query)) {
 			
@@ -500,8 +471,6 @@ public class SQLiteDBC implements DBConnection {
 		
 		String sql = "UPDATE room SET maxGuest=?, isServiceable=?, services=?, isAvailable=?, price=? WHERE  idRoom =" + r.getRoomId();
 		
-		initializationDriver();
-		
 		try(PreparedStatement ps = connectionPreparedStatement(sql)) {
 			
 			ps.setInt(1, maxGuest);
@@ -526,8 +495,6 @@ public class SQLiteDBC implements DBConnection {
 		int customerId = getCustomerId(c);
 		
 		String sql = "UPDATE customer SET name=?, surname=?, mailAddress=?, cellPhoneNumber=?, cardNumber=?, taxCode=? WHERE  idCustomer =" + customerId;
-		
-		initializationDriver();
 		
 		try(PreparedStatement ps = connectionPreparedStatement(sql)) {
 			
@@ -581,8 +548,6 @@ public class SQLiteDBC implements DBConnection {
 		if(reservationId!=null)
 			sql+="?,";
 		sql+=" ?, ?, ?, ?, ? )";
-		
-		initializationDriver();
 		
 		try(PreparedStatement ps = connectionPreparedStatement(sql)) {
 			
