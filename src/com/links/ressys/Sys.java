@@ -228,8 +228,8 @@ public class Sys {
 		while(itRoom.hasNext()){
 			Room ro=itRoom.next();
 			if(ro.getRoomId()==roomId){
-				itRoom.remove();
 				this.db.deleteRoom(roomId);
+				itRoom.remove();
 				roomRemoved=true;
 			}else{
 				;
@@ -244,8 +244,8 @@ public class Sys {
 		while(itCustomer.hasNext()){
 			Customer cust=itCustomer.next();
 			if(cust.getMailAddress().equals(mailAddress)){
-				itCustomer.remove();
 				this.db.deleteCustomer(mailAddress);
+				itCustomer.remove();
 				customerRemoved=true;
 			}else{
 				;
@@ -261,8 +261,9 @@ public class Sys {
 		while(itReservation.hasNext()){
 			Reservation res=itReservation.next();
 			if(res.getReservationId()==reservationId){
-				itReservation.remove();
 				this.db.deleteReservation(res);
+				itReservation.remove();
+				//this.db.deleteReservation(res);
 				reservationRemoved=true;
 			}else{
 				;

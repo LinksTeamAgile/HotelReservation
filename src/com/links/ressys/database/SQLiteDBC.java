@@ -20,10 +20,10 @@ import com.links.ressys.core.RoomConcrete;
 public class SQLiteDBC implements DBConnection {
 
 	private final String JDBC_TYPE = "jdbc:sqlite:";
-	private final String DB_PATH = new Main().getProperty("db_path");
+	//private final String DB_PATH = new Main().getProperty("db_path");
 	private final String S_DRIVER_NAME = "org.sqlite.JDBC";
 	
-	//private static final String DB_PATH = "/Users/userm06/git/HotelReservation/res/db/HotelReservation.sqlite";
+	private final String DB_PATH = "/Users/userm06/git/HotelReservation/res/db/HotelReservation.sqlite";
 	
 	private void initializationDriver(){
 		try {
@@ -60,7 +60,7 @@ public class SQLiteDBC implements DBConnection {
 		return ps;
 	}
 	
-	@Override
+	//@Override
 	public ArrayList<Customer> getCustomers(){
 		String query = "SELECT * FROM customer";
 		ArrayList<Customer> customer = new ArrayList<Customer>();
@@ -81,7 +81,7 @@ public class SQLiteDBC implements DBConnection {
 		
 	}
 
-	@Override
+	//@Override
 	public ArrayList<Room> getRooms(){
 		String query = "SELECT * FROM room";
 		ArrayList<Room> room = new ArrayList<Room>();
@@ -100,7 +100,7 @@ public class SQLiteDBC implements DBConnection {
 		return room;		
 	}
 	
-	@Override
+	//@Override
 	public ArrayList<Reservation> getReservations(){
 		String query = "SELECT idReservation, idCustomer, startDate, endDate, price FROM reservation GROUP BY idCustomer, startDate, endDate";
 		ArrayList<Reservation> reservations = new ArrayList<Reservation>();
@@ -134,7 +134,7 @@ public class SQLiteDBC implements DBConnection {
 		return reservations;
 	}
 
-	@Override
+	//@Override
 	public boolean createCustomer(Customer c){
 		boolean result = false;
 		
@@ -169,7 +169,7 @@ public class SQLiteDBC implements DBConnection {
 		return result;
 	}
 	
-	@Override
+	//@Override
 	public boolean createRoom(Room r){
 		boolean result = false;
 		
@@ -208,7 +208,7 @@ public class SQLiteDBC implements DBConnection {
 	
 	
 	
-	@Override
+	//@Override
 	public boolean createReservation(Reservation r){
 		boolean result = false;
 		
@@ -334,7 +334,7 @@ public class SQLiteDBC implements DBConnection {
 				cardNumber = rs.getString("cardNumber");
 				taxCode = rs.getString("taxCode");
 			}		
-			customer = new CustomerConcrete(name, surname, mailAddress, cellPhone, cardNumber, taxCode);
+			customer = new CustomerConcrete(taxCode, name, surname, cellPhone, mailAddress, cardNumber);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -342,7 +342,7 @@ public class SQLiteDBC implements DBConnection {
 		return customer;
 	}
 	
-	@Override
+	//@Override
 	public boolean deleteRoom(int roomIndex){
 		boolean result = false;
 		
@@ -363,7 +363,7 @@ public class SQLiteDBC implements DBConnection {
 		return result;
 	}
 	
-	@Override
+	//@Override
 	public boolean deleteCustomer(String mailAdd){
 		boolean result = false;
 		
@@ -384,7 +384,7 @@ public class SQLiteDBC implements DBConnection {
 		return result;
 	}
 	
-	@Override
+	//@Override
 	public boolean deleteReservation(Reservation reservation){
 		boolean result = false;
 		
@@ -424,7 +424,7 @@ public class SQLiteDBC implements DBConnection {
 		return result;
 	}
 	
-	//@Override
+	@Override
 	public int getMaxRoomId(){
 		int maxId = 0;
 		String query = "SELECT MAX(idRoom) AS maxIdRoom FROM room";
@@ -445,7 +445,7 @@ public class SQLiteDBC implements DBConnection {
 		return maxId;
 	}
 	
-	//@Override
+	@Override
 	public int getMaxReservationId() {
 		int maxId = 0;
 		String query = "SELECT MAX(idReservation) AS maxIdReservation FROM reservation";
@@ -554,7 +554,7 @@ public class SQLiteDBC implements DBConnection {
 		
 		deleteReservation(oldReservation);
 		
-		createFirstReservationById(newReservation, newReservation.getRooms()[0], newReservation.getReservationId());
+		createFirstReservationById(newReservation, newReservation.getRooms()[0], oldReservation.getReservationId());
 		for(int i=1; i<newReservation.getRooms().length; i++)
 			createFirstReservationById(newReservation, newReservation.getRooms()[i], null);
 		
@@ -651,7 +651,8 @@ public class SQLiteDBC implements DBConnection {
 ////			Reservation r = new ReservationConcrete(c, rs, 500, sD, eD);
 ////			
 ////			createFirstReservationById(rescon, r1, rescon.getReservationId() );
-//			updateReservation(rescon, resconNew);
+////			updateReservation(rescon, resconNew);
+//			deleteReservation(rescon);
 //			//createFirstReservationById(rescon, r1, null );
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
