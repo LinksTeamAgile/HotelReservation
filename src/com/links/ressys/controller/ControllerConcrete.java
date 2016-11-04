@@ -73,10 +73,22 @@ public class ControllerConcrete extends Controller {
 
 	protected void makeCreateRoom(){
 		int maxGuest = -1;
+		int counterTries = 0;
 		while(maxGuest == -1){
 			maxGuest = this.controlIfInteger(this.gui.getInput("Max guest for room (numeric value): "));
+			if(counterTries++ == 5){
+				return;
+			}
 		}
-		String[] services = this.transformInArray(this.gui.getInput("Insert services (separated by comma): "));
+		String[] services = null;
+		counterTries = 0;
+		while(services == null){
+			services = this.transformInArray(this.gui.getInput("Insert services (separated by comma): "));
+			if(counterTries++ == 5){
+				return;
+			}
+		}
+		
 		super.sys.createRoom(maxGuest, services);
 		if(!super.sys.isThereAnError()) {
 			System.out.println("Room created");
@@ -141,9 +153,8 @@ public class ControllerConcrete extends Controller {
 	protected Reservation makeCreateReservation(boolean onDb){
 		String idCostumer = super.gui.getInput("Please insert the customer's email: ");
 		int maxGuests = Integer.parseInt(super.gui.getInput("Please insert the number of guests: "));
-		this.sys.showRoom(s -> s.getMaxGuests() <= maxGuests);
+		this.sys.showRoom(s -> s.getMaxGuests() >= maxGuests);
 		int[] idRoom = this.transformInInteger(this.gui.getInput("Insert the ID room: "));
-		System.out.println(idRoom);
 		LocalDate[] dates = getDatesFromKeyboard();
 
 		Reservation res = super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1], onDb);
