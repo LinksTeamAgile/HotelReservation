@@ -139,10 +139,16 @@ public class ControllerConcrete extends Controller {
 
 	@Override
 	protected Reservation makeCreateReservation(boolean onDb){
+		int countTries = 0;
 		String idCostumer = super.gui.getInput("Please insert the customer's email: ");
 		int maxGuests = Integer.parseInt(super.gui.getInput("Please insert the number of guests: "));
 		this.sys.showRoom(s -> s.getMaxGuests() <= maxGuests);
 		int[] idRoom = this.transformInInteger(this.gui.getInput("Insert the ID room: "));
+		while (idRoom == null) {
+			idRoom = this.transformInInteger(this.gui.getInput("Insert the ID room: "));
+			if(countTries++ == 5)
+				return null;
+		}
 		System.out.println(idRoom);
 		LocalDate[] dates = getDatesFromKeyboard();
 
