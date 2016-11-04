@@ -4,6 +4,6 @@ import java.util.ArrayList;
 
 public interface Checker{
 	
-	public ArrayList<Integer> check();
+	public ArrayList<Enum> check();
 	
 }
