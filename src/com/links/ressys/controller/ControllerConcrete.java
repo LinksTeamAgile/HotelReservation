@@ -29,12 +29,10 @@ public class ControllerConcrete extends Controller {
 
 	private String[] transformInArray(String s) {
 		String[] array = s.split(",");
-		ArrayList list = new ArrayList();
-		int i = 0;
+		ArrayList<String> list = new ArrayList<String>();
 		for (String str : array) {
 			list.add(str.trim());
 		}
-		String[] strings = new String[list.size()];
 		list.toArray(array);
 		return array;
 
@@ -43,12 +41,11 @@ public class ControllerConcrete extends Controller {
 	private int[] transformInInteger(String s) {
 		String[] array = s.split(",");
 		int[] intArray;
-		ArrayList<String> list = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
 		int i = 0;
 		for (String str : array) {
 			list.add(str.trim());
 		}
-		String[] strings = new String[list.size()];
 		intArray = new int[list.size()];
 		i = 0;
 		for (String x : list) {
@@ -117,10 +114,10 @@ public class ControllerConcrete extends Controller {
 		if (idRoom == -1) {
 			System.out.println("Not valid idRoom: insert a numeric value");
 		} else {
-			if (super.sys.deleteRoom(idRoom)) {
-				System.out.println("Room with ID " + idRoom + " deleted ");
-			} else {
-				System.out.println("The room with ID " + idRoom + " has not found");
+			if(super.sys.deleteRoom(idRoom)){
+				System.out.println("Room with ID "+idRoom+" deleted ");
+			}else{
+				System.out.println("The room with ID "+idRoom+" not found");
 			}
 		}
 	}
@@ -150,10 +147,10 @@ public class ControllerConcrete extends Controller {
 	@Override
 	protected void makeDeleteCustomer() {
 		String es1 = this.gui.getInput("Insert the mail address of the customer to delete: ");
-		if (super.sys.deleteCustomer(es1)) {
-			System.out.println("Customer with mail address " + es1 + " deleted ");
-		} else {
-			System.out.println("The mail address " + es1 + " has not found");
+		if(super.sys.deleteCustomer(es1)){
+			System.out.println("Customer with mail address "+es1+" deleted ");
+		}else{
+			System.out.println("The mail address "+es1+" not found");
 		}
 	}
 
@@ -194,7 +191,7 @@ public class ControllerConcrete extends Controller {
 			if (super.sys.deleteReservation(reservationId)) {
 				System.out.println("Reservation with ID " + reservationId + " deleted ");
 			} else {
-				System.out.println("The reservation with ID " + reservationId + " has not been found");
+				System.out.println("The reservation with ID " + reservationId + " not found");
 			}
 		}
 	}
@@ -239,18 +236,16 @@ public class ControllerConcrete extends Controller {
 				if (scannerCounter == 0) {
 					System.out.println("Please insert a start date using the YYYY-MM-DD format: ");
 					scanneredDate[0] = keyboard.nextLine();
-					if ((scanneredDate[0].isEmpty() == true)
-							|| (scanneredDate[0].matches("\\d{4}-[01]\\d-[0-3]\\d") == false)) {
-						System.out.println("Choice not valid!\nPlease enter a vail date");
+					if((scanneredDate[0].isEmpty() == true) || (scanneredDate[0].matches("\\d{4}-[01]\\d-[0-3]\\d") == false)){
+						System.out.println("Choice not valid!\nPlease enter a valid date");
 					} else {
 						scannerCounter += 1;
 					}
 				} else {
 					System.out.println("Please insert an end date using the YYYY-MM-DD format: ");
 					scanneredDate[1] = keyboard.nextLine();
-					if ((scanneredDate[1].isEmpty() == true)
-							|| (scanneredDate[0].matches("\\d{4}-[01]\\d-[0-3]\\d") == false)) {
-						System.out.println("Choice not valid!\nPlease enter a vail date");
+					if((scanneredDate[1].isEmpty() == true) || (scanneredDate[0].matches("\\d{4}-[01]\\d-[0-3]\\d") == false)){
+						System.out.println("Choice not valid!\nPlease enter a valid date");
 					} else {
 						scannerCounter += 1;
 						continueScanneringUserInput = false;
