@@ -17,25 +17,22 @@ public class ControllerConcrete extends Controller {
 		super(sys, gui);
 	}
 
-
-	private int controlIfInteger(String s){
+	private int controlIfInteger(String s) {
 		try {
 			int checkedInt = Integer.parseInt(s);
 			return checkedInt;
-		} catch(NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			return -1;
 		}
 
 	}
 
-	private String[] transformInArray(String s){
+	private String[] transformInArray(String s) {
 		String[] array = s.split(",");
-		ArrayList list = new ArrayList();
-		int i = 0;
-		for(String str : array) {
+		ArrayList<String> list = new ArrayList<String>();
+		for (String str : array) {
 			list.add(str.trim());
 		}
-		String[] strings = new String[list.size()];
 		list.toArray(array);
 		return array;
 
@@ -44,25 +41,24 @@ public class ControllerConcrete extends Controller {
 	private int[] transformInInteger(String s) {
 		String[] array = s.split(",");
 		int[] intArray;
-		ArrayList<String> list = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
 		int i = 0;
 		for (String str : array) {
 			list.add(str.trim());
 		}
-		String[] strings = new String[list.size()];
 		intArray = new int[list.size()];
 		i = 0;
-		for(String x : list) {
+		for (String x : list) {
 			try {
 				intArray[i++] = Integer.parseInt(x);
-			} catch(NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				return null;
 			}
 		}
 		return intArray;
 	}
 
-	private String controlIfDate(String s){
+	private String controlIfDate(String s) {
 		try {
 			String parsedDate = LocalDate.parse(s).toString();
 			return parsedDate;
@@ -71,14 +67,40 @@ public class ControllerConcrete extends Controller {
 		}
 	}
 
-	protected void makeCreateRoom(){
+	protected void makeCreateRoom() {
 		int maxGuest = -1;
-		while(maxGuest == -1){
+		boolean success = true;
+		int counterTries = 0;
+		String[] services = null;
+		while (maxGuest == -1) {
 			maxGuest = this.controlIfInteger(this.gui.getInput("Max guest for room (numeric value): "));
+			if(counterTries++ == 5){
+				return;
+			}
 		}
-		String[] services = this.transformInArray(this.gui.getInput("Insert services (separated by comma): "));
+		services = null;
+		counterTries = 0;
+		
+		System.out.println("Services avaiable:");
+		System.out.println("1 - Television,");
+		System.out.println("2 - Wifi,");
+		System.out.println("3 - Room for smokers,");
+		System.out.println("4 - Room for handicapped.");
+		while (services == null || success == false) {
+			services = this.transformInArray(this.gui.getInput("Insert services names (separated by comma): "));
+			for (String s : services) {
+				if (!s.equalsIgnoreCase("Television") || !s.equalsIgnoreCase("Wifi")
+						|| !s.equalsIgnoreCase("Room for smokers") || !s.equalsIgnoreCase("Room for handicapped")) {
+					success = false;
+				}
+			}
+			if(counterTries++ == 5){
+				return;
+			}
+		}
+
 		super.sys.createRoom(maxGuest, services);
-		if(!super.sys.isThereAnError()) {
+		if (!super.sys.isThereAnError()) {
 			System.out.println("Room created");
 		} else {
 			this.prinErrors(super.sys.getLastErrors());
@@ -89,7 +111,7 @@ public class ControllerConcrete extends Controller {
 	@Override
 	protected void makeDeleteRoom() {
 		int idRoom = this.controlIfInteger(this.gui.getInput("Insert the ID room to delete: "));
-		if(idRoom == -1){
+		if (idRoom == -1) {
 			System.out.println("Not valid idRoom: insert a numeric value");
 		} else {
 			if(super.sys.deleteRoom(idRoom)){
@@ -106,7 +128,7 @@ public class ControllerConcrete extends Controller {
 	}
 
 	@Override
-	protected void makeCreateCustomer(){
+	protected void makeCreateCustomer() {
 		String taxCode = this.gui.getInput("Insert tax code:");
 		String name = this.gui.getInput("Insert name:");
 		String surName = this.gui.getInput("Insert surname:");
@@ -124,7 +146,7 @@ public class ControllerConcrete extends Controller {
 
 	@Override
 	protected void makeDeleteCustomer() {
-		String es1=this.gui.getInput("Insert the mail address of the customer to delete: ");
+		String es1 = this.gui.getInput("Insert the mail address of the customer to delete: ");
 		if(super.sys.deleteCustomer(es1)){
 			System.out.println("Customer with mail address "+es1+" deleted ");
 		}else{
@@ -138,12 +160,17 @@ public class ControllerConcrete extends Controller {
 	}
 
 	@Override
-	protected Reservation makeCreateReservation(boolean onDb){
+	protected Reservation makeCreateReservation(boolean onDb) {
+		int countTries = 0;
 		String idCostumer = super.gui.getInput("Please insert the customer's email: ");
 		int maxGuests = Integer.parseInt(super.gui.getInput("Please insert the number of guests: "));
-		this.sys.showRoom(s -> s.getMaxGuests() <= maxGuests);
-		int[] idRoom = this.transformInInteger(this.gui.getInput("Insert the ID room: "));
-		System.out.println(idRoom);
+		this.sys.showRoom(s -> s.getMaxGuests() >= maxGuests);
+		int[] idRoom = null;
+		while (idRoom == null) {
+			idRoom = this.transformInInteger(this.gui.getInput("Insert the ID room: "));
+			if (countTries++ == 5)
+				return null;
+		}
 		LocalDate[] dates = getDatesFromKeyboard();
 
 		Reservation res = super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1], onDb);
@@ -158,7 +185,7 @@ public class ControllerConcrete extends Controller {
 
 	protected void makeDeleteReservation() {
 		int reservationId = this.controlIfInteger(this.gui.getInput("Insert the ID reservation to update: "));
-		if(reservationId == -1)
+		if (reservationId == -1)
 			System.out.println("Insert a correct ID.");
 		else {
 			if (super.sys.deleteReservation(reservationId)) {
@@ -168,7 +195,6 @@ public class ControllerConcrete extends Controller {
 			}
 		}
 	}
-
 
 	@Override
 	protected void makeShowReservations() {
@@ -188,16 +214,15 @@ public class ControllerConcrete extends Controller {
 
 	}
 
-	private <T> void prinErrors(Iterator<T> it){
+	private <T> void prinErrors(Iterator<T> it) {
 		System.out.println("ERRORS");
-		while(it.hasNext()){
-			System.out.print(it.next()+" ");
+		while (it.hasNext()) {
+			System.out.print(it.next() + " ");
 		}
 		System.out.println("===========");
 	}
 
-
-	private LocalDate[] getDatesFromKeyboard(){
+	private LocalDate[] getDatesFromKeyboard() {
 		Scanner keyboard = new Scanner(System.in);
 		boolean continueScanneringUserInput = true;
 		LocalDate[] scanneredDates = new LocalDate[2];
@@ -206,9 +231,9 @@ public class ControllerConcrete extends Controller {
 		int startDate[] = new int[3];
 		int endDate[] = new int[3];
 
-		while(continueScanneringUserInput == true){
-			try{
-				if(scannerCounter == 0){
+		while (continueScanneringUserInput == true) {
+			try {
+				if (scannerCounter == 0) {
 					System.out.println("Please insert a start date using the YYYY-MM-DD format: ");
 					scanneredDate[0] = keyboard.nextLine();
 					if((scanneredDate[0].isEmpty() == true) || (scanneredDate[0].matches("\\d{4}-[01]\\d-[0-3]\\d") == false)){
@@ -216,8 +241,7 @@ public class ControllerConcrete extends Controller {
 					} else {
 						scannerCounter += 1;
 					}
-				}
-				else{
+				} else {
 					System.out.println("Please insert an end date using the YYYY-MM-DD format: ");
 					scanneredDate[1] = keyboard.nextLine();
 					if((scanneredDate[1].isEmpty() == true) || (scanneredDate[0].matches("\\d{4}-[01]\\d-[0-3]\\d") == false)){
@@ -226,8 +250,8 @@ public class ControllerConcrete extends Controller {
 						scannerCounter += 1;
 						continueScanneringUserInput = false;
 					}
-				} 
-			} catch (InputMismatchException ex){
+				}
+			} catch (InputMismatchException ex) {
 				System.out.println("User input is not a valid value for this method.");
 				System.out.println("Exception caught: User cannot put that value as menu choice.");
 				continueScanneringUserInput = false;
@@ -236,13 +260,13 @@ public class ControllerConcrete extends Controller {
 
 		String[] start = new String[3];
 		start = scanneredDate[0].split("-");
-		for(int i=0; i<3; i++){
+		for (int i = 0; i < 3; i++) {
 			startDate[i] = Integer.parseInt(start[i]);
 		}
 
 		String[] end = new String[3];
 		end = scanneredDate[1].split("-");
-		for(int i=0; i<3; i++){
+		for (int i = 0; i < 3; i++) {
 			endDate[i] = Integer.parseInt(end[i]);
 		}
 
@@ -252,11 +276,10 @@ public class ControllerConcrete extends Controller {
 		return scanneredDates;
 	}
 
-
 	@Override
 	protected void makeUpdateReservation() {
 		int idRes = this.controlIfInteger(this.gui.getInput("Which Reservation do you want to update? (id)"));
-		if(idRes == -1){
+		if (idRes == -1) {
 			System.out.println("Insert a numeric value for id!");
 		}
 		Reservation resNew = this.makeCreateReservation(false);
@@ -269,4 +292,3 @@ public class ControllerConcrete extends Controller {
 	}
 
 }
-

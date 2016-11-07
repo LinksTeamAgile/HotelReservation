@@ -18,8 +18,8 @@ public class CheckerReservation implements Checker{
 	}
 	
 	@Override
-	public ArrayList<Integer> check() {
-		ArrayList<Integer> check = new ArrayList<Integer>();
+	public ArrayList<Enum> check() {
+		ArrayList<Enum> check = new ArrayList<Enum>();
 		check.add(checkCustomer());
 	    check.add(checkRooms());
 	    check.add(checkStartDate());
@@ -27,46 +27,46 @@ public class CheckerReservation implements Checker{
 	    return check;	
 	}
 	
-	private int checkCustomer(){
+	private Enum checkCustomer(){
 		CheckerCustomer custchecker = new CheckerCustomer(res.getCustomer());
-		ArrayList<Integer> errorList = custchecker.check();
-		for (Integer i:errorList)
-			if(!i.equals(CustomerCode.SUCCESS_CUSTOMER.getCode()))
+		ArrayList<Enum> errorList = custchecker.check();
+		for (Enum i:errorList)
+			if(!i.equals(CustomerCode.SUCCESS_CUSTOMER))
 				return i;
-		return ReservationCode.SUCCESS_RESERVATION.getCode();
+		return ReservationCode.SUCCESS_RESERVATION;
 	}	
 		
 	
-	private int checkRooms(){ 
+	private Enum checkRooms(){ 
 		Room[] roomArray = res.getRooms();
 		
 		for(Room r:roomArray){
 			CheckerRoom custrooms = new CheckerRoom(r);
-			ArrayList<Integer> errorListRooms = custrooms.check();
-			for (Integer i:errorListRooms)
-				if(!i.equals(RoomCode.SUCCESS_ROOM.getCode()))
+			ArrayList<Enum> errorListRooms = custrooms.check();
+			for (Enum i:errorListRooms)
+				if(!i.equals(RoomCode.SUCCESS_ROOM))
 					return i;
 		}
-			return ReservationCode.SUCCESS_RESERVATION.getCode();
+			return ReservationCode.SUCCESS_RESERVATION;
 	}
 	
-	private int checkStartDate(){
+	private Enum checkStartDate(){
 		if(res.getStartDate() == null){
-			return ReservationCode.EMPTY_STARTDATE.getCode();
+			return ReservationCode.EMPTY_STARTDATE;
 		} else if(res.getStartDate().isBefore(LocalDate.now())){
-			return ReservationCode.WRONG_STARTDATE.getCode();
+			return ReservationCode.WRONG_STARTDATE;
 		} else {
-			return ReservationCode.SUCCESS_RESERVATION.getCode();
+			return ReservationCode.SUCCESS_RESERVATION;
 		}
 	}
 	
-	private int checkEndDate(){
+	private Enum checkEndDate(){
 		if(res.getEndDate() == null){
-			return ReservationCode.EMPTY_ENDDATE.getCode();
+			return ReservationCode.EMPTY_ENDDATE;
 		} else if(!res.getEndDate().isAfter(res.getStartDate()) || !res.getEndDate().isAfter(LocalDate.now().plusDays(1))){
-			return ReservationCode.WRONG_ENDDATE.getCode();
+			return ReservationCode.WRONG_ENDDATE;
 		} else {
-			return ReservationCode.SUCCESS_RESERVATION.getCode();
+			return ReservationCode.SUCCESS_RESERVATION;
 		}
 	}
 	

@@ -17,7 +17,7 @@ public class RoomConcrete extends Room{
 		this.isAvailable = isAvailable;
 		this.maxGuests = maxGuests;
 		this.services = services;
-		this.priceRoom = priceRoom;
+		this.priceRoom = 50.00;
 	}
 
 	public int getRoomId() {
