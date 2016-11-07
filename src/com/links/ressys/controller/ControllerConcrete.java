@@ -73,11 +73,17 @@ public class ControllerConcrete extends Controller {
 	protected void makeCreateRoom() {
 		int maxGuest = -1;
 		boolean success = true;
-		int countTries = 0;
+		int counterTries = 0;
 		String[] services = null;
 		while (maxGuest == -1) {
 			maxGuest = this.controlIfInteger(this.gui.getInput("Max guest for room (numeric value): "));
+			if(counterTries++ == 5){
+				return;
+			}
 		}
+		services = null;
+		counterTries = 0;
+		
 		System.out.println("Services avaiable:");
 		System.out.println("1 - Television,");
 		System.out.println("2 - Wifi,");
@@ -91,7 +97,7 @@ public class ControllerConcrete extends Controller {
 					success = false;
 				}
 			}
-			if(countTries++ == 5){
+			if(counterTries++ == 5){
 				return;
 			}
 		}
@@ -161,14 +167,13 @@ public class ControllerConcrete extends Controller {
 		int countTries = 0;
 		String idCostumer = super.gui.getInput("Please insert the customer's email: ");
 		int maxGuests = Integer.parseInt(super.gui.getInput("Please insert the number of guests: "));
-		this.sys.showRoom(s -> s.getMaxGuests() <= maxGuests);
-		int[] idRoom = this.transformInInteger(this.gui.getInput("Insert the ID room: "));
+		this.sys.showRoom(s -> s.getMaxGuests() >= maxGuests);
+		int[] idRoom = null;
 		while (idRoom == null) {
 			idRoom = this.transformInInteger(this.gui.getInput("Insert the ID room: "));
 			if (countTries++ == 5)
 				return null;
 		}
-		System.out.println(idRoom);
 		LocalDate[] dates = getDatesFromKeyboard();
 
 		Reservation res = super.sys.createReservation(idCostumer, idRoom, dates[0], dates[1], onDb);
