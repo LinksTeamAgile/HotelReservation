@@ -26,6 +26,15 @@ public class ControllerConcrete extends Controller {
 		}
 
 	}
+	
+	private long controlIfLong(String s){
+		try{
+			long checkedLong = Long.parseLong(s);
+			return checkedLong;
+		} catch(NumberFormatException e) {
+			return -1;
+		}
+	}
 
 	private String[] transformInArray(String s) {
 		String[] array = s.split(",");
@@ -186,10 +195,10 @@ public class ControllerConcrete extends Controller {
 		if (reservationId == -1)
 			System.out.println("Insert a correct ID.");
 		else {
-			if (super.sys.deleteReservation(reservationId)) {
+			if (super.sys.deleteReservation(reservationId) && super.sys.validFidelityDate(reservationId)) {
 				System.out.println("Reservation with ID " + reservationId + " deleted ");
 			} else {
-				System.out.println("The reservation with ID " + reservationId + " has not been found");
+				System.out.println("Reservation with ID " +reservationId+" not deleted");
 			}
 		}
 	}
@@ -282,11 +291,13 @@ public class ControllerConcrete extends Controller {
 		if (idRes == -1) {
 			System.out.println("Insert a numeric value for id!");
 		}
-		Reservation resNew = this.makeCreateReservation(false);
-		if (super.sys.updateReservation(resNew, idRes)) {
-			System.out.println("Reservation with ID " + idRes + " updated ");
-		} else {
-			System.out.println("The reservation with ID " + idRes + " not updated");
+		if (this.sys.validFidelityDate(idRes)) {
+			Reservation resNew = this.makeCreateReservation(false);
+			if (super.sys.updateReservation(resNew, idRes)) {
+				System.out.println("Reservation with ID " + idRes + " updated ");
+			} else {
+				System.out.println("Reservation with ID " + idRes + " not updated");
+			}
 		}
 
 	}
