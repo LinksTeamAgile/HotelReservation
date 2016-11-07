@@ -32,12 +32,12 @@ public class CheckerCustomer implements Checker {
 			check.add(CustomerCode.EMPTY_CARDNUM.getCode());
 			return check;
 		} else {
-//			check.add(checkName());
-//			check.add(checkSurname());
-//			check.add(checkTaxCode());
-//			check.add(checkCellPhoneNumber());
-//			check.add(checkMailAddress());
-//			check.add(checkCardNumber());
+			check.add(checkName());
+			check.add(checkSurname());
+			check.add(checkTaxCode());
+			check.add(checkCellPhoneNumber());
+			check.add(checkMailAddress());
+			check.add(checkCardNumber());
 			return check;
 		}
 	}

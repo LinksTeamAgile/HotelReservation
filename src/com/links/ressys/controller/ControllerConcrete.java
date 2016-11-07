@@ -95,7 +95,7 @@ public class ControllerConcrete extends Controller {
 			if(super.sys.deleteRoom(idRoom)){
 				System.out.println("Room with ID "+idRoom+" deleted ");
 			}else{
-				System.out.println("The room with ID "+idRoom+" has not found");
+				System.out.println("The room with ID "+idRoom+" not found");
 			}
 		}
 	}
@@ -128,7 +128,7 @@ public class ControllerConcrete extends Controller {
 		if(super.sys.deleteCustomer(es1)){
 			System.out.println("Customer with mail address "+es1+" deleted ");
 		}else{
-			System.out.println("The mail address "+es1+" has not found");
+			System.out.println("The mail address "+es1+" not found");
 		}
 	}
 
@@ -164,7 +164,7 @@ public class ControllerConcrete extends Controller {
 			if (super.sys.deleteReservation(reservationId)) {
 				System.out.println("Reservation with ID " + reservationId + " deleted ");
 			} else {
-				System.out.println("The reservation with ID " + reservationId + " has not been found");
+				System.out.println("The reservation with ID " + reservationId + " not found");
 			}
 		}
 	}
@@ -212,7 +212,7 @@ public class ControllerConcrete extends Controller {
 					System.out.println("Please insert a start date using the YYYY-MM-DD format: ");
 					scanneredDate[0] = keyboard.nextLine();
 					if((scanneredDate[0].isEmpty() == true) || (scanneredDate[0].matches("\\d{4}-[01]\\d-[0-3]\\d") == false)){
-						System.out.println("Choice not valid!\nPlease enter a vail date");
+						System.out.println("Choice not valid!\nPlease enter a valid date");
 					} else {
 						scannerCounter += 1;
 					}
@@ -221,7 +221,7 @@ public class ControllerConcrete extends Controller {
 					System.out.println("Please insert an end date using the YYYY-MM-DD format: ");
 					scanneredDate[1] = keyboard.nextLine();
 					if((scanneredDate[1].isEmpty() == true) || (scanneredDate[0].matches("\\d{4}-[01]\\d-[0-3]\\d") == false)){
-						System.out.println("Choice not valid!\nPlease enter a vail date");
+						System.out.println("Choice not valid!\nPlease enter a valid date");
 					} else {
 						scannerCounter += 1;
 						continueScanneringUserInput = false;
